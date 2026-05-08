@@ -1,0 +1,9 @@
+src/
+notebooks/
+data/
+powerbi/
+presentation/
+requirements.txt
+*.py
+*.ipynb
+__pycache__/

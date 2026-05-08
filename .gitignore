@@ -22,3 +22,5 @@ Thumbs.db
 # Логи, temp
 *.log
 *.tmp
+
+.vercel
