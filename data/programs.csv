@@ -1,0 +1,201 @@
+program_id,uni_id,program_name,anko_program_type,field,degree_level,duration_years,tuition_yuan,language,min_hsk_required,min_hsk_score_required
+1,1,Education,Fall Bachelor,Humanities,Bachelor,4.0,29900,Chinese,4,120
+2,1,Civil Engineering,Fall Bachelor,Engineering,Bachelor,4.0,39562,Chinese,4,120
+3,1,Automation,6+6,Engineering,Language Prep + Bachelor Track,1.5,21603,Chinese,0,0
+4,1,Economics,1+4,Business,Language Prep + Bachelor,5.0,32342,Chinese,0,0
+5,2,Software Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.4,22437,Chinese,0,0
+6,2,International Business,6+6,Business,Language Prep + Bachelor Track,1.5,24065,Chinese,0,0
+7,2,Environmental Science,6+6,Science,Language Prep + Bachelor Track,1.2,24227,Chinese,0,0
+8,2,Architecture,1+4,Engineering,Language Prep + Bachelor,5.0,22314,Chinese,0,0
+9,3,Journalism,6+6,Humanities,Language Prep + Bachelor Track,1.2,25741,Chinese,0,0
+10,3,Public Health,6+6,Medicine,Language Prep + Bachelor Track,1.2,19515,Chinese,0,0
+11,3,Architecture,1+4,Engineering,Language Prep + Bachelor,5.0,30047,Chinese,0,0
+12,3,Biology,6+6,Science,Language Prep + Bachelor Track,1.4,23602,Chinese,0,0
+13,4,Sociology,6+6,Humanities,Language Prep + Bachelor Track,1.3,21100,Chinese,0,0
+14,4,Automation,6+6,Engineering,Language Prep + Bachelor Track,1.4,19599,Chinese,0,0
+15,4,Economics,Fall Bachelor,Business,Bachelor,4.0,34693,Chinese,4,120
+16,4,International Business,6+6,Business,Language Prep + Bachelor Track,1.3,19118,Chinese,0,0
+17,5,Traditional Chinese Medicine,Fall Bachelor,Medicine,Bachelor,4.0,32174,Chinese,4,120
+18,5,International Business,6+6,Business,Language Prep + Bachelor Track,1.0,22474,Chinese,0,0
+19,5,Pharmacy,1+4,Medicine,Language Prep + Bachelor,5.0,34890,Chinese,0,0
+20,5,Automation,6+6,Engineering,Language Prep + Bachelor Track,1.1,25342,Chinese,0,0
+21,6,Finance,1+4,Business,Language Prep + Bachelor,5.0,27575,Chinese,0,0
+22,6,Marketing,1+4,Business,Language Prep + Bachelor,5.0,26269,Chinese,0,0
+23,6,Materials Science and Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.0,24173,Chinese,0,0
+24,6,Public Health,6+6,Medicine,Language Prep + Bachelor Track,1.3,25505,Chinese,0,0
+25,7,International Business,1+4,Business,Language Prep + Bachelor,5.0,22493,Chinese,0,0
+26,7,Dentistry,1+4,Medicine,Language Prep + Bachelor,5.0,29108,Chinese,0,0
+27,7,Electrical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.5,20930,Chinese,0,0
+28,7,Management Science,6+6,Business,Language Prep + Bachelor Track,1.5,20108,Chinese,0,0
+29,8,Psychology,1+4,Humanities,Language Prep + Bachelor,5.0,31054,Chinese,0,0
+30,8,Information Engineering,Master/PhD,Engineering,Master,3.0,39179,Chinese,4,180
+31,8,Accounting,Fall Bachelor,Business,Bachelor,4.0,25182,Chinese,4,120
+32,8,Education,1+4,Humanities,Language Prep + Bachelor,5.0,26481,Chinese,0,0
+33,9,International Business,6+6,Business,Language Prep + Bachelor Track,1.2,23199,Chinese,0,0
+34,9,Software Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.1,21952,Chinese,0,0
+35,9,Architecture,6+6,Engineering,Language Prep + Bachelor Track,1.5,25918,Chinese,0,0
+36,9,Nursing,1+4,Medicine,Language Prep + Bachelor,5.0,24421,Chinese,0,0
+37,10,Music,1+4,Arts,Language Prep + Bachelor,5.0,27007,Chinese,0,0
+38,10,Materials Science and Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,30067,Chinese,0,0
+39,10,Visual Arts,1+4,Arts,Language Prep + Bachelor,5.0,28134,Chinese,0,0
+40,10,Civil Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.3,24799,Chinese,0,0
+41,11,Mechanical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,22178,Chinese,4,120
+42,11,Management Science,6+6,Business,Language Prep + Bachelor Track,1.3,18951,Chinese,0,0
+43,11,Finance,Fall Bachelor,Business,Bachelor,4.0,38898,Chinese,4,120
+44,11,Environmental Science,6+6,Science,Language Prep + Bachelor Track,1.0,19130,Chinese,0,0
+45,12,Nursing,Fall Bachelor,Medicine,Bachelor,4.0,30281,Chinese,4,120
+46,12,Film and Television,6+6,Arts,Language Prep + Bachelor Track,1.3,25245,Chinese,0,0
+47,12,Visual Arts,6+6,Arts,Language Prep + Bachelor Track,1.0,20390,Chinese,0,0
+48,12,Chinese Language and Literature,Fall Bachelor,Language,Bachelor,4.0,29832,Chinese,4,120
+49,13,Physics,1+4,Science,Language Prep + Bachelor,5.0,33402,Chinese,0,0
+50,13,Medicine (MBBS),1+4,Medicine,Language Prep + Bachelor,5.0,48204,Chinese,0,0
+51,13,Mechanical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,28840,Both,4,120
+52,13,Information Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.4,25136,Chinese,0,0
+53,14,Software Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,30799,Chinese,0,0
+54,14,Automation,6+6,Engineering,Language Prep + Bachelor Track,1.4,20563,Chinese,0,0
+55,14,Management Science,6+6,Business,Language Prep + Bachelor Track,1.0,19394,Chinese,0,0
+56,14,Information Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,34540,Chinese,0,0
+57,15,International Business,1+4,Business,Language Prep + Bachelor,5.0,31493,Chinese,0,0
+58,15,Architecture,Fall Bachelor,Engineering,Bachelor,4.0,22451,Chinese,4,120
+59,15,Chemical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.5,18647,Chinese,0,0
+60,15,Dentistry,1+4,Medicine,Language Prep + Bachelor,5.0,27626,Chinese,0,0
+61,16,Design,6+6,Arts,Language Prep + Bachelor Track,1.5,21993,Chinese,0,0
+62,16,International Business,1+4,Business,Language Prep + Bachelor,5.0,32612,Chinese,0,0
+63,16,Software Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,20097,Chinese,0,0
+64,16,Management Science,Master/PhD,Business,Master,3.0,53543,English,0,0
+65,17,Chemical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,23964,Chinese,4,120
+66,17,Electrical Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,27962,Chinese,0,0
+67,17,Environmental Science,1+4,Science,Language Prep + Bachelor,5.0,29047,Chinese,0,0
+68,17,Traditional Chinese Medicine,1+4,Medicine,Language Prep + Bachelor,5.0,26388,Chinese,0,0
+69,18,Physics,6+6,Science,Language Prep + Bachelor Track,1.1,21631,Chinese,0,0
+70,18,Sociology,6+6,Humanities,Language Prep + Bachelor Track,1.0,24533,Chinese,0,0
+71,18,Economics,Fall Bachelor,Business,Bachelor,4.0,24631,Chinese,4,120
+72,18,Industrial Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.1,25368,Chinese,0,0
+73,19,Civil Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.0,18924,Chinese,0,0
+74,19,Automation,1+4,Engineering,Language Prep + Bachelor,5.0,20800,Chinese,0,0
+75,19,Marketing,6+6,Business,Language Prep + Bachelor Track,1.3,21149,Chinese,0,0
+76,19,Environmental Science,6+6,Science,Language Prep + Bachelor Track,1.1,24809,Chinese,0,0
+77,20,Information Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,23741,Chinese,0,0
+78,20,Pharmacy,6+6,Medicine,Language Prep + Bachelor Track,1.3,18394,Chinese,0,0
+79,20,Software Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.5,24668,Chinese,0,0
+80,20,Automation,Master/PhD,Engineering,Master,3.0,47381,Both,4,180
+81,21,Marketing,Fall Bachelor,Business,Bachelor,4.0,35303,Chinese,4,120
+82,21,International Business,Fall Bachelor,Business,Bachelor,4.0,37007,Chinese,4,120
+83,21,Economics,6+6,Business,Language Prep + Bachelor Track,1.1,21469,Chinese,0,0
+84,21,Dentistry,6+6,Medicine,Language Prep + Bachelor Track,1.2,22040,Chinese,0,0
+85,22,Dentistry,6+6,Medicine,Language Prep + Bachelor Track,1.3,19883,Chinese,0,0
+86,22,Visual Arts,Master/PhD,Arts,Master,2.0,46063,Chinese,4,180
+87,22,Chemistry,Fall Bachelor,Science,Bachelor,4.0,33747,Chinese,4,120
+88,22,International Business,Fall Bachelor,Business,Bachelor,4.0,27187,Chinese,4,120
+89,23,Accounting,6+6,Business,Language Prep + Bachelor Track,1.3,24886,Chinese,0,0
+90,23,Architecture,6+6,Engineering,Language Prep + Bachelor Track,1.5,23806,Chinese,0,0
+91,23,Industrial Engineering,Fall Bachelor,Engineering,Bachelor,4.0,39260,Chinese,4,120
+92,23,Sociology,Master/PhD,Humanities,PhD,4.0,31504,English,0,0
+93,24,International Business,6+6,Business,Language Prep + Bachelor Track,1.3,18062,Chinese,0,0
+94,24,Nursing,1+4,Medicine,Language Prep + Bachelor,5.0,30916,Chinese,0,0
+95,24,Psychology,1+4,Humanities,Language Prep + Bachelor,5.0,23535,Chinese,0,0
+96,24,Design,6+6,Arts,Language Prep + Bachelor Track,1.1,23770,Chinese,0,0
+97,25,International Business,1+4,Business,Language Prep + Bachelor,5.0,33825,Chinese,0,0
+98,25,Marketing,6+6,Business,Language Prep + Bachelor Track,1.4,24537,Chinese,0,0
+99,25,Materials Science and Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.2,20504,Chinese,0,0
+100,25,Software Engineering,Master/PhD,Engineering,Master,2.0,51891,English,0,0
+101,26,Management Science,Fall Bachelor,Business,Bachelor,4.0,38851,Chinese,4,120
+102,26,Nursing,Fall Bachelor,Medicine,Bachelor,4.0,39760,Both,4,120
+103,26,Information Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,32758,Chinese,0,0
+104,26,Civil Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,28824,Chinese,0,0
+105,27,Software Engineering,Fall Bachelor,Engineering,Bachelor,4.0,30178,Chinese,4,120
+106,27,Pharmacy,6+6,Medicine,Language Prep + Bachelor Track,1.5,21538,Chinese,0,0
+107,27,Education,Master/PhD,Humanities,Master,2.0,53340,Chinese,4,180
+108,27,Automation,Master/PhD,Engineering,Master,3.0,32713,English,0,0
+109,28,Geology,6+6,Science,Language Prep + Bachelor Track,1.1,18232,Chinese,0,0
+110,28,Psychology,Master/PhD,Humanities,Master,2.0,30164,Chinese,4,180
+111,28,Computer Science and Technology,1+4,Engineering,Language Prep + Bachelor,5.0,34701,Chinese,0,0
+112,28,Materials Science and Engineering,Fall Bachelor,Engineering,Bachelor,4.0,26408,Chinese,4,120
+113,29,Music,Fall Bachelor,Arts,Bachelor,4.0,37231,Chinese,4,120
+114,29,Chemical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.1,23579,Chinese,0,0
+115,29,Education,1+4,Humanities,Language Prep + Bachelor,5.0,21290,Chinese,0,0
+116,29,Automation,Fall Bachelor,Engineering,Bachelor,4.0,22954,Chinese,4,120
+117,30,Law,Master/PhD,Humanities,Master,2.0,48489,Chinese,4,180
+118,30,Information Engineering,Fall Bachelor,Engineering,Bachelor,4.0,37915,Chinese,4,120
+119,30,Materials Science and Engineering,Master/PhD,Engineering,Master,2.0,37634,Both,4,180
+120,30,Accounting,6+6,Business,Language Prep + Bachelor Track,1.5,22330,Chinese,0,0
+121,31,Finance,1+4,Business,Language Prep + Bachelor,5.0,23862,Chinese,0,0
+122,31,Design,6+6,Arts,Language Prep + Bachelor Track,1.3,23527,Chinese,0,0
+123,31,Dentistry,6+6,Medicine,Language Prep + Bachelor Track,1.1,25583,Chinese,0,0
+124,31,Pharmacy,1+4,Medicine,Language Prep + Bachelor,5.0,31784,Chinese,0,0
+125,32,Accounting,1+4,Business,Language Prep + Bachelor,5.0,22301,Chinese,0,0
+126,32,Mechanical Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,29024,Chinese,0,0
+127,32,Electrical Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,27159,Chinese,0,0
+128,32,Civil Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,25263,Chinese,0,0
+129,33,Education,1+4,Humanities,Language Prep + Bachelor,5.0,28807,Chinese,0,0
+130,33,Nursing,Fall Bachelor,Medicine,Bachelor,4.0,28168,Chinese,4,120
+131,33,Accounting,6+6,Business,Language Prep + Bachelor Track,1.3,24467,Chinese,0,0
+132,33,Environmental Science,Master/PhD,Science,Master,2.0,53996,English,0,0
+133,34,Nursing,1+4,Medicine,Language Prep + Bachelor,5.0,32561,Chinese,0,0
+134,34,Computer Science and Technology,Fall Bachelor,Engineering,Bachelor,4.0,23297,Chinese,4,120
+135,34,Architecture,6+6,Engineering,Language Prep + Bachelor Track,1.2,20673,Chinese,0,0
+136,34,Sociology,Fall Bachelor,Humanities,Bachelor,4.0,22264,Both,4,120
+137,35,Public Health,1+4,Medicine,Language Prep + Bachelor,5.0,22304,Chinese,0,0
+138,35,Civil Engineering,Master/PhD,Engineering,Master,2.0,42734,Both,4,180
+139,35,Finance,Fall Bachelor,Business,Bachelor,4.0,35556,Chinese,4,120
+140,35,Mechanical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.3,21734,Chinese,0,0
+141,36,Software Engineering,Fall Bachelor,Engineering,Bachelor,4.0,38567,Chinese,4,120
+142,36,Geology,Master/PhD,Science,PhD,4.0,41777,English,0,0
+143,36,Automation,1+4,Engineering,Language Prep + Bachelor,5.0,31330,Chinese,0,0
+144,36,Traditional Chinese Medicine,6+6,Medicine,Language Prep + Bachelor Track,1.5,19205,Chinese,0,0
+145,37,Architecture,6+6,Engineering,Language Prep + Bachelor Track,1.2,19863,Chinese,0,0
+146,37,Marketing,6+6,Business,Language Prep + Bachelor Track,1.1,21946,Chinese,0,0
+147,37,Geology,1+4,Science,Language Prep + Bachelor,5.0,29564,Chinese,0,0
+148,37,Accounting,6+6,Business,Language Prep + Bachelor Track,1.3,18464,Chinese,0,0
+149,38,Traditional Chinese Medicine,1+4,Medicine,Language Prep + Bachelor,5.0,32668,Chinese,0,0
+150,38,Psychology,1+4,Humanities,Language Prep + Bachelor,5.0,32781,Chinese,0,0
+151,38,Physics,Fall Bachelor,Science,Bachelor,4.0,32568,Chinese,4,120
+152,38,Nursing,6+6,Medicine,Language Prep + Bachelor Track,1.2,25986,Chinese,0,0
+153,39,Management Science,6+6,Business,Language Prep + Bachelor Track,1.2,20532,Chinese,0,0
+154,39,Information Engineering,Master/PhD,Engineering,Master,2.0,47954,Chinese,4,180
+155,39,Mechanical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,27004,Chinese,4,120
+156,39,Chinese Language and Literature,1+4,Language,Language Prep + Bachelor,5.0,33186,Chinese,0,0
+157,40,Journalism,Master/PhD,Humanities,Master,3.0,53460,Both,4,180
+158,40,Mathematics,Fall Bachelor,Science,Bachelor,4.0,24053,Chinese,4,120
+159,40,Management Science,Master/PhD,Business,Master,3.0,54644,Chinese,4,180
+160,40,Psychology,6+6,Humanities,Language Prep + Bachelor Track,1.1,20382,Chinese,0,0
+161,41,International Relations,1+4,Humanities,Language Prep + Bachelor,5.0,33125,Chinese,0,0
+162,41,Traditional Chinese Medicine,Master/PhD,Medicine,Master,3.0,32544,Both,4,180
+163,41,Accounting,Master/PhD,Business,Master,3.0,31651,Chinese,4,180
+164,41,Mechanical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.3,24102,Chinese,0,0
+165,42,Psychology,Fall Bachelor,Humanities,Bachelor,4.0,35318,Chinese,4,120
+166,42,Materials Science and Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.3,19869,Chinese,0,0
+167,42,Automation,1+4,Engineering,Language Prep + Bachelor,5.0,23944,Chinese,0,0
+168,42,Chemical Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,30497,Chinese,0,0
+169,43,Management Science,6+6,Business,Language Prep + Bachelor Track,1.4,22194,Chinese,0,0
+170,43,Chemistry,6+6,Science,Language Prep + Bachelor Track,1.3,21592,Chinese,0,0
+171,43,Mechanical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,37595,Chinese,4,120
+172,43,Pharmacy,Fall Bachelor,Medicine,Bachelor,4.0,29648,Both,4,120
+173,44,Materials Science and Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,28013,Chinese,0,0
+174,44,International Business,Master/PhD,Business,Master,2.0,41771,English,0,0
+175,44,Physics,6+6,Science,Language Prep + Bachelor Track,1.2,21975,Chinese,0,0
+176,44,Electrical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.2,19616,Chinese,0,0
+177,45,Management Science,1+4,Business,Language Prep + Bachelor,5.0,25149,Chinese,0,0
+178,45,Film and Television,1+4,Arts,Language Prep + Bachelor,5.0,31280,Chinese,0,0
+179,45,Electrical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.2,25176,Chinese,0,0
+180,45,Physics,Fall Bachelor,Science,Bachelor,4.0,31532,Chinese,4,120
+181,46,International Business,6+6,Business,Language Prep + Bachelor Track,1.2,20395,Chinese,0,0
+182,46,Electrical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.3,24995,Chinese,0,0
+183,46,Education,1+4,Humanities,Language Prep + Bachelor,5.0,31758,Chinese,0,0
+184,46,Traditional Chinese Medicine,1+4,Medicine,Language Prep + Bachelor,5.0,34921,Chinese,0,0
+185,47,Psychology,Fall Bachelor,Humanities,Bachelor,4.0,38246,Chinese,4,120
+186,47,Finance,1+4,Business,Language Prep + Bachelor,5.0,21528,Chinese,0,0
+187,47,Film and Television,1+4,Arts,Language Prep + Bachelor,5.0,27691,Chinese,0,0
+188,47,Industrial Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.0,25679,Chinese,0,0
+189,48,Architecture,1+4,Engineering,Language Prep + Bachelor,5.0,20983,Chinese,0,0
+190,48,Marketing,6+6,Business,Language Prep + Bachelor Track,1.1,20500,Chinese,0,0
+191,48,Public Health,1+4,Medicine,Language Prep + Bachelor,5.0,20907,Chinese,0,0
+192,48,Industrial Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.2,20416,Chinese,0,0
+193,49,Electrical Engineering,Fall Bachelor,Engineering,Bachelor,4.0,24017,Chinese,4,120
+194,49,Finance,6+6,Business,Language Prep + Bachelor Track,1.2,21916,Chinese,0,0
+195,49,Journalism,6+6,Humanities,Language Prep + Bachelor Track,1.2,24730,Chinese,0,0
+196,49,Industrial Engineering,1+4,Engineering,Language Prep + Bachelor,5.0,27198,Chinese,0,0
+197,50,Materials Science and Engineering,Master/PhD,Engineering,PhD,3.0,55919,English,0,0
+198,50,Chemical Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.1,18164,Chinese,0,0
+199,50,Industrial Engineering,6+6,Engineering,Language Prep + Bachelor Track,1.0,19228,Chinese,0,0
+200,50,International Business,6+6,Business,Language Prep + Bachelor Track,1.3,19845,Chinese,0,0

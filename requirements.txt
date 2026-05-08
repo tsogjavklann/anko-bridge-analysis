@@ -1,0 +1,12 @@
+pandas>=2.3
+numpy>=1.26
+faker>=24
+scipy>=1.15
+scikit-learn>=1.7
+xgboost>=2.0
+plotly>=5.20
+matplotlib>=3.10
+seaborn>=0.13
+jupyter>=1.0
+sqlalchemy>=2.0
+statsmodels>=0.14

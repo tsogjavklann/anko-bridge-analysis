@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="mn" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANKO Bridge — Монгол оюутнуудын Хятадад суралцах элсэлтийн шинжилгээ, 2019–2025</title>
+  <meta name="description" content="ANKO Bridge зуучлагч агентлагийн өгөгдлийн гүйлгэж унших өгөгдлийн түүхчилсэн тайлан шинжилгээ. Хятад дахь Монгол оюутны элсэлтийн чиг хандлага 2019–2025." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="agency.css" />
+</head>
+<body>
+
+  <!-- Page loader (Dogstudio style) -->
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <div class="loader-bg"></div>
+    <div class="loader-content">
+      <div class="loader-brand">ANKO Bridge</div>
+      <div class="loader-counter"><span id="loaderNum">0</span><span class="loader-pct">%</span></div>
+      <div class="loader-line"><div class="loader-line-fill" id="loaderFill"></div></div>
+      <div class="loader-tagline">Өгөгдлийн шинжилгээний үндэслэлийг ачаалж байна…</div>
+    </div>
+  </div>
+
+  <!-- Persistent 3D globe (fixed, scroll-driven) -->
+  <canvas id="three-globe-fixed" aria-hidden="true"></canvas>
+
+  <!-- Cursor glow + scroll progress + section nav -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <nav class="section-nav" aria-label="Хэсгийн навигаци">
+    <button data-target="0" data-label="Эхлэл" class="active" type="button"></button>
+    <button data-target="1" data-label="Хугацаа" type="button"></button>
+    <button data-target="2" data-label="Хятад"   type="button"></button>
+    <button data-target="3" data-label="Монгол"  type="button"></button>
+    <button data-target="4" data-label="HSK"     type="button"></button>
+    <button data-target="5" data-label="Хөтөлбөр" type="button"></button>
+    <button data-target="6" data-label="Чиглэл"  type="button"></button>
+    <button data-target="7" data-label="Төрөл"   type="button"></button>
+    <button data-target="8" data-label="Таамаг"  type="button"></button>
+    <button data-target="9" data-label="Урсгал"  type="button"></button>
+    <button data-target="10" data-label="Зөвлөмж" type="button"></button>
+    <button data-target="11" data-label="Дүгнэлт" type="button"></button>
+  </nav>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="brand">ANKO Bridge<span class="brand-sub">· Өгөгдлийн шинжилгээ 2019–2025</span></div>
+    <button class="theme-toggle" type="button" aria-label="Дэлгэцийн өнгө солих">
+      <span class="theme-icon">◐</span>
+    </button>
+  </header>
+
+  <!-- ───────────── Section 1 — Hero with 3D globe ───────────── -->
+  <section class="section section-hero" id="sec-0" data-step="0">
+    <div class="hero-bg" aria-hidden="true">
+      <!-- Globe is now persistent (#three-globe-fixed at body root) -->
+    </div>
+    <div class="hero-inner">
+      <div class="kicker">2019 → 2025 · ANKO Bridge · Өгөгдлийн шинжилгээ</div>
+      <h1 class="hero-title">
+        <span class="hero-num counter" id="hero-num" data-target="1500">0</span>
+        <span class="hero-rotator-wrap">
+          <span class="hero-rotator-static">Монгол</span>
+          <span class="hero-rotator">
+            <span class="rotator-word">оюутан</span>
+            <span class="rotator-word">өргөдөл</span>
+            <span class="rotator-word">амжилт</span>
+            <span class="rotator-word">түүх</span>
+          </span>
+        </span>
+        <span class="hero-tail">7 жилийн хугацаанд</span>
+      </h1>
+      <p class="hero-sub">
+        2019 онд тав хүрэхгүй өргөдлөөс эхэлсэн нэг агентлаг. 2025 онд оны дунд гэхэд
+        <strong>1,371 өргөдөл</strong>. Энэ хугацаанд хил хаалт, цар тахлын саатал, дараах огцом сэргэлт зэрэг томоохон өөрчлөлтүүд өрнөсөн.
+        Энэ бол дата нь хэлж буй жинхэнэ түүх — диаграм, газрын зураг, Машин сургалтын загвар, Python хийгээд
+        <strong>5 стратегийн зөвлөмж</strong>-ийг нэгтгэн харуулна.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-num">2,250</span><span class="hero-stat-lab">өргөдөл</span></div>
+        <div class="hero-stat"><span class="hero-stat-num">50</span><span class="hero-stat-lab">их сургууль</span></div>
+        <div class="hero-stat"><span class="hero-stat-num">21</span><span class="hero-stat-lab">аймаг</span></div>
+        <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-lab">Машин сургалтын загвар</span></div>
+      </div>
+      <div class="scroll-hint">
+        <span>Доош гүйлгэж үзнэ үү</span>
+        <span class="arrow">↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── Sections 2-4 — Timeline (sticky chart) ───────────── -->
+  <section class="section section-scrolly" id="sec-1" data-anchor="1">
+    <div class="scrolly-grid">
+      <div class="scrolly-graphic">
+        <div class="sticky-wrap">
+          <div class="chart-wrap" style="width:100%;">
+            <div class="chart-mount" id="chart-timeline"></div>
+          </div>
+        </div>
+      </div>
+      <div class="scrolly-text" id="timeline-scrolly">
+        <div class="step" data-step="1">
+          <div class="kicker">Эхлэлийн жил</div>
+          <h2>2019 он. ANKO Bridge байгуулагдав.</h2>
+          <p>ANKO Bridge байгуулагдаж байсан анхны жил. Зөвхөн <strong class="hl-purple">55 оюутан</strong> бүртгүүлж, ихэнх нь Бээжин, Шанхайн нэр хүндтэй сургуулиуд руу. Хил нээлттэй, виз тогтвортой, ажил жигд явсан.</p>
+        </div>
+        <div class="step" data-step="2">
+          <div class="kicker">Хямрал</div>
+          <h2>2020. Хил хаагдав.</h2>
+          <p>2020 оны 1-р сард Хятад хилээ хаалаа. Нислэг цуцалж, виз олгох ажиллагаа зогсов. Бүтэн жилд <strong class="hl-coral">10 оюутан</strong> л явж чадав. Цахим хичээлд оюутан, эцэг эхийн итгэлийг алдсан, агентлагт орлого тасрав. 2021 онд ердөө 8, 2022 онд 17 өргөдөл.</p>
+        </div>
+        <div class="step" data-step="3">
+          <div class="kicker">Сэргэлт</div>
+          <h2>2023. Хил нээгдэв. 2025 онд оргилдоо хүрэв.</h2>
+          <p>2023 оны 1-р сард Хятад хилээ дахин нээснээр гурван жилийн хүлээгдсэн эрэлт нэг дор тэсэлсэн. <strong class="hl-teal">2023: 190</strong>, <strong class="hl-teal">2024: 460</strong>, ялангуяа <strong class="hl-teal">2025 оны эхний 6 сард 760</strong> оюутан — 2019 оны 14 дахин. Энэ нь зөвхөн ANKO биш, Монгол гэр бүлүүдийн боловсролд хийх хөрөнгө оруулалтын чиг хандлагад гарсан томоохон өөрчлөлт.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bar Chart Race — Top universities cumulative over years -->
+  <section class="section section-race" id="sec-race" data-anchor="race">
+    <div class="container">
+      <div class="step reveal">
+        <div class="kicker">Bar chart race</div>
+        <h2 class="section-title">Топ 10 их сургууль — 7 жилийн уралдаан</h2>
+        <p class="lead">2019-2025 онд оюутны өргөдлөөр өрсөлдсөн их сургуулиуд хугацаа явахад хэрхэн солигдсоныг харуулсан хөдөлгөөнт баганан диаграм. Жилийн гулсуур-ээр сонгож үзэж болно.</p>
+      </div>
+      <div class="chart-wrap">
+        <div class="race-controls">
+          <button id="raceToggle" class="chip active" type="button">▶ Автоматаар тоглуулах</button>
+          <input type="range" id="raceYear" min="2019" max="2025" step="1" value="2019" />
+          <span class="race-year-label" id="raceYearLabel">2019</span>
+        </div>
+        <div class="chart-mount tall" id="chart-race"></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Marquee — between Timeline and China sections -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>1,500 ОЮУТАН</span><span class="dot-sep">●</span>
+      <span>50 ИХ СУРГУУЛЬ</span><span class="dot-sep">●</span>
+      <span>21 АЙМАГ</span><span class="dot-sep">●</span>
+      <span>2019 → 2025</span><span class="dot-sep">●</span>
+      <span>+1370% ӨСӨЛТ</span><span class="dot-sep">●</span>
+      <span>1,500 ОЮУТАН</span><span class="dot-sep">●</span>
+      <span>50 ИХ СУРГУУЛЬ</span><span class="dot-sep">●</span>
+      <span>21 АЙМАГ</span><span class="dot-sep">●</span>
+      <span>2019 → 2025</span><span class="dot-sep">●</span>
+      <span>+1370% ӨСӨЛТ</span><span class="dot-sep">●</span>
+    </div>
+  </div>
+
+  <!-- Chapter intro: Хятад дахь -->
+  <div class="chapter-intro" data-chapter="01">
+    <div class="chapter-num">01</div>
+    <div class="chapter-title">Хаашаа?</div>
+    <div class="chapter-desc">1,218 элссэн оюутны байршил — Бээжин, Шанхай, Хөх хот, Өвөр Монгол болон бусад мужийн их сургуулиуд.</div>
+  </div>
+
+  <!-- ───────────── Section 5 — China destinations (real map) ───────────── -->
+  <section class="section section-china" id="sec-2" data-anchor="2">
+    <div class="container">
+      <div class="step reveal" data-step="4">
+        <div class="kicker">Тэд хаашаа явдаг вэ?</div>
+        <h2 class="section-title">Хятадад элссэн оюутнуудын байршил</h2>
+        <p class="lead">Цэг бүр нэг элссэн оюутныг илэрхийлнэ. Бээжинд 460, Шанхайд 197, Өвөр Монголд 160 оюутан байна. C9 болон 985 зэрэглэлийн томоохон их сургуулиудад Монгол оюутнууд суралцаж байна. Газрын зургийг гүйлгэж томруулан, цэг дээр дарж оюутны нэр, GPA, HSK түвшин, элссэн сургуулийг харах боломжтой.</p>
+      </div>
+      <!-- China filter toolbar -->
+      <div class="map-toolbar reveal">
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">Хөтөлбөр</label>
+          <div class="chip-group" id="cn-filter-program">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="6+6" type="button">6+6</button>
+            <button class="chip" data-value="1+4" type="button">1+4</button>
+            <button class="chip" data-value="Fall Bachelor" type="button">Намрын шууд бакалавр</button>
+            <button class="chip" data-value="Master/PhD" type="button">Магистр / Доктор</button>
+          </div>
+        </div>
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">Зэрэглэл</label>
+          <div class="chip-group" id="cn-filter-tier">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="C9" type="button">C9</button>
+            <button class="chip" data-value="985" type="button">985</button>
+            <button class="chip" data-value="211" type="button">211</button>
+            <button class="chip" data-value="Provincial" type="button">Мужийн / орон нутгийн</button>
+          </div>
+        </div>
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">Жил</label>
+          <div class="chip-group" id="cn-filter-year">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="2019" type="button">2019</button>
+            <button class="chip" data-value="2023" type="button">2023</button>
+            <button class="chip" data-value="2024" type="button">2024</button>
+            <button class="chip" data-value="2025" type="button">2025</button>
+          </div>
+        </div>
+        <div class="map-toolbar-counter">
+          <span class="counter-num" id="cn-visible-count">1,218</span>
+          <span class="counter-label">элссэн оюутан</span>
+        </div>
+      </div>
+
+      <div class="china-grid">
+        <div class="leaflet-wrap reveal" style="margin:0;">
+          <div id="leaflet-china"></div>
+          <div class="map-legend">
+            <div class="map-legend-title">Хөтөлбөр</div>
+            <div class="legend-row"><span class="dot d6"></span> 6+6</div>
+            <div class="legend-row"><span class="dot d1"></span> 1+4</div>
+            <div class="legend-row"><span class="dot dfb"></span> Fall Bachelor</div>
+            <div class="legend-row"><span class="dot dm"></span> Магистр / Доктор</div>
+          </div>
+          <div class="map-hint">Scroll → томруулна · Drag → хөдөлгөнө</div>
+        </div>
+        <aside class="china-list">
+          <h3>Хамгийн олон оюутан элссэн 10 их сургууль</h3>
+          <ol id="china-list-items"></ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+    <!-- Chapter intro: Хэн? -->
+  <div class="chapter-intro" data-chapter="02">
+    <div class="chapter-num">02</div>
+    <div class="chapter-title">Хэн?</div>
+    <div class="chapter-desc">21 аймаг, Улаанбаатарын дүүргүүдээр тархсан 1,500 оюутны газарзүйн зураглал — аймаг, дүүрэг бүрийн GPA, HSK түвшин, сургуулийн төрлийг харуулна.</div>
+  </div>
+
+  <!-- ───────────── Section 6 — Mongolia (real choropleth) ───────────── -->
+  <section class="section section-mongolia" id="sec-3" data-anchor="3">
+    <div class="container">
+      <div class="step reveal" data-step="5">
+        <div class="kicker">Хэн өргөдөл өгдөг вэ?</div>
+        <h2 class="section-title">1,500 оюутан — газрын зураг дээр</h2>
+        <p class="lead">1,500 цэг тус бүр нэг оюутныг илэрхийлнэ. Улаанбаатар нийт оюутны 70%-ийг эзэлж, Хан-Уул дүүрэг хамгийн өндөр хувьтай байна. Энэ зураг нь ANKO Bridge-ийн зорилтот зах зээлийн бодит дүр зургийг харуулж, аль аймаг, дүүргээс ямар төрлийн сурагчид илүү сонирхож байгааг ойлгоход тусална.</p>
+      </div>
+      <!-- Map filter toolbar -->
+      <div class="map-toolbar reveal">
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">Хөтөлбөр</label>
+          <div class="chip-group" id="filter-program">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="6+6" type="button">6+6</button>
+            <button class="chip" data-value="1+4" type="button">1+4</button>
+            <button class="chip" data-value="Fall Bachelor" type="button">Намрын шууд бакалавр</button>
+            <button class="chip" data-value="Master/PhD" type="button">Магистр / Доктор</button>
+          </div>
+        </div>
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">HSK</label>
+          <div class="chip-group" id="filter-hsk">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="1-2" type="button">1–2</button>
+            <button class="chip" data-value="3-4" type="button">3–4</button>
+            <button class="chip" data-value="5-6" type="button">5–6</button>
+          </div>
+        </div>
+        <div class="map-toolbar-group">
+          <label class="map-toolbar-label">Сургууль</label>
+          <div class="chip-group" id="filter-school">
+            <button class="chip active" data-value="all" type="button">Бүгд</button>
+            <button class="chip" data-value="Public" type="button">Улсын</button>
+            <button class="chip" data-value="Private" type="button">Хувийн</button>
+            <button class="chip" data-value="International" type="button">Олон улсын</button>
+          </div>
+        </div>
+        <div class="map-toolbar-counter">
+          <span class="counter-num" id="map-visible-count">1,500</span>
+          <span class="counter-label">харагдаж буй оюутан</span>
+        </div>
+      </div>
+
+      <!-- Leaflet interactive map -->
+      <div class="leaflet-wrap reveal">
+        <div id="leaflet-mongolia"></div>
+        <div class="map-legend">
+          <div class="map-legend-title">Хөтөлбөр</div>
+          <div class="legend-row"><span class="dot d6"></span> 6+6</div>
+          <div class="legend-row"><span class="dot d1"></span> 1+4</div>
+          <div class="legend-row"><span class="dot dfb"></span> Fall Bachelor</div>
+          <div class="legend-row"><span class="dot dm"></span> Магистр / Доктор</div>
+        </div>
+        <div class="map-hint">Scroll → томруулна · Drag → хөдөлгөнө · Цэг дээр дарна → дэлгэрэнгүй</div>
+      </div>
+      <div class="callout reveal">
+        <div class="callout-num counter" id="ub-share-num">—</div>
+        <div class="callout-text">10 оюутан тутмын <strong>7</strong> нь Улаанбаатарынх. Гэхдээ аль дүүргээс?</div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-mount" id="chart-ub-districts"></div>
+      </div>
+      <div class="did-you-know reveal">
+        <div class="dyk-icon">💡</div>
+        <div>
+          <strong>Онцлох ажиглалт:</strong> Бүх оюутны <strong id="senior-share">85%</strong> нь
+          17–19 настай — 12-р анги төгсөж шууд бакалаврын замыг сонгож байна.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── Section 7 — HSK story ───────────── -->
+  <section class="section section-hsk" id="sec-4" data-anchor="4">
+    <div class="container">
+      <div class="step reveal" data-step="6">
+        <div class="kicker">Хэлний бэлтгэл</div>
+        <h2 class="section-title">HSK түвшний шилжилт</h2>
+        <p class="lead">HSK буюу 汉语水平考试 нь Хятад хэлний түвшин тогтоох албан ёсны олон улсын шалгалт. ANKO-гийн оюутнуудын HSK тархалт жил тутамд хэрхэн өөрчлөгдсөнийг давхарласан тархалтын графикаар үзүүлэв — 2019 онд HSK 4 голлож, 2024-25 онд HSK 5/6 рүү шилжсэн нь сурагчдын Хятад хэлний бэлтгэлийн чанар сайжирсныг харуулдаг.</p>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-mount tall" id="chart-hsk"></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Chapter intro: Хөтөлбөр -->
+  <div class="chapter-intro" data-chapter="03">
+    <div class="chapter-num">03</div>
+    <div class="chapter-title">Хөтөлбөр</div>
+    <div class="chapter-desc">ANKO Bridge-ийн 4 хөтөлбөрийн зам — HSK-ийн шаардлага, суралцах хугацаа, тэтгэлгийн босго хүртэл.</div>
+  </div>
+
+  <section class="section section-programs" id="sec-5" data-anchor="5">
+    <div class="container">
+      <div class="step reveal" data-step="7">
+        <div class="kicker">Хөтөлбөр</div>
+        <h2 class="section-title">ANKO-гийн 4 хөтөлбөр</h2>
+        <p class="lead">ANKO Bridge нь дөрвөн өөр хөтөлбөртэй ажилладаг. Сурагчийн HSK түвшин, зорьж буй шат, бэлтгэлийн хэрэгцээнээс хамааран тохирох хөтөлбөр өөр өөр байна. Хамгийн алдартай нь <strong>6+6</strong> — HSK ямар ч түвшнээс эхлэх боломжтой тул 12-р анги шинэ төгсөгчдөд хамгийн их сонгогддог.</p>
+      </div>
+      <div class="program-cards" id="chart-programs"></div>
+      <div class="chart-wrap">
+        <div class="chart-mount" id="chart-program-evolution"></div>
+      </div>
+      <p class="caption">6+6 хөтөлбөрийн жилийн эзлэх хувь — 2019 онд <strong id="six-six-2019">35%</strong>-аас 2024 онд <strong id="six-six-2024">55%</strong> хүртэл өсчээ.</p>
+    </div>
+  </section>
+
+  <!-- ───────────── Section 9 — Field shifts ───────────── -->
+  <section class="section section-fields" id="sec-6" data-anchor="6">
+    <div class="container">
+      <div class="step reveal" data-step="8">
+        <div class="kicker">Мэргэжил</div>
+        <h2 class="section-title">Мэргэжлийн чиг хандлага</h2>
+        <p class="lead">7 том чиглэл, 200 хөтөлбөр. Анагаах ухаан (MBBS) болон Компьютерын ухааны чиглэлийн эрэлт 2019–2024 онд хамгийн их өсжээ. 2025 онд эрэлт хэрхэн өөрчлөгдсөнийг харна уу.</p>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-mount tall" id="chart-fields"></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Chapter intro: 5 төрөл -->
+  <div class="chapter-intro" data-chapter="04">
+    <div class="chapter-num">04</div>
+    <div class="chapter-title">5 төрөл</div>
+    <div class="chapter-desc">K-Means алгоритм 1,500 оюутныг 5 нийтлэг архетип болгон ангилав. "Эрт эхлэгчид", "Тэтгэлгийн хайгуулчид", "Шууд элсэгчид"…</div>
+  </div>
+
+  <section class="section section-personas" id="sec-7" data-anchor="7">
+    <div class="container">
+      <div class="step reveal" data-step="9">
+        <div class="kicker">Машин сурахуй</div>
+        <h2 class="section-title">5 архетип — машин сурахуй олсон</h2>
+        <p class="lead">Хүний хүчээр гар тогтоосон ангилал биш — <strong>K-Means машин сурахуйн алгоритм</strong> 1,500 оюутны GPA, HSK, гэр бүлийн орлого, нас, аймаг зэрэг 5 хувьсагч дээр өөрөө 5 ялгаатай бүлэг олжээ. Тэдгээрт ердөө шинж тэмдэгт нь нийцсэн, утгатай нэр өгсөн.</p>
+      </div>
+      <div class="persona-grid" id="chart-personas"></div>
+    </div>
+  </section>
+
+  <!-- ───────────── Section 11 — Predictor ───────────── -->
+  <section class="section section-predictor" id="sec-8" data-anchor="8">
+    <div class="container">
+      <div class="step reveal" data-step="10">
+        <div class="kicker">Урьдчилсан таамаглал</div>
+        <h2 class="section-title">Таны виз батлагдах магадлал хэд вэ?</h2>
+        <p class="lead">Сурагчийн HSK түвшин, оноо, GPA, гэр бүлийн орлого, сонгож буй хөтөлбөрөөс хамаарч <strong>виз батлагдах магадлалыг</strong> Logistic Regression загвараар тооцоолно. Гулсуурын утгуудыг өөрчилж үзээд, доор гарах <strong>тантай төстэй 5 оюутны мэдээллийн хуудас</strong>-ыг харна уу — таны үзүүлэлтэд хамгийн ойр оюутнуудыг 1,500-аас хайн олж харуулна.</p>
+      </div>
+      <div class="predictor reveal">
+        <div class="predictor-controls">
+          <label>HSK түвшин: <output id="out-hsk">4</output>
+            <input type="range" id="in-hsk" min="1" max="6" value="4" />
+          </label>
+          <label>HSK оноо: <output id="out-hsk-score">180</output>
+            <input type="range" id="in-hsk-score" min="60" max="300" value="180" />
+          </label>
+          <label>GPA (хувь): <output id="out-gpa">82</output>%
+            <input type="range" id="in-gpa" min="50" max="99" value="82" />
+          </label>
+          <label>Гэр бүлийн орлого (₮/сар): <output id="out-income">3,000,000</output>
+            <input type="range" id="in-income" min="500000" max="15000000" step="100000" value="3000000" />
+          </label>
+          <label>Хөтөлбөр:
+            <select id="in-program">
+              <option value="6+6">6+6 (хэлний бэлтгэл)</option>
+              <option value="1+4">1+4</option>
+              <option value="Fall Bachelor">Fall Bachelor (шууд)</option>
+              <option value="Master/PhD">Магистр / Доктор</option>
+            </select>
+          </label>
+        </div>
+        <div class="predictor-result">
+          <div class="result-label">Виз батлагдах магадлал</div>
+          <div class="result-value" id="result-prob">—</div>
+          <div class="result-bar"><div class="result-bar-fill" id="result-bar"></div></div>
+          <div class="result-note" id="result-note"></div>
+        </div>
+      </div>
+
+      <!-- Similar students -->
+      <div class="similar-students reveal">
+        <div class="similar-title">📌 Тантай төстэй 5 оюутан</div>
+        <div class="similar-grid" id="similar-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── Section 11.5 — Student Journey Sankey ───────────── -->
+  <section class="section section-sankey" id="sec-9" data-anchor="9">
+    <div class="container">
+      <div class="step reveal" data-step="11">
+        <div class="kicker">Урсгалын зураглал</div>
+        <h2 class="section-title">1,500 оюутан хаашаа урсаж байна вэ?</h2>
+        <p class="lead">Sankey диаграм нь оюутнууд аймаг, хөтөлбөр, сургуулийн зэрэглэл, эцсийн үр дүн рүү хэрхэн шилжсэнийг харуулдаг урсгалын зураглал юм. Шугамын зузаан нь тухайн замаар явсан оюутны тоог илэрхийлнэ. Хан-Уулаас гарсан оюутны замыг нүдээр дагаж болно.</p>
+      </div>
+
+      <!-- Tier explanation -->
+      <div class="tier-explainer reveal">
+        <div class="tier-explainer-title">📚 Хятадын их сургуулиудын зэрэглэл (tier)</div>
+        <div class="tier-grid">
+          <div class="tier-item">
+            <div class="tier-tag tier-c9">C9</div>
+            <div class="tier-desc"><strong>Шилдэг 9 их сургууль</strong> — Tsinghua, Peking, Fudan, SJTU, Zhejiang, USTC, Nanjing, HIT, Xi'an Jiaotong. Хятадын шилдэг их сургуулиудын бүлэг.</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-tag tier-985">985</div>
+            <div class="tier-desc"><strong>985 төсөл</strong> — 1998 оны 5 сард зарласан. 39 шилдэг сургуулийн жагсаалт. C9 нь үүний дотор. Дэлхийд өрсөлдөх стратеги.</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-tag tier-211">211</div>
+            <div class="tier-desc"><strong>211 төсөл</strong> — 21-р зууны төлөөх ~115 сонгомол сургууль. 985-аас илүү өргөн. Үндэсний түвшний боловсрол.</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-tag tier-prov">Provincial</div>
+            <div class="tier-desc"><strong>Аймгийн / орон нутгийн</strong> их сургууль. C9/985/211-д ороогүй бусад. Бага өртөгтэй, хүртээмжтэй.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-mount" id="chart-sankey" style="min-height:560px;"></div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Chapter intro: Зөвлөмж -->
+  <div class="chapter-intro" data-chapter="05">
+    <div class="chapter-num">05</div>
+    <div class="chapter-title">Зөвлөмж</div>
+    <div class="chapter-desc">Хаана салбар нээх, ямар сегментэд төвлөрөх, ямар эрсдэлээс сэргийлэх талаар 5 стратегийн зөвлөмж.</div>
+  </div>
+
+  <section class="section section-bi" id="sec-10" data-anchor="10">
+    <div class="container">
+      <div class="step reveal" data-step="12">
+        <div class="kicker">Дата шинжээчийн тайлан</div>
+        <h2 class="section-title">5 стратегийн зөвлөмж</h2>
+        <p class="lead">Энэ бол энгийн гүйлгэж унших өгөгдлийн түүхчилсэн тайлан биш — энэ хэсэг нь <strong>дата шинжээчийн зөвлөмжийн тайлан</strong>. 1,500 оюутны өгөгдлөөс олж тогтоосон 5 стратегийн боломж: хаана өргөтгөл хийх, ямар сегментэд анхаарах, ямар эрсдэл байх вэ. Card бүрд итгэл түвшин (1-5 одоор), гол өгөгдлүүд, конкрет үйлдэл агуулсан.</p>
+      </div>
+
+      <div class="reco-grid" id="bi-reco-grid">
+        <!-- 5 cards rendered by JS -->
+      </div>
+
+      <div class="bi-summary glass reveal">
+        <div class="bi-summary-title">📊 Хураангуй ROI үнэлгээ</div>
+        <div class="bi-summary-grid" id="bi-roi-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── Section 13 — Conclusion ───────────── -->
+  <section class="section section-conclusion" id="sec-11" data-anchor="11">
+    <div class="container">
+      <div class="step reveal" data-step="11">
+        <div class="kicker">Дүгнэлт</div>
+        <h2 class="section-title">Дата хэлж буй гол санаанууд</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-num counter" data-target="1500">1,500</div><div class="kpi-label">Нийт оюутан</div></div>
+          <div class="kpi"><div class="kpi-num counter" data-target="2250">2,250</div><div class="kpi-label">Өргөдөл</div></div>
+          <div class="kpi"><div class="kpi-num counter" data-target="50">50</div><div class="kpi-label">Их сургууль</div></div>
+          <div class="kpi"><div class="kpi-num" id="kpi-acceptance">—</div><div class="kpi-label">Дундаж элсэлт</div></div>
+        </div>
+        <ul class="findings">
+          <li><strong>COVID-19 цар тахал</strong> ANKO Bridge-ийн ажилд 3 жилийн саатал учруулсан.</li>
+          <li><strong>2025 онд peak хүрэв</strong> — 6 сарын дотор 760 оюутан бүртгүүлэв (2019 онтой харьцуулахад 14 дахин).</li>
+          <li><strong>10 оюутан тутмын 7</strong> Улаанбаатараас. Хан-Уул дүүрэг тэргүүлдэг.</li>
+          <li><strong>6+6 хөтөлбөр</strong> хамгийн эрэлттэй — 2019-аас 2024 хооронд 20+ хувийн пунктээр өсчээ.</li>
+          <li><strong>HSK 5+</strong> элсэгчдийн ~78% нь батлагдан элсдэг.</li>
+        </ul>
+        <div class="credits">
+          <p>Өгөгдлийн шинжилгээ: <strong>tsogjavkhlananko</strong> · 2026</p>
+          <p>Хичээл: «Эдийн засгийн шинжилгээн дэх программын хэрэглээ»</p>
+          <p>Өгөгдөл: ANKO Bridge-ийн жинхэнэ үйл ажиллагааны паттерныг тусгасан синтетик дата</p>
+          <p class="links">
+            <a href="https://github.com/tsogjavkhlananko/anko-bridge-analysis" target="_blank" rel="noopener">GitHub</a> ·
+            <a href="https://ankobridge.com" target="_blank" rel="noopener">ANKO Bridge</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">© 2026 · D3.js + Scrollama · Монгол, Хятадын бодит газрын зураг (geoBoundaries)</div>
+
+  <!-- ───────────── External libs (CDN) ───────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/scrollama@3"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <!-- Agency-level: smooth scroll, animation engine, 3D -->
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    // Expose globally so legacy script-style code (agency.js) can still use them
+    window.THREE = THREE;
+    window.GLTFLoader = GLTFLoader;
+    // Dispatch a "three-ready" event so agency.js can start
+    window.dispatchEvent(new Event("three-ready"));
+  </script>
+  <script src="main.js"></script>
+  <script src="agency.js"></script>
+</body>
+</html>

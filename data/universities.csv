@@ -1,0 +1,51 @@
+uni_id,uni_name,city,province,qs_rank,tier,established_year,mn_student_friendly_score
+1,Tsinghua University,Beijing,Beijing,12,C9,1911,9
+2,Peking University,Beijing,Beijing,14,C9,1898,9
+3,Fudan University,Shanghai,Shanghai,39,C9,1905,9
+4,Shanghai Jiao Tong University,Shanghai,Shanghai,47,C9,1896,9
+5,Zhejiang University,Hangzhou,Zhejiang,44,C9,1897,7
+6,University of Science and Technology of China,Hefei,Anhui,133,C9,1958,5
+7,Nanjing University,Nanjing,Jiangsu,145,C9,1902,7
+8,Harbin Institute of Technology,Harbin,Heilongjiang,217,C9,1920,7
+9,Xi'an Jiaotong University,Xi'an,Shaanxi,145,C9,1896,5
+10,Renmin University of China,Beijing,Beijing,318,985,1937,9
+11,Beijing Normal University,Beijing,Beijing,244,985,1902,9
+12,Beihang University,Beijing,Beijing,308,985,1952,9
+13,Tongji University,Shanghai,Shanghai,216,985,1907,9
+14,Wuhan University,Wuhan,Hubei,194,985,1893,5
+15,Sun Yat-sen University,Guangzhou,Guangdong,267,985,1924,5
+16,Sichuan University,Chengdu,Sichuan,395,985,1896,5
+17,Jilin University,Changchun,Jilin,415,985,1946,7
+18,Nankai University,Tianjin,Tianjin,396,985,1919,7
+19,Tianjin University,Tianjin,Tianjin,466,985,1895,7
+20,Shandong University,Jinan,Shandong,543,985,1901,5
+21,Xiamen University,Xiamen,Fujian,469,985,1921,5
+22,Southeast University,Nanjing,Jiangsu,405,985,1902,7
+23,Central South University,Changsha,Hunan,537,985,1952,5
+24,Hunan University,Changsha,Hunan,624,985,1926,5
+25,South China University of Technology,Guangzhou,Guangdong,313,985,1952,5
+26,Beijing Institute of Technology,Beijing,Beijing,412,985,1940,9
+27,Northwestern Polytechnical University,Xi'an,Shaanxi,411,985,1938,5
+28,Dalian University of Technology,Dalian,Liaoning,426,985,1949,5
+29,Lanzhou University,Lanzhou,Gansu,700,985,1909,5
+30,North China Electric Power University,Beijing,Beijing,700,211,1958,9
+31,China Agricultural University,Beijing,Beijing,609,211,1905,9
+32,Beijing Forestry University,Beijing,Beijing,800,211,1952,9
+33,Beijing Foreign Studies University,Beijing,Beijing,700,211,1941,9
+34,Beijing Language and Culture University,Beijing,Beijing,850,211,1962,9
+35,Capital Normal University,Beijing,Beijing,900,211,1954,9
+36,Communication University of China,Beijing,Beijing,800,211,1954,9
+37,Northeast Normal University,Changchun,Jilin,700,211,1946,7
+38,Heilongjiang University,Harbin,Heilongjiang,950,211,1941,7
+39,Liaoning University,Shenyang,Liaoning,1000,211,1948,5
+40,Northeast Forestry University,Harbin,Heilongjiang,1100,211,1952,7
+41,Yanbian University,Yanji,Jilin,1100,211,1949,5
+42,Hebei University,Baoding,Hebei,1200,211,1921,5
+43,Inner Mongolia University,Hohhot,Inner Mongolia,850,211,1957,8
+44,Inner Mongolia Normal University,Hohhot,Inner Mongolia,1200,Provincial,1952,6
+45,Inner Mongolia University of Technology,Hohhot,Inner Mongolia,1300,Provincial,1951,6
+46,Inner Mongolia Agricultural University,Hohhot,Inner Mongolia,1400,Provincial,1952,6
+47,Inner Mongolia Medical University,Hohhot,Inner Mongolia,1500,Provincial,1956,6
+48,Inner Mongolia University for Nationalities,Tongliao,Inner Mongolia,1500,Provincial,1958,6
+49,Hohhot Minzu College,Hohhot,Inner Mongolia,1700,Provincial,1953,6
+50,Shenyang Normal University,Shenyang,Liaoning,1500,Provincial,1951,4

@@ -1,0 +1,517 @@
+scholarship_id,app_id,scholarship_type,amount_yuan,sponsor,coverage
+1,1,CSC Partial,23647,China Scholarship Council,Tuition only
+2,2,CSC Full,61566,China Scholarship Council,Full tuition + stipend
+3,4,CSC Full,55229,China Scholarship Council,Full tuition + stipend
+4,11,Confucius Institute,11244,Confucius Institute HQ,Living stipend
+5,16,CSC Full,55274,China Scholarship Council,Full tuition + stipend
+6,17,ANKO Bridge,4733,ANKO Bridge Agency,Living stipend
+7,28,ANKO Bridge,6154,ANKO Bridge Agency,Living stipend
+8,29,CSC Partial,16655,China Scholarship Council,Tuition only
+9,31,University Merit,12170,Host University,Tuition only
+10,32,ANKO Bridge,7491,ANKO Bridge Agency,Living stipend
+11,39,ANKO Bridge,7899,ANKO Bridge Agency,Living stipend
+12,40,CSC Full,61920,China Scholarship Council,Full tuition + stipend
+13,52,Provincial,11646,Province Government,Tuition only
+14,58,Confucius Institute,9670,Confucius Institute HQ,Living stipend
+15,59,CSC Partial,17548,China Scholarship Council,Tuition only
+16,69,University Merit,6465,Host University,Tuition only
+17,70,Confucius Institute,9579,Confucius Institute HQ,Living stipend
+18,91,CSC Partial,26316,China Scholarship Council,Tuition only
+19,98,CSC Partial,18124,China Scholarship Council,Tuition only
+20,101,CSC Full,56262,China Scholarship Council,Full tuition + stipend
+21,105,CSC Partial,24890,China Scholarship Council,Tuition only
+22,107,University Merit,17742,Host University,Tuition only
+23,110,CSC Partial,22820,China Scholarship Council,Tuition only
+24,118,University Merit,20830,Host University,Tuition only
+25,129,CSC Full,59076,China Scholarship Council,Full tuition + stipend
+26,133,CSC Partial,20198,China Scholarship Council,Tuition only
+27,134,CSC Full,60247,China Scholarship Council,Full tuition + stipend
+28,145,University Merit,20392,Host University,Tuition only
+29,152,CSC Partial,20347,China Scholarship Council,Tuition only
+30,156,CSC Full,61128,China Scholarship Council,Full tuition + stipend
+31,157,CSC Partial,16274,China Scholarship Council,Tuition only
+32,159,CSC Partial,28461,China Scholarship Council,Tuition only
+33,167,Confucius Institute,9533,Confucius Institute HQ,Living stipend
+34,175,CSC Partial,20454,China Scholarship Council,Tuition only
+35,176,University Merit,24094,Host University,Tuition only
+36,178,University Merit,23830,Host University,Tuition only
+37,180,CSC Partial,21327,China Scholarship Council,Tuition only
+38,182,Confucius Institute,10107,Confucius Institute HQ,Living stipend
+39,183,University Merit,13246,Host University,Tuition only
+40,190,ANKO Bridge,3961,ANKO Bridge Agency,Living stipend
+41,191,CSC Full,57372,China Scholarship Council,Full tuition + stipend
+42,193,University Merit,15714,Host University,Tuition only
+43,196,University Merit,5007,Host University,Tuition only
+44,205,University Merit,18453,Host University,Tuition only
+45,212,CSC Full,63258,China Scholarship Council,Full tuition + stipend
+46,218,CSC Partial,17718,China Scholarship Council,Tuition only
+47,219,CSC Partial,23275,China Scholarship Council,Tuition only
+48,221,Provincial,12474,Province Government,Tuition only
+49,222,Confucius Institute,12583,Confucius Institute HQ,Living stipend
+50,226,CSC Partial,19039,China Scholarship Council,Tuition only
+51,227,CSC Partial,23430,China Scholarship Council,Tuition only
+52,230,Confucius Institute,12762,Confucius Institute HQ,Living stipend
+53,231,University Merit,10426,Host University,Tuition only
+54,234,Provincial,8049,Province Government,Tuition only
+55,241,CSC Partial,15308,China Scholarship Council,Tuition only
+56,244,University Merit,24449,Host University,Tuition only
+57,245,CSC Partial,25600,China Scholarship Council,Tuition only
+58,249,CSC Partial,24391,China Scholarship Council,Tuition only
+59,251,University Merit,19936,Host University,Tuition only
+60,270,CSC Partial,17740,China Scholarship Council,Tuition only
+61,298,University Merit,6108,Host University,Tuition only
+62,303,CSC Partial,18173,China Scholarship Council,Tuition only
+63,304,University Merit,16542,Host University,Tuition only
+64,307,Confucius Institute,13641,Confucius Institute HQ,Living stipend
+65,308,CSC Partial,18799,China Scholarship Council,Tuition only
+66,312,University Merit,22386,Host University,Tuition only
+67,314,ANKO Bridge,9241,ANKO Bridge Agency,Living stipend
+68,315,Provincial,8834,Province Government,Tuition only
+69,316,Provincial,15233,Province Government,Tuition only
+70,318,CSC Partial,18755,China Scholarship Council,Tuition only
+71,326,Confucius Institute,16822,Confucius Institute HQ,Living stipend
+72,343,University Merit,17112,Host University,Tuition only
+73,366,Confucius Institute,9699,Confucius Institute HQ,Living stipend
+74,369,CSC Partial,29790,China Scholarship Council,Tuition only
+75,376,University Merit,12330,Host University,Tuition only
+76,382,Provincial,9846,Province Government,Tuition only
+77,383,CSC Partial,27390,China Scholarship Council,Tuition only
+78,384,University Merit,13976,Host University,Tuition only
+79,385,CSC Partial,23214,China Scholarship Council,Tuition only
+80,396,ANKO Bridge,9197,ANKO Bridge Agency,Living stipend
+81,406,Provincial,9935,Province Government,Tuition only
+82,423,CSC Partial,18216,China Scholarship Council,Tuition only
+83,429,University Merit,22849,Host University,Tuition only
+84,430,Confucius Institute,11371,Confucius Institute HQ,Living stipend
+85,432,CSC Partial,16159,China Scholarship Council,Tuition only
+86,439,CSC Partial,19187,China Scholarship Council,Tuition only
+87,440,University Merit,20231,Host University,Tuition only
+88,446,CSC Partial,19305,China Scholarship Council,Tuition only
+89,447,CSC Partial,20515,China Scholarship Council,Tuition only
+90,450,University Merit,17836,Host University,Tuition only
+91,451,University Merit,11608,Host University,Tuition only
+92,460,University Merit,18773,Host University,Tuition only
+93,463,CSC Partial,18639,China Scholarship Council,Tuition only
+94,478,Confucius Institute,15951,Confucius Institute HQ,Living stipend
+95,482,CSC Full,64079,China Scholarship Council,Full tuition + stipend
+96,493,CSC Partial,21455,China Scholarship Council,Tuition only
+97,495,CSC Partial,23988,China Scholarship Council,Tuition only
+98,501,CSC Partial,15683,China Scholarship Council,Tuition only
+99,502,CSC Partial,21479,China Scholarship Council,Tuition only
+100,504,University Merit,8794,Host University,Tuition only
+101,505,ANKO Bridge,9149,ANKO Bridge Agency,Living stipend
+102,529,Confucius Institute,12129,Confucius Institute HQ,Living stipend
+103,535,CSC Partial,19401,China Scholarship Council,Tuition only
+104,539,CSC Partial,19135,China Scholarship Council,Tuition only
+105,540,CSC Full,60986,China Scholarship Council,Full tuition + stipend
+106,552,CSC Partial,15304,China Scholarship Council,Tuition only
+107,556,CSC Partial,17559,China Scholarship Council,Tuition only
+108,558,University Merit,10968,Host University,Tuition only
+109,562,University Merit,24855,Host University,Tuition only
+110,563,CSC Partial,24084,China Scholarship Council,Tuition only
+111,567,University Merit,13153,Host University,Tuition only
+112,568,Provincial,19212,Province Government,Tuition only
+113,570,CSC Full,62143,China Scholarship Council,Full tuition + stipend
+114,571,University Merit,7517,Host University,Tuition only
+115,572,CSC Partial,17957,China Scholarship Council,Tuition only
+116,577,ANKO Bridge,7400,ANKO Bridge Agency,Living stipend
+117,578,CSC Partial,28382,China Scholarship Council,Tuition only
+118,582,University Merit,12158,Host University,Tuition only
+119,586,CSC Full,58295,China Scholarship Council,Full tuition + stipend
+120,588,Provincial,17032,Province Government,Tuition only
+121,596,CSC Partial,27338,China Scholarship Council,Tuition only
+122,597,University Merit,9790,Host University,Tuition only
+123,599,Confucius Institute,8314,Confucius Institute HQ,Living stipend
+124,605,ANKO Bridge,7243,ANKO Bridge Agency,Living stipend
+125,606,University Merit,20770,Host University,Tuition only
+126,612,CSC Partial,16527,China Scholarship Council,Tuition only
+127,619,ANKO Bridge,8148,ANKO Bridge Agency,Living stipend
+128,621,CSC Partial,25791,China Scholarship Council,Tuition only
+129,634,CSC Partial,15743,China Scholarship Council,Tuition only
+130,640,Confucius Institute,12813,Confucius Institute HQ,Living stipend
+131,641,University Merit,9904,Host University,Tuition only
+132,642,CSC Partial,23405,China Scholarship Council,Tuition only
+133,656,CSC Partial,29729,China Scholarship Council,Tuition only
+134,664,Provincial,9564,Province Government,Tuition only
+135,667,Confucius Institute,17647,Confucius Institute HQ,Living stipend
+136,668,CSC Partial,17489,China Scholarship Council,Tuition only
+137,673,Confucius Institute,16904,Confucius Institute HQ,Living stipend
+138,676,Confucius Institute,15643,Confucius Institute HQ,Living stipend
+139,677,CSC Partial,15735,China Scholarship Council,Tuition only
+140,681,University Merit,24723,Host University,Tuition only
+141,682,ANKO Bridge,7851,ANKO Bridge Agency,Living stipend
+142,684,University Merit,6044,Host University,Tuition only
+143,685,University Merit,10428,Host University,Tuition only
+144,687,CSC Full,56802,China Scholarship Council,Full tuition + stipend
+145,689,CSC Partial,17221,China Scholarship Council,Tuition only
+146,692,CSC Full,64339,China Scholarship Council,Full tuition + stipend
+147,698,CSC Full,55753,China Scholarship Council,Full tuition + stipend
+148,699,CSC Partial,16650,China Scholarship Council,Tuition only
+149,700,CSC Partial,27383,China Scholarship Council,Tuition only
+150,701,ANKO Bridge,6748,ANKO Bridge Agency,Living stipend
+151,710,Provincial,18620,Province Government,Tuition only
+152,718,CSC Partial,24421,China Scholarship Council,Tuition only
+153,721,Confucius Institute,11424,Confucius Institute HQ,Living stipend
+154,722,Confucius Institute,16960,Confucius Institute HQ,Living stipend
+155,726,CSC Partial,16198,China Scholarship Council,Tuition only
+156,727,University Merit,20184,Host University,Tuition only
+157,731,CSC Partial,25148,China Scholarship Council,Tuition only
+158,732,CSC Partial,27668,China Scholarship Council,Tuition only
+159,733,University Merit,16721,Host University,Tuition only
+160,738,University Merit,17957,Host University,Tuition only
+161,747,University Merit,21220,Host University,Tuition only
+162,754,CSC Partial,27599,China Scholarship Council,Tuition only
+163,757,CSC Full,58479,China Scholarship Council,Full tuition + stipend
+164,760,Confucius Institute,10523,Confucius Institute HQ,Living stipend
+165,762,University Merit,22376,Host University,Tuition only
+166,763,University Merit,17894,Host University,Tuition only
+167,764,University Merit,9476,Host University,Tuition only
+168,765,CSC Partial,22789,China Scholarship Council,Tuition only
+169,770,University Merit,11820,Host University,Tuition only
+170,773,CSC Full,57768,China Scholarship Council,Full tuition + stipend
+171,784,CSC Full,58114,China Scholarship Council,Full tuition + stipend
+172,786,CSC Partial,28177,China Scholarship Council,Tuition only
+173,790,University Merit,12043,Host University,Tuition only
+174,793,CSC Partial,19472,China Scholarship Council,Tuition only
+175,794,CSC Partial,15301,China Scholarship Council,Tuition only
+176,800,CSC Partial,28003,China Scholarship Council,Tuition only
+177,802,Provincial,17340,Province Government,Tuition only
+178,803,University Merit,20771,Host University,Tuition only
+179,808,University Merit,17260,Host University,Tuition only
+180,815,CSC Partial,27750,China Scholarship Council,Tuition only
+181,816,Confucius Institute,14512,Confucius Institute HQ,Living stipend
+182,827,Confucius Institute,10304,Confucius Institute HQ,Living stipend
+183,828,University Merit,20775,Host University,Tuition only
+184,829,Confucius Institute,15945,Confucius Institute HQ,Living stipend
+185,831,Confucius Institute,17372,Confucius Institute HQ,Living stipend
+186,838,Confucius Institute,11546,Confucius Institute HQ,Living stipend
+187,842,University Merit,15031,Host University,Tuition only
+188,846,ANKO Bridge,5738,ANKO Bridge Agency,Living stipend
+189,847,CSC Partial,25351,China Scholarship Council,Tuition only
+190,854,Confucius Institute,12514,Confucius Institute HQ,Living stipend
+191,861,University Merit,11144,Host University,Tuition only
+192,862,ANKO Bridge,6868,ANKO Bridge Agency,Living stipend
+193,863,Confucius Institute,16650,Confucius Institute HQ,Living stipend
+194,867,CSC Partial,26841,China Scholarship Council,Tuition only
+195,869,CSC Partial,21791,China Scholarship Council,Tuition only
+196,881,ANKO Bridge,5237,ANKO Bridge Agency,Living stipend
+197,884,Provincial,10423,Province Government,Tuition only
+198,885,Confucius Institute,14066,Confucius Institute HQ,Living stipend
+199,887,ANKO Bridge,7562,ANKO Bridge Agency,Living stipend
+200,890,University Merit,6047,Host University,Tuition only
+201,896,CSC Full,61168,China Scholarship Council,Full tuition + stipend
+202,899,CSC Full,62470,China Scholarship Council,Full tuition + stipend
+203,900,CSC Partial,23108,China Scholarship Council,Tuition only
+204,901,University Merit,21653,Host University,Tuition only
+205,903,CSC Partial,20764,China Scholarship Council,Tuition only
+206,908,University Merit,6322,Host University,Tuition only
+207,909,ANKO Bridge,8916,ANKO Bridge Agency,Living stipend
+208,911,CSC Partial,28679,China Scholarship Council,Tuition only
+209,912,CSC Partial,19672,China Scholarship Council,Tuition only
+210,913,ANKO Bridge,9479,ANKO Bridge Agency,Living stipend
+211,915,ANKO Bridge,7182,ANKO Bridge Agency,Living stipend
+212,916,Provincial,9173,Province Government,Tuition only
+213,923,Confucius Institute,10453,Confucius Institute HQ,Living stipend
+214,926,Confucius Institute,14082,Confucius Institute HQ,Living stipend
+215,931,ANKO Bridge,6408,ANKO Bridge Agency,Living stipend
+216,933,CSC Partial,27802,China Scholarship Council,Tuition only
+217,955,CSC Partial,26587,China Scholarship Council,Tuition only
+218,958,University Merit,10161,Host University,Tuition only
+219,963,Confucius Institute,10027,Confucius Institute HQ,Living stipend
+220,965,University Merit,21207,Host University,Tuition only
+221,972,ANKO Bridge,6023,ANKO Bridge Agency,Living stipend
+222,973,University Merit,12513,Host University,Tuition only
+223,975,CSC Partial,17360,China Scholarship Council,Tuition only
+224,980,CSC Partial,27024,China Scholarship Council,Tuition only
+225,986,CSC Partial,19432,China Scholarship Council,Tuition only
+226,987,CSC Partial,21447,China Scholarship Council,Tuition only
+227,989,ANKO Bridge,9091,ANKO Bridge Agency,Living stipend
+228,993,CSC Partial,24058,China Scholarship Council,Tuition only
+229,1000,CSC Partial,26869,China Scholarship Council,Tuition only
+230,1001,Confucius Institute,10337,Confucius Institute HQ,Living stipend
+231,1004,CSC Partial,17957,China Scholarship Council,Tuition only
+232,1005,Confucius Institute,9179,Confucius Institute HQ,Living stipend
+233,1014,Confucius Institute,15051,Confucius Institute HQ,Living stipend
+234,1017,Provincial,11877,Province Government,Tuition only
+235,1020,University Merit,6931,Host University,Tuition only
+236,1021,CSC Full,58191,China Scholarship Council,Full tuition + stipend
+237,1022,CSC Partial,16767,China Scholarship Council,Tuition only
+238,1026,CSC Full,61096,China Scholarship Council,Full tuition + stipend
+239,1050,Confucius Institute,15755,Confucius Institute HQ,Living stipend
+240,1052,University Merit,24951,Host University,Tuition only
+241,1053,CSC Partial,15843,China Scholarship Council,Tuition only
+242,1055,Confucius Institute,8488,Confucius Institute HQ,Living stipend
+243,1063,CSC Partial,16230,China Scholarship Council,Tuition only
+244,1067,CSC Full,62652,China Scholarship Council,Full tuition + stipend
+245,1070,Confucius Institute,17115,Confucius Institute HQ,Living stipend
+246,1080,CSC Full,57546,China Scholarship Council,Full tuition + stipend
+247,1081,Provincial,13526,Province Government,Tuition only
+248,1082,CSC Partial,28253,China Scholarship Council,Tuition only
+249,1083,ANKO Bridge,4665,ANKO Bridge Agency,Living stipend
+250,1092,Provincial,19094,Province Government,Tuition only
+251,1094,CSC Partial,23228,China Scholarship Council,Tuition only
+252,1104,CSC Partial,19413,China Scholarship Council,Tuition only
+253,1105,University Merit,22230,Host University,Tuition only
+254,1106,CSC Partial,28694,China Scholarship Council,Tuition only
+255,1107,CSC Full,55259,China Scholarship Council,Full tuition + stipend
+256,1113,University Merit,17373,Host University,Tuition only
+257,1114,CSC Partial,24731,China Scholarship Council,Tuition only
+258,1117,University Merit,8953,Host University,Tuition only
+259,1132,University Merit,20103,Host University,Tuition only
+260,1137,CSC Partial,15734,China Scholarship Council,Tuition only
+261,1138,CSC Full,64515,China Scholarship Council,Full tuition + stipend
+262,1140,University Merit,22702,Host University,Tuition only
+263,1141,University Merit,9466,Host University,Tuition only
+264,1142,University Merit,13352,Host University,Tuition only
+265,1144,Confucius Institute,9957,Confucius Institute HQ,Living stipend
+266,1149,Confucius Institute,15709,Confucius Institute HQ,Living stipend
+267,1158,CSC Full,59203,China Scholarship Council,Full tuition + stipend
+268,1159,CSC Partial,19865,China Scholarship Council,Tuition only
+269,1184,CSC Partial,29533,China Scholarship Council,Tuition only
+270,1187,Confucius Institute,15535,Confucius Institute HQ,Living stipend
+271,1192,University Merit,10881,Host University,Tuition only
+272,1198,University Merit,5385,Host University,Tuition only
+273,1204,University Merit,19308,Host University,Tuition only
+274,1211,Confucius Institute,8872,Confucius Institute HQ,Living stipend
+275,1214,University Merit,24213,Host University,Tuition only
+276,1222,University Merit,6621,Host University,Tuition only
+277,1225,Confucius Institute,14905,Confucius Institute HQ,Living stipend
+278,1231,University Merit,20122,Host University,Tuition only
+279,1232,Provincial,15254,Province Government,Tuition only
+280,1235,ANKO Bridge,6769,ANKO Bridge Agency,Living stipend
+281,1242,University Merit,14661,Host University,Tuition only
+282,1245,CSC Partial,15608,China Scholarship Council,Tuition only
+283,1253,University Merit,21909,Host University,Tuition only
+284,1257,ANKO Bridge,4524,ANKO Bridge Agency,Living stipend
+285,1265,University Merit,17100,Host University,Tuition only
+286,1272,CSC Full,60176,China Scholarship Council,Full tuition + stipend
+287,1277,CSC Partial,24101,China Scholarship Council,Tuition only
+288,1280,Confucius Institute,8537,Confucius Institute HQ,Living stipend
+289,1289,CSC Partial,19898,China Scholarship Council,Tuition only
+290,1290,Provincial,18385,Province Government,Tuition only
+291,1294,CSC Partial,23364,China Scholarship Council,Tuition only
+292,1297,University Merit,21552,Host University,Tuition only
+293,1299,CSC Partial,16122,China Scholarship Council,Tuition only
+294,1308,CSC Partial,20484,China Scholarship Council,Tuition only
+295,1312,Provincial,10131,Province Government,Tuition only
+296,1313,University Merit,22546,Host University,Tuition only
+297,1322,University Merit,18406,Host University,Tuition only
+298,1330,CSC Partial,27702,China Scholarship Council,Tuition only
+299,1334,University Merit,18180,Host University,Tuition only
+300,1336,Confucius Institute,9700,Confucius Institute HQ,Living stipend
+301,1341,CSC Partial,22061,China Scholarship Council,Tuition only
+302,1342,CSC Full,58059,China Scholarship Council,Full tuition + stipend
+303,1346,University Merit,5826,Host University,Tuition only
+304,1348,CSC Partial,16345,China Scholarship Council,Tuition only
+305,1358,Confucius Institute,15084,Confucius Institute HQ,Living stipend
+306,1359,Confucius Institute,16736,Confucius Institute HQ,Living stipend
+307,1366,CSC Partial,24434,China Scholarship Council,Tuition only
+308,1370,ANKO Bridge,9561,ANKO Bridge Agency,Living stipend
+309,1372,University Merit,11604,Host University,Tuition only
+310,1374,CSC Partial,20016,China Scholarship Council,Tuition only
+311,1375,Confucius Institute,12679,Confucius Institute HQ,Living stipend
+312,1391,CSC Partial,17676,China Scholarship Council,Tuition only
+313,1393,Confucius Institute,11486,Confucius Institute HQ,Living stipend
+314,1403,Provincial,15419,Province Government,Tuition only
+315,1419,CSC Full,60001,China Scholarship Council,Full tuition + stipend
+316,1420,CSC Partial,15576,China Scholarship Council,Tuition only
+317,1421,CSC Full,64861,China Scholarship Council,Full tuition + stipend
+318,1429,University Merit,10477,Host University,Tuition only
+319,1430,Confucius Institute,10111,Confucius Institute HQ,Living stipend
+320,1433,CSC Partial,28862,China Scholarship Council,Tuition only
+321,1434,University Merit,24544,Host University,Tuition only
+322,1435,CSC Partial,26124,China Scholarship Council,Tuition only
+323,1436,CSC Full,61036,China Scholarship Council,Full tuition + stipend
+324,1438,ANKO Bridge,4879,ANKO Bridge Agency,Living stipend
+325,1448,Provincial,12131,Province Government,Tuition only
+326,1452,Provincial,15372,Province Government,Tuition only
+327,1454,ANKO Bridge,4307,ANKO Bridge Agency,Living stipend
+328,1467,ANKO Bridge,3513,ANKO Bridge Agency,Living stipend
+329,1471,Confucius Institute,16053,Confucius Institute HQ,Living stipend
+330,1477,University Merit,15067,Host University,Tuition only
+331,1480,ANKO Bridge,3564,ANKO Bridge Agency,Living stipend
+332,1482,CSC Partial,16653,China Scholarship Council,Tuition only
+333,1487,Provincial,16601,Province Government,Tuition only
+334,1490,ANKO Bridge,9244,ANKO Bridge Agency,Living stipend
+335,1495,Provincial,17886,Province Government,Tuition only
+336,1499,University Merit,23229,Host University,Tuition only
+337,1518,CSC Full,60767,China Scholarship Council,Full tuition + stipend
+338,1519,ANKO Bridge,6935,ANKO Bridge Agency,Living stipend
+339,1528,University Merit,13979,Host University,Tuition only
+340,1530,CSC Partial,22439,China Scholarship Council,Tuition only
+341,1543,Confucius Institute,12561,Confucius Institute HQ,Living stipend
+342,1545,ANKO Bridge,5149,ANKO Bridge Agency,Living stipend
+343,1546,Confucius Institute,10113,Confucius Institute HQ,Living stipend
+344,1548,CSC Partial,16705,China Scholarship Council,Tuition only
+345,1549,Confucius Institute,12941,Confucius Institute HQ,Living stipend
+346,1551,CSC Full,64461,China Scholarship Council,Full tuition + stipend
+347,1555,Provincial,16379,Province Government,Tuition only
+348,1559,Provincial,13774,Province Government,Tuition only
+349,1562,CSC Full,62292,China Scholarship Council,Full tuition + stipend
+350,1577,University Merit,20760,Host University,Tuition only
+351,1579,University Merit,18967,Host University,Tuition only
+352,1583,University Merit,21383,Host University,Tuition only
+353,1584,University Merit,17576,Host University,Tuition only
+354,1585,Provincial,14011,Province Government,Tuition only
+355,1594,CSC Full,60693,China Scholarship Council,Full tuition + stipend
+356,1595,Provincial,8169,Province Government,Tuition only
+357,1601,University Merit,18220,Host University,Tuition only
+358,1603,CSC Partial,20006,China Scholarship Council,Tuition only
+359,1612,University Merit,7993,Host University,Tuition only
+360,1622,CSC Full,63651,China Scholarship Council,Full tuition + stipend
+361,1626,Confucius Institute,12023,Confucius Institute HQ,Living stipend
+362,1629,CSC Full,57436,China Scholarship Council,Full tuition + stipend
+363,1630,CSC Full,60970,China Scholarship Council,Full tuition + stipend
+364,1632,CSC Partial,18330,China Scholarship Council,Tuition only
+365,1637,University Merit,24872,Host University,Tuition only
+366,1639,ANKO Bridge,9680,ANKO Bridge Agency,Living stipend
+367,1640,Provincial,13912,Province Government,Tuition only
+368,1644,CSC Full,56411,China Scholarship Council,Full tuition + stipend
+369,1647,CSC Partial,19369,China Scholarship Council,Tuition only
+370,1654,CSC Full,60113,China Scholarship Council,Full tuition + stipend
+371,1657,Confucius Institute,17521,Confucius Institute HQ,Living stipend
+372,1660,University Merit,10082,Host University,Tuition only
+373,1664,CSC Partial,22807,China Scholarship Council,Tuition only
+374,1670,ANKO Bridge,5981,ANKO Bridge Agency,Living stipend
+375,1671,CSC Full,61690,China Scholarship Council,Full tuition + stipend
+376,1679,Confucius Institute,9131,Confucius Institute HQ,Living stipend
+377,1681,University Merit,5029,Host University,Tuition only
+378,1682,Confucius Institute,9647,Confucius Institute HQ,Living stipend
+379,1684,ANKO Bridge,9330,ANKO Bridge Agency,Living stipend
+380,1686,CSC Full,56193,China Scholarship Council,Full tuition + stipend
+381,1687,Provincial,9074,Province Government,Tuition only
+382,1688,Confucius Institute,15495,Confucius Institute HQ,Living stipend
+383,1692,University Merit,14394,Host University,Tuition only
+384,1694,Confucius Institute,15426,Confucius Institute HQ,Living stipend
+385,1699,ANKO Bridge,7300,ANKO Bridge Agency,Living stipend
+386,1703,University Merit,15601,Host University,Tuition only
+387,1709,CSC Partial,19811,China Scholarship Council,Tuition only
+388,1721,ANKO Bridge,4135,ANKO Bridge Agency,Living stipend
+389,1729,University Merit,16588,Host University,Tuition only
+390,1731,CSC Full,64503,China Scholarship Council,Full tuition + stipend
+391,1739,Confucius Institute,17184,Confucius Institute HQ,Living stipend
+392,1741,ANKO Bridge,4338,ANKO Bridge Agency,Living stipend
+393,1748,CSC Partial,17518,China Scholarship Council,Tuition only
+394,1752,CSC Partial,25318,China Scholarship Council,Tuition only
+395,1756,ANKO Bridge,5652,ANKO Bridge Agency,Living stipend
+396,1757,Confucius Institute,10307,Confucius Institute HQ,Living stipend
+397,1763,University Merit,21542,Host University,Tuition only
+398,1770,CSC Partial,16200,China Scholarship Council,Tuition only
+399,1772,Provincial,14959,Province Government,Tuition only
+400,1775,University Merit,8254,Host University,Tuition only
+401,1781,Provincial,11179,Province Government,Tuition only
+402,1801,University Merit,7087,Host University,Tuition only
+403,1806,University Merit,24601,Host University,Tuition only
+404,1807,Confucius Institute,8368,Confucius Institute HQ,Living stipend
+405,1808,Provincial,13231,Province Government,Tuition only
+406,1809,ANKO Bridge,9780,ANKO Bridge Agency,Living stipend
+407,1820,CSC Partial,21155,China Scholarship Council,Tuition only
+408,1821,CSC Full,62094,China Scholarship Council,Full tuition + stipend
+409,1823,CSC Partial,19835,China Scholarship Council,Tuition only
+410,1844,Confucius Institute,13856,Confucius Institute HQ,Living stipend
+411,1845,Confucius Institute,9450,Confucius Institute HQ,Living stipend
+412,1866,ANKO Bridge,3625,ANKO Bridge Agency,Living stipend
+413,1877,University Merit,9650,Host University,Tuition only
+414,1884,CSC Full,61918,China Scholarship Council,Full tuition + stipend
+415,1888,ANKO Bridge,7507,ANKO Bridge Agency,Living stipend
+416,1890,CSC Partial,24163,China Scholarship Council,Tuition only
+417,1897,CSC Full,63163,China Scholarship Council,Full tuition + stipend
+418,1898,CSC Partial,27206,China Scholarship Council,Tuition only
+419,1899,CSC Partial,15100,China Scholarship Council,Tuition only
+420,1902,CSC Partial,15338,China Scholarship Council,Tuition only
+421,1906,CSC Partial,25392,China Scholarship Council,Tuition only
+422,1909,Provincial,16302,Province Government,Tuition only
+423,1918,CSC Partial,19372,China Scholarship Council,Tuition only
+424,1919,Confucius Institute,9902,Confucius Institute HQ,Living stipend
+425,1921,Provincial,15878,Province Government,Tuition only
+426,1923,Provincial,11448,Province Government,Tuition only
+427,1924,ANKO Bridge,6672,ANKO Bridge Agency,Living stipend
+428,1928,CSC Partial,26177,China Scholarship Council,Tuition only
+429,1929,CSC Partial,29992,China Scholarship Council,Tuition only
+430,1931,CSC Partial,23460,China Scholarship Council,Tuition only
+431,1934,University Merit,12656,Host University,Tuition only
+432,1937,Confucius Institute,11824,Confucius Institute HQ,Living stipend
+433,1939,CSC Partial,15752,China Scholarship Council,Tuition only
+434,1942,Confucius Institute,16213,Confucius Institute HQ,Living stipend
+435,1943,ANKO Bridge,7643,ANKO Bridge Agency,Living stipend
+436,1947,ANKO Bridge,9265,ANKO Bridge Agency,Living stipend
+437,1949,University Merit,15281,Host University,Tuition only
+438,1956,University Merit,9436,Host University,Tuition only
+439,1959,University Merit,21707,Host University,Tuition only
+440,1960,University Merit,22305,Host University,Tuition only
+441,1967,Provincial,13367,Province Government,Tuition only
+442,1969,University Merit,13329,Host University,Tuition only
+443,1970,University Merit,8184,Host University,Tuition only
+444,1974,CSC Partial,20720,China Scholarship Council,Tuition only
+445,1980,University Merit,9061,Host University,Tuition only
+446,1981,University Merit,6252,Host University,Tuition only
+447,1986,ANKO Bridge,9683,ANKO Bridge Agency,Living stipend
+448,1991,Confucius Institute,12802,Confucius Institute HQ,Living stipend
+449,1996,CSC Full,56785,China Scholarship Council,Full tuition + stipend
+450,2000,ANKO Bridge,4806,ANKO Bridge Agency,Living stipend
+451,2002,CSC Partial,20938,China Scholarship Council,Tuition only
+452,2003,University Merit,20747,Host University,Tuition only
+453,2006,University Merit,6146,Host University,Tuition only
+454,2011,Provincial,17455,Province Government,Tuition only
+455,2014,Confucius Institute,15243,Confucius Institute HQ,Living stipend
+456,2021,CSC Full,55971,China Scholarship Council,Full tuition + stipend
+457,2022,CSC Partial,18618,China Scholarship Council,Tuition only
+458,2031,CSC Partial,25519,China Scholarship Council,Tuition only
+459,2038,University Merit,7667,Host University,Tuition only
+460,2044,CSC Partial,23528,China Scholarship Council,Tuition only
+461,2045,CSC Partial,22446,China Scholarship Council,Tuition only
+462,2053,Confucius Institute,9851,Confucius Institute HQ,Living stipend
+463,2055,CSC Full,62127,China Scholarship Council,Full tuition + stipend
+464,2057,Confucius Institute,10183,Confucius Institute HQ,Living stipend
+465,2064,University Merit,17367,Host University,Tuition only
+466,2065,ANKO Bridge,6671,ANKO Bridge Agency,Living stipend
+467,2066,University Merit,20623,Host University,Tuition only
+468,2067,Provincial,8921,Province Government,Tuition only
+469,2076,Provincial,18973,Province Government,Tuition only
+470,2078,University Merit,11687,Host University,Tuition only
+471,2081,CSC Partial,27647,China Scholarship Council,Tuition only
+472,2084,ANKO Bridge,9817,ANKO Bridge Agency,Living stipend
+473,2091,CSC Partial,17602,China Scholarship Council,Tuition only
+474,2100,CSC Partial,25942,China Scholarship Council,Tuition only
+475,2107,Confucius Institute,15770,Confucius Institute HQ,Living stipend
+476,2109,University Merit,6183,Host University,Tuition only
+477,2112,Confucius Institute,13101,Confucius Institute HQ,Living stipend
+478,2117,Provincial,17846,Province Government,Tuition only
+479,2118,University Merit,13643,Host University,Tuition only
+480,2120,Provincial,15479,Province Government,Tuition only
+481,2128,Confucius Institute,10126,Confucius Institute HQ,Living stipend
+482,2129,CSC Full,59768,China Scholarship Council,Full tuition + stipend
+483,2131,University Merit,15854,Host University,Tuition only
+484,2135,CSC Full,56267,China Scholarship Council,Full tuition + stipend
+485,2139,University Merit,6206,Host University,Tuition only
+486,2141,University Merit,15614,Host University,Tuition only
+487,2143,CSC Partial,21033,China Scholarship Council,Tuition only
+488,2144,CSC Partial,20477,China Scholarship Council,Tuition only
+489,2147,Confucius Institute,8617,Confucius Institute HQ,Living stipend
+490,2148,University Merit,7610,Host University,Tuition only
+491,2154,Confucius Institute,16654,Confucius Institute HQ,Living stipend
+492,2167,CSC Partial,17570,China Scholarship Council,Tuition only
+493,2170,University Merit,11163,Host University,Tuition only
+494,2180,University Merit,14923,Host University,Tuition only
+495,2182,Confucius Institute,15711,Confucius Institute HQ,Living stipend
+496,2183,CSC Full,55159,China Scholarship Council,Full tuition + stipend
+497,2185,CSC Partial,28382,China Scholarship Council,Tuition only
+498,2187,CSC Full,64579,China Scholarship Council,Full tuition + stipend
+499,2188,University Merit,16738,Host University,Tuition only
+500,2194,Confucius Institute,10298,Confucius Institute HQ,Living stipend
+501,2201,Confucius Institute,14139,Confucius Institute HQ,Living stipend
+502,2202,Provincial,18305,Province Government,Tuition only
+503,2206,University Merit,20675,Host University,Tuition only
+504,2210,CSC Full,56935,China Scholarship Council,Full tuition + stipend
+505,2211,University Merit,15327,Host University,Tuition only
+506,2214,CSC Partial,15275,China Scholarship Council,Tuition only
+507,2218,ANKO Bridge,4814,ANKO Bridge Agency,Living stipend
+508,2219,Provincial,14795,Province Government,Tuition only
+509,2221,Confucius Institute,17882,Confucius Institute HQ,Living stipend
+510,2222,CSC Full,56546,China Scholarship Council,Full tuition + stipend
+511,2223,University Merit,5165,Host University,Tuition only
+512,2226,Provincial,14806,Province Government,Tuition only
+513,2227,Confucius Institute,12283,Confucius Institute HQ,Living stipend
+514,2236,Provincial,19653,Province Government,Tuition only
+515,2244,CSC Full,56860,China Scholarship Council,Full tuition + stipend
+516,2245,ANKO Bridge,8066,ANKO Bridge Agency,Living stipend

@@ -1,0 +1,1459 @@
+{
+  "yearly_apps": [
+    {
+      "year": 2019,
+      "count": 53
+    },
+    {
+      "year": 2020,
+      "count": 31
+    },
+    {
+      "year": 2021,
+      "count": 13
+    },
+    {
+      "year": 2022,
+      "count": 37
+    },
+    {
+      "year": 2023,
+      "count": 187
+    },
+    {
+      "year": 2024,
+      "count": 558
+    },
+    {
+      "year": 2025,
+      "count": 1371
+    }
+  ],
+  "yearly_registrations": [
+    {
+      "year": 2019,
+      "count": 55
+    },
+    {
+      "year": 2020,
+      "count": 10
+    },
+    {
+      "year": 2021,
+      "count": 8
+    },
+    {
+      "year": 2022,
+      "count": 17
+    },
+    {
+      "year": 2023,
+      "count": 190
+    },
+    {
+      "year": 2024,
+      "count": 460
+    },
+    {
+      "year": 2025,
+      "count": 760
+    }
+  ],
+  "covid_drop": {
+    "year": 2020,
+    "before": 53,
+    "after": 31,
+    "pct": -41.5
+  },
+  "peak_year": {
+    "year": 2025,
+    "count": 1371
+  },
+  "top_universities": [
+    {
+      "name": "Nankai University",
+      "count": 74
+    },
+    {
+      "name": "China Agricultural University",
+      "count": 71
+    },
+    {
+      "name": "Renmin University of China",
+      "count": 71
+    },
+    {
+      "name": "Fudan University",
+      "count": 69
+    },
+    {
+      "name": "Tongji University",
+      "count": 69
+    },
+    {
+      "name": "Beijing Forestry University",
+      "count": 66
+    },
+    {
+      "name": "Peking University",
+      "count": 65
+    },
+    {
+      "name": "Zhejiang University",
+      "count": 64
+    },
+    {
+      "name": "Northeast Normal University",
+      "count": 63
+    },
+    {
+      "name": "Tianjin University",
+      "count": 62
+    }
+  ],
+  "top_universities_by_year": {
+    "2019": {
+      "Inner Mongolia University of Technology": 4,
+      "Fudan University": 3,
+      "Nanjing University": 3,
+      "Xi'an Jiaotong University": 3,
+      "Jilin University": 3
+    },
+    "2020": {
+      "Tongji University": 3,
+      "Capital Normal University": 2,
+      "Inner Mongolia University for Nationalities": 2,
+      "Fudan University": 2,
+      "Nankai University": 2
+    },
+    "2021": {
+      "Nankai University": 3,
+      "Communication University of China": 2,
+      "Tianjin University": 2,
+      "China Agricultural University": 1,
+      "University of Science and Technology of China": 1
+    },
+    "2022": {
+      "Heilongjiang University": 3,
+      "Nanjing University": 3,
+      "Beijing Forestry University": 2,
+      "South China University of Technology": 2,
+      "Tsinghua University": 2
+    },
+    "2023": {
+      "Northeast Normal University": 10,
+      "Sichuan University": 7,
+      "Renmin University of China": 7,
+      "Inner Mongolia University": 7,
+      "Beihang University": 7
+    },
+    "2024": {
+      "Renmin University of China": 20,
+      "Peking University": 19,
+      "Shanghai Jiao Tong University": 19,
+      "Northeast Normal University": 18,
+      "Tongji University": 17
+    },
+    "2025": {
+      "China Agricultural University": 49,
+      "Nankai University": 48,
+      "Zhejiang University": 46,
+      "Tongji University": 44,
+      "Fudan University": 44
+    }
+  },
+  "aimag_share": [
+    {
+      "aimag": "Улаанбаатар",
+      "pct": 70.1
+    },
+    {
+      "aimag": "Дархан-Уул",
+      "pct": 6.1
+    },
+    {
+      "aimag": "Орхон",
+      "pct": 4.3
+    },
+    {
+      "aimag": "Сэлэнгэ",
+      "pct": 3.4
+    },
+    {
+      "aimag": "Увс",
+      "pct": 2.1
+    },
+    {
+      "aimag": "Баян-Өлгий",
+      "pct": 2.1
+    },
+    {
+      "aimag": "Хэнтий",
+      "pct": 1.7
+    },
+    {
+      "aimag": "Дорнод",
+      "pct": 1.5
+    },
+    {
+      "aimag": "Хөвсгөл",
+      "pct": 1.3
+    },
+    {
+      "aimag": "Архангай",
+      "pct": 0.9
+    },
+    {
+      "aimag": "Ховд",
+      "pct": 0.9
+    },
+    {
+      "aimag": "Өмнөговь",
+      "pct": 0.9
+    },
+    {
+      "aimag": "Завхан",
+      "pct": 0.8
+    },
+    {
+      "aimag": "Баянхонгор",
+      "pct": 0.7
+    },
+    {
+      "aimag": "Говь-Алтай",
+      "pct": 0.6
+    },
+    {
+      "aimag": "Өвөрхангай",
+      "pct": 0.5
+    },
+    {
+      "aimag": "Төв",
+      "pct": 0.5
+    },
+    {
+      "aimag": "Булган",
+      "pct": 0.5
+    },
+    {
+      "aimag": "Дорноговь",
+      "pct": 0.5
+    },
+    {
+      "aimag": "Сүхбаатар",
+      "pct": 0.4
+    },
+    {
+      "aimag": "Дундговь",
+      "pct": 0.4
+    }
+  ],
+  "ub_share": {
+    "name": "Улаанбаатар",
+    "share": 70.1
+  },
+  "ub_districts": [
+    {
+      "district": "Хан-Уул",
+      "pct": 17.5
+    },
+    {
+      "district": "Сүхбаатар",
+      "pct": 16.1
+    },
+    {
+      "district": "Баянзүрх",
+      "pct": 16.0
+    },
+    {
+      "district": "Сонгинохайрхан",
+      "pct": 14.4
+    },
+    {
+      "district": "Баянгол",
+      "pct": 13.7
+    },
+    {
+      "district": "Чингэлтэй",
+      "pct": 13.7
+    },
+    {
+      "district": "Налайх",
+      "pct": 4.5
+    },
+    {
+      "district": "Багануур",
+      "pct": 4.2
+    }
+  ],
+  "top_ub_district": {
+    "name": "Хан-Уул",
+    "share": 17.5
+  },
+  "hsk_by_year": {
+    "2019": {
+      "HSK 1": 3,
+      "HSK 2": 8,
+      "HSK 3": 8,
+      "HSK 4": 19,
+      "HSK 5": 12,
+      "HSK 6": 5
+    },
+    "2020": {
+      "HSK 1": 0,
+      "HSK 2": 0,
+      "HSK 3": 3,
+      "HSK 4": 4,
+      "HSK 5": 2,
+      "HSK 6": 1
+    },
+    "2021": {
+      "HSK 1": 0,
+      "HSK 2": 1,
+      "HSK 3": 2,
+      "HSK 4": 3,
+      "HSK 5": 2,
+      "HSK 6": 0
+    },
+    "2022": {
+      "HSK 1": 0,
+      "HSK 2": 0,
+      "HSK 3": 2,
+      "HSK 4": 6,
+      "HSK 5": 7,
+      "HSK 6": 2
+    },
+    "2023": {
+      "HSK 1": 10,
+      "HSK 2": 10,
+      "HSK 3": 43,
+      "HSK 4": 69,
+      "HSK 5": 47,
+      "HSK 6": 11
+    },
+    "2024": {
+      "HSK 1": 21,
+      "HSK 2": 28,
+      "HSK 3": 113,
+      "HSK 4": 150,
+      "HSK 5": 103,
+      "HSK 6": 45
+    },
+    "2025": {
+      "HSK 1": 48,
+      "HSK 2": 53,
+      "HSK 3": 158,
+      "HSK 4": 275,
+      "HSK 5": 145,
+      "HSK 6": 81
+    }
+  },
+  "age_distribution": [
+    {
+      "age": 17,
+      "pct": 14.3
+    },
+    {
+      "age": 18,
+      "pct": 56.9
+    },
+    {
+      "age": 19,
+      "pct": 15.5
+    },
+    {
+      "age": 20,
+      "pct": 3.6
+    },
+    {
+      "age": 21,
+      "pct": 2.7
+    },
+    {
+      "age": 22,
+      "pct": 3.1
+    },
+    {
+      "age": 23,
+      "pct": 1.0
+    },
+    {
+      "age": 24,
+      "pct": 1.1
+    },
+    {
+      "age": 25,
+      "pct": 0.6
+    },
+    {
+      "age": 26,
+      "pct": 0.3
+    },
+    {
+      "age": 27,
+      "pct": 0.6
+    },
+    {
+      "age": 28,
+      "pct": 0.4
+    }
+  ],
+  "high_school_seniors": {
+    "share": 73.5,
+    "median_age": 18
+  },
+  "gender_share": {
+    "F": 51.3,
+    "M": 48.7
+  },
+  "field_by_year": {
+    "2019": {
+      "Arts": 2,
+      "Business": 23,
+      "Engineering": 17,
+      "Humanities": 7,
+      "Language": 0,
+      "Medicine": 0,
+      "Science": 4
+    },
+    "2020": {
+      "Arts": 0,
+      "Business": 3,
+      "Engineering": 15,
+      "Humanities": 4,
+      "Language": 0,
+      "Medicine": 9,
+      "Science": 0
+    },
+    "2021": {
+      "Arts": 2,
+      "Business": 2,
+      "Engineering": 5,
+      "Humanities": 3,
+      "Language": 0,
+      "Medicine": 1,
+      "Science": 0
+    },
+    "2022": {
+      "Arts": 2,
+      "Business": 9,
+      "Engineering": 10,
+      "Humanities": 2,
+      "Language": 1,
+      "Medicine": 11,
+      "Science": 2
+    },
+    "2023": {
+      "Arts": 10,
+      "Business": 50,
+      "Engineering": 69,
+      "Humanities": 13,
+      "Language": 4,
+      "Medicine": 26,
+      "Science": 15
+    },
+    "2024": {
+      "Arts": 44,
+      "Business": 118,
+      "Engineering": 199,
+      "Humanities": 55,
+      "Language": 4,
+      "Medicine": 82,
+      "Science": 56
+    },
+    "2025": {
+      "Arts": 85,
+      "Business": 314,
+      "Engineering": 484,
+      "Humanities": 130,
+      "Language": 6,
+      "Medicine": 217,
+      "Science": 135
+    }
+  },
+  "program_share": [
+    {
+      "type": "6+6",
+      "pct": 56.8
+    },
+    {
+      "type": "1+4",
+      "pct": 30.7
+    },
+    {
+      "type": "Fall Bachelor",
+      "pct": 9.7
+    },
+    {
+      "type": "Master/PhD",
+      "pct": 2.8
+    }
+  ],
+  "program_share_by_year": {
+    "2019": {
+      "1+4": 34.0,
+      "6+6": 50.9,
+      "Fall Bachelor": 15.1,
+      "Master/PhD": 0.0
+    },
+    "2020": {
+      "1+4": 41.9,
+      "6+6": 48.4,
+      "Fall Bachelor": 9.7,
+      "Master/PhD": 0.0
+    },
+    "2021": {
+      "1+4": 38.5,
+      "6+6": 61.5,
+      "Fall Bachelor": 0.0,
+      "Master/PhD": 0.0
+    },
+    "2022": {
+      "1+4": 43.2,
+      "6+6": 48.6,
+      "Fall Bachelor": 8.1,
+      "Master/PhD": 0.0
+    },
+    "2023": {
+      "1+4": 27.8,
+      "6+6": 55.1,
+      "Fall Bachelor": 13.4,
+      "Master/PhD": 3.7
+    },
+    "2024": {
+      "1+4": 29.6,
+      "6+6": 58.8,
+      "Fall Bachelor": 8.8,
+      "Master/PhD": 2.9
+    },
+    "2025": {
+      "1+4": 30.8,
+      "6+6": 56.8,
+      "Fall Bachelor": 9.6,
+      "Master/PhD": 2.8
+    }
+  },
+  "acceptance_by_program": [
+    {
+      "type": "1+4",
+      "rate": 53.4
+    },
+    {
+      "type": "6+6",
+      "rate": 51.2
+    },
+    {
+      "type": "Fall Bachelor",
+      "rate": 68.9
+    },
+    {
+      "type": "Master/PhD",
+      "rate": 71.0
+    }
+  ],
+  "most_popular_program": {
+    "type": "6+6",
+    "share": 56.8,
+    "growth_2019_to_2024_pp": 7.8
+  },
+  "highest_acceptance_program": {
+    "type": "Master/PhD",
+    "rate": 0.71
+  },
+  "acceptance_by_hsk": [
+    {
+      "hsk": 1,
+      "rate": 7.7
+    },
+    {
+      "hsk": 2,
+      "rate": 18.2
+    },
+    {
+      "hsk": 3,
+      "rate": 42.2
+    },
+    {
+      "hsk": 4,
+      "rate": 54.4
+    },
+    {
+      "hsk": 5,
+      "rate": 76.6
+    },
+    {
+      "hsk": 6,
+      "rate": 79.8
+    }
+  ],
+  "scholarship_types": [
+    {
+      "type": "CSC Partial",
+      "count": 145
+    },
+    {
+      "type": "University Merit",
+      "count": 130
+    },
+    {
+      "type": "Confucius Institute",
+      "count": 82
+    },
+    {
+      "type": "CSC Full",
+      "count": 59
+    },
+    {
+      "type": "ANKO Bridge",
+      "count": 53
+    },
+    {
+      "type": "Provincial",
+      "count": 47
+    }
+  ],
+  "scholarship_total_yuan": 10703815,
+  "scholarship_avg_yuan": 20743,
+  "models": {
+    "random_forest_acceptance": {
+      "accuracy": 0.686,
+      "f1": 0.724,
+      "auc": 0.736,
+      "feature_importances": [
+        {
+          "feature": "hsk_level",
+          "importance": 0.21922276710025604
+        },
+        {
+          "feature": "gpa_percent",
+          "importance": 0.14352743969753373
+        },
+        {
+          "feature": "hsk_score",
+          "importance": 0.1377503845293833
+        },
+        {
+          "feature": "family_income_mnt",
+          "importance": 0.13289903303194556
+        },
+        {
+          "feature": "apply_age",
+          "importance": 0.06030580492941336
+        },
+        {
+          "feature": "anko_program_type_6+6",
+          "importance": 0.02299951114074691
+        },
+        {
+          "feature": "school_type_Public",
+          "importance": 0.02269289792363559
+        },
+        {
+          "feature": "field_Engineering",
+          "importance": 0.021875851306121557
+        },
+        {
+          "feature": "tier_C9",
+          "importance": 0.021201648510951104
+        },
+        {
+          "feature": "anko_program_type_Fall Bachelor",
+          "importance": 0.020664411778604133
+        }
+      ]
+    },
+    "logreg_visa": {
+      "accuracy": 0.951,
+      "f1": 0.975,
+      "auc": 0.706,
+      "intercept": 3.2128,
+      "coefs": {
+        "hsk_level": 0.1238,
+        "hsk_score": -0.1513,
+        "gpa_percent": -0.0737,
+        "family_income_mnt": 0.1574,
+        "apply_age": -0.2425,
+        "is_high_school_senior": 0.058,
+        "aimag_Дархан-Уул": 0.6464,
+        "aimag_Орхон": -0.058,
+        "aimag_Сэлэнгэ": -0.0203,
+        "aimag_Увс": -0.0966,
+        "aimag_Улаанбаатар": -0.1761,
+        "school_type_Private": 0.3411,
+        "school_type_Public": -0.0187,
+        "anko_program_type_6+6": -0.1744,
+        "anko_program_type_Fall Bachelor": -0.075,
+        "anko_program_type_Master/PhD": 0.0265,
+        "tier_985": 0.2676,
+        "tier_C9": 0.1778,
+        "tier_Provincial": 0.1848,
+        "field_Business": 0.1399,
+        "field_Engineering": 0.2532,
+        "field_Humanities": -0.1074,
+        "field_Language": 0.1836,
+        "field_Medicine": 0.2049,
+        "field_Science": 0.0304
+      },
+      "feature_means": {
+        "hsk_level": 4.324,
+        "hsk_score": 191.882,
+        "gpa_percent": 82.693,
+        "family_income_mnt": 3498170.777,
+        "apply_age": 18.792,
+        "is_high_school_senior": 0.716,
+        "aimag_Дархан-Уул": 0.054,
+        "aimag_Орхон": 0.043,
+        "aimag_Сэлэнгэ": 0.026,
+        "aimag_Увс": 0.03,
+        "aimag_Улаанбаатар": 0.718,
+        "school_type_Private": 0.257,
+        "school_type_Public": 0.648,
+        "anko_program_type_6+6": 0.544,
+        "anko_program_type_Fall Bachelor": 0.109,
+        "anko_program_type_Master/PhD": 0.041,
+        "tier_985": 0.38,
+        "tier_C9": 0.202,
+        "tier_Provincial": 0.142,
+        "field_Business": 0.248,
+        "field_Engineering": 0.352,
+        "field_Humanities": 0.095,
+        "field_Language": 0.004,
+        "field_Medicine": 0.157,
+        "field_Science": 0.071
+      },
+      "feature_stds": {
+        "hsk_level": 1.056,
+        "hsk_score": 30.739,
+        "gpa_percent": 7.146,
+        "family_income_mnt": 2467244.278,
+        "apply_age": 1.823,
+        "is_high_school_senior": 0.451,
+        "aimag_Дархан-Уул": 0.226,
+        "aimag_Орхон": 0.203,
+        "aimag_Сэлэнгэ": 0.158,
+        "aimag_Увс": 0.172,
+        "aimag_Улаанбаатар": 0.45,
+        "school_type_Private": 0.437,
+        "school_type_Public": 0.478,
+        "anko_program_type_6+6": 0.498,
+        "anko_program_type_Fall Bachelor": 0.311,
+        "anko_program_type_Master/PhD": 0.198,
+        "tier_985": 0.485,
+        "tier_C9": 0.402,
+        "tier_Provincial": 0.349,
+        "field_Business": 0.432,
+        "field_Engineering": 0.478,
+        "field_Humanities": 0.293,
+        "field_Language": 0.059,
+        "field_Medicine": 0.364,
+        "field_Science": 0.257
+      }
+    },
+    "xgb_scholarship": {
+      "accuracy": 0.544,
+      "f1": 0.433,
+      "auc": 0.543,
+      "feature_importances": [
+        {
+          "feature": "hsk_level",
+          "importance": 0.06990734487771988
+        },
+        {
+          "feature": "aimag_Увс",
+          "importance": 0.05390181392431259
+        },
+        {
+          "feature": "field_Medicine",
+          "importance": 0.052876126021146774
+        },
+        {
+          "feature": "aimag_Улаанбаатар",
+          "importance": 0.05139606073498726
+        },
+        {
+          "feature": "field_Business",
+          "importance": 0.046398721635341644
+        },
+        {
+          "feature": "apply_age",
+          "importance": 0.04452040046453476
+        },
+        {
+          "feature": "field_Humanities",
+          "importance": 0.04199112951755524
+        },
+        {
+          "feature": "hsk_score",
+          "importance": 0.04179614037275314
+        },
+        {
+          "feature": "gpa_percent",
+          "importance": 0.041502080857753754
+        },
+        {
+          "feature": "anko_program_type_Fall Bachelor",
+          "importance": 0.040935929864645004
+        }
+      ]
+    }
+  },
+  "personas": [
+    {
+      "id": 0,
+      "name": "Орон нутгийн боломжит сурагчид",
+      "size": 393,
+      "avg_hsk": 4.4,
+      "avg_hsk_score": 185.0,
+      "avg_gpa": 80.9,
+      "avg_age": 18.2,
+      "avg_income_mnt": 5609967,
+      "radar": {
+        "HSK": 0.733,
+        "HSK_оноо": 0.617,
+        "GPA": 0.809,
+        "Нас": 0.109,
+        "Орлого": 0.701
+      }
+    },
+    {
+      "id": 1,
+      "name": "Орон нутгийн дэмжлэг хэрэгтэй сурагчид",
+      "size": 400,
+      "avg_hsk": 4.0,
+      "avg_hsk_score": 180.0,
+      "avg_gpa": 75.7,
+      "avg_age": 18.2,
+      "avg_income_mnt": 1899639,
+      "radar": {
+        "HSK": 0.667,
+        "HSK_оноо": 0.6,
+        "GPA": 0.757,
+        "Нас": 0.109,
+        "Орлого": 0.237
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ахисан түвшний суралцагчид",
+      "size": 105,
+      "avg_hsk": 4.0,
+      "avg_hsk_score": 188.0,
+      "avg_gpa": 81.2,
+      "avg_age": 23.6,
+      "avg_income_mnt": 3984942,
+      "radar": {
+        "HSK": 0.667,
+        "HSK_оноо": 0.627,
+        "GPA": 0.812,
+        "Нас": 0.6,
+        "Орлого": 0.498
+      }
+    },
+    {
+      "id": 3,
+      "name": "Тэтгэлэгт төвлөрсөн сурагчид",
+      "size": 390,
+      "avg_hsk": 4.3,
+      "avg_hsk_score": 217.0,
+      "avg_gpa": 88.5,
+      "avg_age": 18.1,
+      "avg_income_mnt": 2976018,
+      "radar": {
+        "HSK": 0.717,
+        "HSK_оноо": 0.723,
+        "GPA": 0.885,
+        "Нас": 0.1,
+        "Орлого": 0.372
+      }
+    },
+    {
+      "id": 4,
+      "name": "Хэлний бэлтгэлээс эхлэгчид",
+      "size": 212,
+      "avg_hsk": 1.9,
+      "avg_hsk_score": 151.0,
+      "avg_gpa": 81.0,
+      "avg_age": 18.3,
+      "avg_income_mnt": 2995153,
+      "radar": {
+        "HSK": 0.317,
+        "HSK_оноо": 0.503,
+        "GPA": 0.81,
+        "Нас": 0.118,
+        "Орлого": 0.374
+      }
+    }
+  ],
+  "uni_race_by_year": {
+    "2019": [
+      {
+        "name": "Inner Mongolia University of Technology",
+        "count": 4
+      },
+      {
+        "name": "Fudan University",
+        "count": 3
+      },
+      {
+        "name": "Nanjing University",
+        "count": 3
+      },
+      {
+        "name": "Xi'an Jiaotong University",
+        "count": 3
+      },
+      {
+        "name": "Jilin University",
+        "count": 3
+      },
+      {
+        "name": "Xiamen University",
+        "count": 2
+      },
+      {
+        "name": "Yanbian University",
+        "count": 2
+      },
+      {
+        "name": "Inner Mongolia University",
+        "count": 2
+      },
+      {
+        "name": "Tsinghua University",
+        "count": 2
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 2
+      }
+    ],
+    "2020": [
+      {
+        "name": "Fudan University",
+        "count": 5
+      },
+      {
+        "name": "Jilin University",
+        "count": 5
+      },
+      {
+        "name": "Inner Mongolia University of Technology",
+        "count": 4
+      },
+      {
+        "name": "Tongji University",
+        "count": 4
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 4
+      },
+      {
+        "name": "Capital Normal University",
+        "count": 3
+      },
+      {
+        "name": "Xi'an Jiaotong University",
+        "count": 3
+      },
+      {
+        "name": "Tianjin University",
+        "count": 3
+      },
+      {
+        "name": "Tsinghua University",
+        "count": 3
+      },
+      {
+        "name": "Nankai University",
+        "count": 3
+      }
+    ],
+    "2021": [
+      {
+        "name": "Nankai University",
+        "count": 6
+      },
+      {
+        "name": "Jilin University",
+        "count": 5
+      },
+      {
+        "name": "Fudan University",
+        "count": 5
+      },
+      {
+        "name": "Tianjin University",
+        "count": 5
+      },
+      {
+        "name": "Xi'an Jiaotong University",
+        "count": 4
+      },
+      {
+        "name": "Tongji University",
+        "count": 4
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 4
+      },
+      {
+        "name": "Inner Mongolia University of Technology",
+        "count": 4
+      },
+      {
+        "name": "Capital Normal University",
+        "count": 3
+      },
+      {
+        "name": "Tsinghua University",
+        "count": 3
+      }
+    ],
+    "2022": [
+      {
+        "name": "Beijing Forestry University",
+        "count": 6
+      },
+      {
+        "name": "Nankai University",
+        "count": 6
+      },
+      {
+        "name": "Nanjing University",
+        "count": 6
+      },
+      {
+        "name": "Tianjin University",
+        "count": 6
+      },
+      {
+        "name": "Xi'an Jiaotong University",
+        "count": 5
+      },
+      {
+        "name": "Renmin University of China",
+        "count": 5
+      },
+      {
+        "name": "Tsinghua University",
+        "count": 5
+      },
+      {
+        "name": "Inner Mongolia University of Technology",
+        "count": 5
+      },
+      {
+        "name": "Jilin University",
+        "count": 5
+      },
+      {
+        "name": "Fudan University",
+        "count": 5
+      }
+    ],
+    "2023": [
+      {
+        "name": "Renmin University of China",
+        "count": 12
+      },
+      {
+        "name": "Nankai University",
+        "count": 12
+      },
+      {
+        "name": "Northeast Normal University",
+        "count": 12
+      },
+      {
+        "name": "Nanjing University",
+        "count": 11
+      },
+      {
+        "name": "Fudan University",
+        "count": 10
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 10
+      },
+      {
+        "name": "Inner Mongolia University",
+        "count": 10
+      },
+      {
+        "name": "Xi'an Jiaotong University",
+        "count": 10
+      },
+      {
+        "name": "Beihang University",
+        "count": 10
+      },
+      {
+        "name": "Tianjin University",
+        "count": 9
+      }
+    ],
+    "2024": [
+      {
+        "name": "Renmin University of China",
+        "count": 32
+      },
+      {
+        "name": "Northeast Normal University",
+        "count": 30
+      },
+      {
+        "name": "Nankai University",
+        "count": 26
+      },
+      {
+        "name": "Shanghai Jiao Tong University",
+        "count": 26
+      },
+      {
+        "name": "Peking University",
+        "count": 26
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 26
+      },
+      {
+        "name": "Fudan University",
+        "count": 25
+      },
+      {
+        "name": "Tongji University",
+        "count": 25
+      },
+      {
+        "name": "Nanjing University",
+        "count": 24
+      },
+      {
+        "name": "Tianjin University",
+        "count": 23
+      }
+    ],
+    "2025": [
+      {
+        "name": "Nankai University",
+        "count": 74
+      },
+      {
+        "name": "China Agricultural University",
+        "count": 71
+      },
+      {
+        "name": "Renmin University of China",
+        "count": 71
+      },
+      {
+        "name": "Fudan University",
+        "count": 69
+      },
+      {
+        "name": "Tongji University",
+        "count": 69
+      },
+      {
+        "name": "Beijing Forestry University",
+        "count": 66
+      },
+      {
+        "name": "Peking University",
+        "count": 65
+      },
+      {
+        "name": "Zhejiang University",
+        "count": 64
+      },
+      {
+        "name": "Northeast Normal University",
+        "count": 63
+      },
+      {
+        "name": "Tianjin University",
+        "count": 62
+      }
+    ]
+  },
+  "bi_aimag_growth": [
+    {
+      "aimag": "Улаанбаатар",
+      "recent": 847,
+      "older": 64,
+      "growth_x": 13.2,
+      "gpa_avg": 82.8,
+      "hsk_avg": 4.04
+    },
+    {
+      "aimag": "Дархан-Уул",
+      "recent": 71,
+      "older": 4,
+      "growth_x": 17.8,
+      "gpa_avg": 78.0,
+      "hsk_avg": 3.65
+    },
+    {
+      "aimag": "Орхон",
+      "recent": 54,
+      "older": 3,
+      "growth_x": 18.0,
+      "gpa_avg": 78.1,
+      "hsk_avg": 3.59
+    },
+    {
+      "aimag": "Сэлэнгэ",
+      "recent": 41,
+      "older": 4,
+      "growth_x": 10.2,
+      "gpa_avg": 77.3,
+      "hsk_avg": 3.59
+    },
+    {
+      "aimag": "Баян-Өлгий",
+      "recent": 28,
+      "older": 1,
+      "growth_x": 28.0,
+      "gpa_avg": 79.0,
+      "hsk_avg": 3.26
+    },
+    {
+      "aimag": "Увс",
+      "recent": 23,
+      "older": 4,
+      "growth_x": 5.8,
+      "gpa_avg": 79.9,
+      "hsk_avg": 3.74
+    },
+    {
+      "aimag": "Хэнтий",
+      "recent": 23,
+      "older": 2,
+      "growth_x": 11.5,
+      "gpa_avg": 78.7,
+      "hsk_avg": 3.35
+    },
+    {
+      "aimag": "Дорнод",
+      "recent": 19,
+      "older": 0,
+      "growth_x": 19.0,
+      "gpa_avg": 80.6,
+      "hsk_avg": 3.18
+    },
+    {
+      "aimag": "Хөвсгөл",
+      "recent": 17,
+      "older": 1,
+      "growth_x": 17.0,
+      "gpa_avg": 74.8,
+      "hsk_avg": 3.32
+    },
+    {
+      "aimag": "Ховд",
+      "recent": 13,
+      "older": 0,
+      "growth_x": 13.0,
+      "gpa_avg": 74.4,
+      "hsk_avg": 3.23
+    },
+    {
+      "aimag": "Өмнөговь",
+      "recent": 13,
+      "older": 0,
+      "growth_x": 13.0,
+      "gpa_avg": 79.5,
+      "hsk_avg": 3.46
+    },
+    {
+      "aimag": "Архангай",
+      "recent": 11,
+      "older": 0,
+      "growth_x": 11.0,
+      "gpa_avg": 81.4,
+      "hsk_avg": 3.54
+    },
+    {
+      "aimag": "Завхан",
+      "recent": 10,
+      "older": 1,
+      "growth_x": 10.0,
+      "gpa_avg": 79.1,
+      "hsk_avg": 3.58
+    },
+    {
+      "aimag": "Баянхонгор",
+      "recent": 8,
+      "older": 2,
+      "growth_x": 4.0,
+      "gpa_avg": 84.2,
+      "hsk_avg": 3.82
+    },
+    {
+      "aimag": "Говь-Алтай",
+      "recent": 8,
+      "older": 0,
+      "growth_x": 8.0,
+      "gpa_avg": 78.1,
+      "hsk_avg": 3.89
+    },
+    {
+      "aimag": "Төв",
+      "recent": 7,
+      "older": 0,
+      "growth_x": 7.0,
+      "gpa_avg": 76.9,
+      "hsk_avg": 3.38
+    },
+    {
+      "aimag": "Дорноговь",
+      "recent": 6,
+      "older": 0,
+      "growth_x": 6.0,
+      "gpa_avg": 81.8,
+      "hsk_avg": 3.29
+    },
+    {
+      "aimag": "Дундговь",
+      "recent": 6,
+      "older": 0,
+      "growth_x": 6.0,
+      "gpa_avg": 83.1,
+      "hsk_avg": 3.83
+    },
+    {
+      "aimag": "Өвөрхангай",
+      "recent": 6,
+      "older": 0,
+      "growth_x": 6.0,
+      "gpa_avg": 76.5,
+      "hsk_avg": 3.5
+    },
+    {
+      "aimag": "Булган",
+      "recent": 5,
+      "older": 2,
+      "growth_x": 2.5,
+      "gpa_avg": 76.3,
+      "hsk_avg": 3.86
+    },
+    {
+      "aimag": "Сүхбаатар",
+      "recent": 4,
+      "older": 2,
+      "growth_x": 2.0,
+      "gpa_avg": 79.4,
+      "hsk_avg": 3.67
+    }
+  ],
+  "bi_school_acceptance": [
+    {
+      "school": "International",
+      "rate": 70.9
+    },
+    {
+      "school": "Private",
+      "rate": 60.1
+    },
+    {
+      "school": "Public",
+      "rate": 52.2
+    }
+  ],
+  "bi_program_revenue": {
+    "6+6": {
+      "count": 654,
+      "avg_tuition_yuan": 22136.0,
+      "share": 53.7
+    },
+    "1+4": {
+      "count": 369,
+      "avg_tuition_yuan": 28400.0,
+      "share": 30.3
+    },
+    "Fall Bachelor": {
+      "count": 151,
+      "avg_tuition_yuan": 30970.0,
+      "share": 12.4
+    },
+    "Master/PhD": {
+      "count": 44,
+      "avg_tuition_yuan": 45409.0,
+      "share": 3.6
+    }
+  },
+  "bi_hsk_funnel": {
+    "1": {
+      "applied": 117,
+      "accepted": 9,
+      "rate": 7.7
+    },
+    "2": {
+      "applied": 154,
+      "accepted": 28,
+      "rate": 18.2
+    },
+    "3": {
+      "applied": 495,
+      "accepted": 209,
+      "rate": 42.2
+    },
+    "4": {
+      "applied": 774,
+      "accepted": 421,
+      "rate": 54.4
+    },
+    "5": {
+      "applied": 482,
+      "accepted": 369,
+      "rate": 76.6
+    },
+    "6": {
+      "applied": 228,
+      "accepted": 182,
+      "rate": 79.8
+    }
+  },
+  "bi_yearly_volatility": {
+    "max_drop_pct": -75.5,
+    "covid_years_total": 81,
+    "all_china_dependency": true
+  },
+  "story_moments": {
+    "covid_drop": {
+      "year": 2020,
+      "before": 53,
+      "after": 31,
+      "pct": -41.5
+    },
+    "peak_year": {
+      "year": 2025,
+      "count": 1371
+    },
+    "ub_share": {
+      "name": "Улаанбаатар",
+      "share": 70.1
+    },
+    "top_ub_district": {
+      "name": "Хан-Уул",
+      "share": 17.5
+    },
+    "high_school_seniors": {
+      "share": 73.5,
+      "median_age": 18
+    },
+    "most_popular_program": {
+      "type": "6+6",
+      "share": 56.8,
+      "growth_2019_to_2024_pp": 7.8
+    },
+    "highest_acceptance_program": {
+      "type": "Master/PhD",
+      "rate": 0.71
+    }
+  }
+}
