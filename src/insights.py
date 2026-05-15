@@ -45,6 +45,20 @@ def _round(x: float, n: int = 1) -> float:
     return float(round(float(x), n))
 
 
+def _downsample_roc(roc: dict, n: int = 60) -> dict:
+    """Эвенли түүвэрлэж ROC муруйг ~n цэг болгож хөнгөлнө."""
+    fpr, tpr = roc["fpr"], roc["tpr"]
+    if len(fpr) <= n:
+        idx = range(len(fpr))
+    else:
+        step = len(fpr) / n
+        idx = sorted({0, len(fpr) - 1} | {int(i * step) for i in range(n)})
+    return {
+        "fpr": [_round(fpr[i], 4) for i in idx],
+        "tpr": [_round(tpr[i], 4) for i in idx],
+    }
+
+
 def main() -> None:
     print("ANKO Bridge — insights.json үүсгэж байна...")
     dfs = load_all()
@@ -170,6 +184,8 @@ def main() -> None:
             "f1": _round(rf["f1"], 3),
             "auc": _round(rf["auc"], 3),
             "feature_importances": rf["feature_importances"][:10],
+            "roc": _downsample_roc(rf["roc"]),
+            "confusion_matrix": rf["confusion_matrix"],
         },
     }
 
@@ -188,6 +204,8 @@ def main() -> None:
                 "coefs": {k: _round(v, 4) for k, v in lr["coefs"].items()},
                 "feature_means": {k: _round(v, 3) for k, v in lr["feature_means"].items()},
                 "feature_stds": {k: _round(v, 3) for k, v in lr["feature_stds"].items()},
+                "roc": _downsample_roc(lr["roc"]),
+                "confusion_matrix": lr["confusion_matrix"],
             }
 
     print("  XGBoost (scholarship) fit-лэж байна...")
@@ -204,6 +222,8 @@ def main() -> None:
                 "f1": _round(xgb["f1"], 3),
                 "auc": _round(xgb["auc"], 3),
                 "feature_importances": xgb["feature_importances"][:10],
+                "roc": _downsample_roc(xgb["roc"]),
+                "confusion_matrix": xgb["confusion_matrix"],
             }
 
     # ─── Clustering — student personas ───
@@ -221,6 +241,61 @@ def main() -> None:
             "avg_gpa": _round(stats["gpa_percent"], 1),
             "avg_age": _round(stats["age_at_register"], 1),
             "avg_income_mnt": int(stats["family_income_mnt"]),
+        })
+
+    # ─── PCA projection — кластеруудын 2D зураглал (scatter) ───
+    pca_pts = []
+    for (x, y), lbl in zip(cl["pca_coords"], cl["labels"]):
+        pca_pts.append({"x": _round(x, 3), "y": _round(y, 3), "cluster": int(lbl)})
+    pca_centroids = {}
+    for cid in cl["summary"].keys():
+        pts = [p for p in pca_pts if p["cluster"] == int(cid)]
+        if pts:
+            pca_centroids[int(cid)] = {
+                "x": _round(sum(p["x"] for p in pts) / len(pts), 3),
+                "y": _round(sum(p["y"] for p in pts) / len(pts), 3),
+            }
+    out["personas_pca"] = {
+        "points": pca_pts,
+        "centroids": pca_centroids,
+        "names": {int(cid): persona_names[cid] for cid in cl["summary"].keys()},
+    }
+
+    # ─── Correlation matrix — оюутны тоон үзүүлэлтүүдийн Pearson r ───
+    corr_cols = ["hsk_level", "hsk_score", "gpa_percent", "family_income_mnt", "age_at_register"]
+    corr_labels = {
+        "hsk_level": "HSK түвшин",
+        "hsk_score": "HSK оноо",
+        "gpa_percent": "GPA",
+        "family_income_mnt": "Орлого",
+        "age_at_register": "Нас",
+    }
+    avail = [c for c in corr_cols if c in students.columns]
+    corr = students[avail].corr(method="pearson")
+    out["correlation_matrix"] = {
+        "labels": [corr_labels.get(c, c) for c in avail],
+        "keys": avail,
+        "matrix": [[_round(corr.loc[r, c], 3) for c in avail] for r in avail],
+    }
+
+    # ─── Scholarship box-plot статистик — төрөл тус бүрийн дүнгийн тархалт ───
+    out["scholarship_box"] = []
+    for stype in sch["scholarship_type"].value_counts().index:
+        vals = sch[sch["scholarship_type"] == stype]["amount_yuan"].astype(float)
+        q1, med, q3 = vals.quantile(0.25), vals.quantile(0.5), vals.quantile(0.75)
+        iqr = q3 - q1
+        lo, hi = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+        inliers = vals[(vals >= lo) & (vals <= hi)]
+        outliers = vals[(vals < lo) | (vals > hi)]
+        out["scholarship_box"].append({
+            "type": stype,
+            "count": int(len(vals)),
+            "q1": _round(q1, 0),
+            "median": _round(med, 0),
+            "q3": _round(q3, 0),
+            "whisker_lo": _round(inliers.min(), 0) if len(inliers) else _round(vals.min(), 0),
+            "whisker_hi": _round(inliers.max(), 0) if len(inliers) else _round(vals.max(), 0),
+            "outliers": [_round(v, 0) for v in outliers.tolist()[:12]],
         })
 
     # ─── BAR CHART RACE — top universities by year (cumulative) ───

@@ -92,12 +92,14 @@ def fit_random_forest(X: pd.DataFrame, y: pd.Series) -> dict:
         zip(X.columns, model.feature_importances_),
         key=lambda x: x[1], reverse=True,
     )
+    fpr, tpr, _ = roc_curve(yte, yp_prob)
     return {
         "model": model,
         "accuracy": float(accuracy_score(yte, yp)),
         "f1": float(f1_score(yte, yp, zero_division=0)),
         "auc": float(roc_auc_score(yte, yp_prob)),
         "feature_importances": [{"feature": f, "importance": float(i)} for f, i in importances[:15]],
+        "roc": {"fpr": fpr.tolist(), "tpr": tpr.tolist()},
         "confusion_matrix": confusion_matrix(yte, yp).tolist(),
     }
 
@@ -118,12 +120,15 @@ def fit_xgboost(X: pd.DataFrame, y: pd.Series) -> dict:
         zip(X.columns, model.feature_importances_),
         key=lambda x: x[1], reverse=True,
     )
+    fpr, tpr, _ = roc_curve(yte, yp_prob)
     return {
         "model": model,
         "accuracy": float(accuracy_score(yte, yp)),
         "f1": float(f1_score(yte, yp, zero_division=0)),
         "auc": float(roc_auc_score(yte, yp_prob)),
         "feature_importances": [{"feature": f, "importance": float(i)} for f, i in importances[:15]],
+        "roc": {"fpr": fpr.tolist(), "tpr": tpr.tolist()},
+        "confusion_matrix": confusion_matrix(yte, yp).tolist(),
     }
 
 

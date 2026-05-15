@@ -6,4 +6,13 @@
 /requirements.txt
 /*.py
 /*.ipynb
+/skills-lock.json
+/CLAUDE.md
+/.claude/
+/.playwright-mcp/
+/New folder/
+/website/_legacy/
 __pycache__/
+*.png
+*.jpeg
+*.jpg

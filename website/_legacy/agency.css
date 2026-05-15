@@ -1,7 +1,6 @@
 /* ═════════════════════════════════════════════════════════════
-   ANKO Bridge — Agency-level (Dogstudio / Refokus / Noomo vibe)
-   Page loader, marquees, chapter intros, masked text reveals,
-   magnetic buttons, smooth scroll integration with Lenis.
+   ANKO Bridge — Agency layer (Noomo-style редизайн)
+   Page loader · marquee · chapter intros · masked reveals · 3D canvas
    ═════════════════════════════════════════════════════════════ */
 
 /* ═════ Page loader ═════ */
@@ -21,10 +20,8 @@
 .loader-bg {
   position: absolute;
   inset: 0;
-  background: #07090f;
-  background-image:
-    radial-gradient(at 20% 30%, rgba(127, 119, 221, 0.18), transparent 45%),
-    radial-gradient(at 80% 70%, rgba(93, 202, 165, 0.10), transparent 50%);
+  background: var(--bg);
+  background-image: var(--grad-mesh);
 }
 .loader-content {
   position: relative;
@@ -34,24 +31,17 @@
 }
 .loader-brand {
   font-family: var(--serif);
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  background: var(--grad-purple);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin-bottom: 32px;
-  animation: loader-pulse 2.4s ease-in-out infinite alternate;
-}
-@keyframes loader-pulse {
-  from { opacity: 0.7; transform: scale(1); }
-  to   { opacity: 1;   transform: scale(1.02); }
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 36px;
 }
 .loader-counter {
-  font-family: var(--sans);
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: var(--text);
   margin-bottom: 18px;
@@ -62,8 +52,8 @@
 }
 .loader-line {
   width: min(420px, 70vw);
-  height: 3px;
-  background: var(--bg-elev-2);
+  height: 2px;
+  background: var(--border);
   border-radius: 2px;
   overflow: hidden;
   margin: 0 auto 18px;
@@ -71,18 +61,15 @@
 .loader-line-fill {
   width: 0%;
   height: 100%;
-  background: var(--grad-purple);
+  background: var(--text);
   border-radius: 2px;
   transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 0 14px rgba(127, 119, 221, 0.6);
 }
 .loader-tagline {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
-  letter-spacing: 0.06em;
-}
-@media (prefers-reduced-motion: reduce) {
-  .loader-brand { animation: none; }
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* ═════ Three.js persistent fixed canvas ═════ */
@@ -94,48 +81,29 @@
   z-index: 0;
   pointer-events: none;
   display: block;
-  opacity: 0.62;          /* background-mode — partially transparent */
-  filter: blur(0.8px);    /* very subtle softness */
-  mix-blend-mode: screen; /* blends with bg, doesn't dominate */
+  opacity: 1;
 }
-/* Old hero-only canvas kept hidden */
-#three-globe {
-  display: none;
-}
-.hero-bg { z-index: 0; }
+#three-globe { display: none; }
+.hero-bg { z-index: 0; background: transparent; }
 .hero-inner { position: relative; z-index: 3; }
-/* Sections sit above canvas. Do NOT include .topbar / .section-nav / .scroll-progress —
-   they need their own fixed/sticky positioning from styles.css. */
 .section, .marquee, .chapter-intro, .footer-note {
   position: relative;
   z-index: 2;
 }
-/* Stacking only — preserve fixed/sticky positions. */
 .topbar, .section-nav, .scroll-progress { z-index: 100; }
-/* Hero + chapter intros + conclusion fully transparent — 3D fully visible */
 .section-hero, .section-conclusion, .chapter-intro {
   background: transparent;
 }
-/* All other sections: NO solid background — let 3D model show on the right side */
-.section {
-  background: transparent;
-}
-/* But chart-wraps and panels keep their glass treatment for legibility */
-.chart-wrap, .glass, .reco-card, .program-card, .persona-card, .kpi,
-.china-list, .map-toolbar, .leaflet-wrap, .tier-explainer, .similar-students,
-.predictor, .bi-summary, .callout, .did-you-know, .chip-group, .chip {
-  /* These have their own solid/glass bg already from styles.css */
-}
+.section { background: transparent; }
 
-/* ═════ Marquee — agency text band ═════ */
+/* ═════ Marquee — big grotesk text band ═════ */
 .marquee {
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 36px 0;
-  border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
-  background: linear-gradient(180deg, transparent, rgba(127, 119, 221, 0.04), transparent);
+  padding: 30px 0;
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
   user-select: none;
 }
 .marquee-track {
@@ -145,23 +113,17 @@
 }
 .marquee-track span {
   font-family: var(--serif);
-  font-style: italic;
-  font-size: clamp(2rem, 5vw, 3.6rem);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  padding: 0 32px;
+  font-style: normal;
+  font-size: clamp(2.2rem, 6vw, 5rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  padding: 0 30px;
   color: var(--text);
-  -webkit-text-stroke: 1px transparent;
-  background: linear-gradient(135deg, var(--purple-2), var(--text), var(--teal-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .marquee-track .dot-sep {
-  font-size: 1.2rem;
-  color: var(--purple-2);
-  -webkit-text-fill-color: var(--purple-2);
-  background: none;
+  font-size: 1rem;
+  color: var(--text-muted);
   padding: 0;
   vertical-align: middle;
 }
@@ -176,61 +138,43 @@
 /* ═════ Chapter intro (cinematic interlude) ═════ */
 .chapter-intro {
   position: relative;
-  padding: 140px 32px;
+  padding: 180px 40px;
   text-align: center;
   overflow: hidden;
-  background: linear-gradient(180deg, transparent, rgba(15, 22, 45, 0.55), transparent);
-}
-.chapter-intro::before,
-.chapter-intro::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.4;
-}
-.chapter-intro::before {
-  background: radial-gradient(ellipse 60% 40% at 25% 50%, rgba(127, 119, 221, 0.18), transparent 60%);
-}
-.chapter-intro::after {
-  background: radial-gradient(ellipse 60% 40% at 75% 50%, rgba(93, 202, 165, 0.12), transparent 60%);
 }
 .chapter-num {
   position: relative;
   font-family: var(--serif);
-  font-size: clamp(0.9rem, 1.4vw, 1.1rem);
-  font-weight: 600;
-  letter-spacing: 0.4em;
-  color: var(--purple-2);
-  margin-bottom: 18px;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.5em;
+  color: var(--text-muted);
+  margin-bottom: 22px;
   z-index: 1;
 }
 .chapter-title {
   position: relative;
   font-family: var(--serif);
-  font-size: clamp(4rem, 14vw, 11rem);
-  font-weight: 600;
-  font-style: italic;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  background: linear-gradient(135deg, var(--text) 30%, var(--purple-2) 70%, var(--teal-2));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  font-size: clamp(4rem, 15vw, 13rem);
+  font-weight: 900;
+  font-style: normal;
+  line-height: 0.86;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+  color: var(--text);
   z-index: 1;
 }
 .chapter-desc {
   position: relative;
-  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
   color: var(--text-muted);
-  max-width: 480px;
-  margin: 24px auto 0;
-  letter-spacing: 0.02em;
-  line-height: 1.5;
+  max-width: 460px;
+  margin: 28px auto 0;
+  line-height: 1.55;
   z-index: 1;
 }
 
-/* ═════ Masked text reveal (Splittype style) ═════ */
+/* ═════ Masked text reveal ═════ */
 .split-mask {
   display: block;
   overflow: hidden;
@@ -249,89 +193,73 @@
 .split-mask.is-revealed .split-line:nth-child(3) { transition-delay: 0.16s; }
 .split-mask.is-revealed .split-line:nth-child(4) { transition-delay: 0.24s; }
 
-/* ═════ Magnetic hover effect ═════ */
+/* ═════ Magnetic hover ═════ */
 .magnetic {
   display: inline-block;
   transition: transform 0.18s ease-out;
   will-change: transform;
 }
 
-/* ═════ Section dividers — subtle gradient line ═════ */
+/* ═════ Section dividers ═════ */
 .section + .section,
 .section + .marquee,
 .marquee + .chapter-intro,
 .chapter-intro + .section {
-  border-top: 1px solid color-mix(in srgb, var(--border-soft) 60%, transparent);
+  border-top: 1px solid var(--border-soft);
 }
 
-/* ═════ Smooth scroll hint (Lenis is active) ═════ */
+/* ═════ Lenis smooth scroll ═════ */
 html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: clip;
-}
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
 
-/* Improve hero (now that Three.js takes background) */
-.hero-bg { background: transparent; }
-
-/* Grain texture overlay (Refokus vibe) */
+/* ═════ Grain texture overlay ═════ */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.025;
-  mix-blend-mode: overlay;
+  opacity: 0.018;
+  mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
+[data-theme="dark"] body::after { mix-blend-mode: overlay; opacity: 0.025; }
 
 /* ═════ Bar chart race controls ═════ */
 .race-controls {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 .race-controls input[type="range"] {
   flex: 1;
   min-width: 200px;
-  accent-color: var(--purple);
+  accent-color: var(--text);
   height: 4px;
 }
 .race-year-label {
   font-family: var(--serif);
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 2.6rem;
+  font-weight: 900;
   font-variant-numeric: tabular-nums;
-  background: var(--grad-purple);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  letter-spacing: -0.03em;
-  min-width: 90px;
+  color: var(--text);
+  letter-spacing: -0.05em;
+  min-width: 96px;
   text-align: center;
 }
-.race-bar-rect {
-  fill: var(--purple);
-  filter: drop-shadow(0 4px 10px rgba(127, 119, 221, 0.3));
-}
+.race-bar-rect { fill: var(--purple); }
 .race-bar-label {
   fill: var(--text);
   font-weight: 600;
   font-size: 12px;
 }
 .race-value {
-  fill: var(--purple-2);
+  fill: var(--text);
   font-weight: 800;
   font-size: 13px;
   font-variant-numeric: tabular-nums;
@@ -339,18 +267,19 @@ body::after {
 
 /* ═════ Persona radar chart ═════ */
 .persona-radar-wrap {
-  margin: 30px 0;
-  padding: 28px 24px;
-  background: linear-gradient(135deg, var(--bg-elev), var(--bg-elev-2));
+  margin: 32px 0;
+  padding: 30px 26px;
+  background: var(--bg-elev);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 .persona-radar-title {
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  margin-bottom: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
   color: var(--text);
 }
 .persona-radar-mount {
@@ -359,16 +288,16 @@ body::after {
   position: relative;
 }
 .persona-radar-mount svg { width: 100%; height: 100%; }
-.radar-axis-line { stroke: rgba(255,255,255,0.10); stroke-width: 1; }
-.radar-grid-circle { fill: none; stroke: rgba(255,255,255,0.07); stroke-width: 1; }
+.radar-axis-line { stroke: var(--chart-grid); stroke-width: 1; }
+.radar-grid-circle { fill: none; stroke: var(--chart-grid); stroke-width: 1; }
 .radar-axis-label { fill: var(--text-muted); font-size: 11px; font-weight: 600; }
 .radar-poly {
-  fill-opacity: 0.18;
+  fill-opacity: 0.16;
   stroke-width: 2;
   cursor: pointer;
   transition: fill-opacity 0.25s, stroke-width 0.25s;
 }
-.radar-poly:hover { fill-opacity: 0.4; stroke-width: 3; }
+.radar-poly:hover { fill-opacity: 0.36; stroke-width: 3; }
 .radar-legend {
   margin-top: 16px;
   display: flex;
@@ -379,25 +308,24 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
-  background: var(--bg-elev-3);
-  font-size: 0.82rem;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border-soft);
+  font-size: 0.8rem;
   cursor: pointer;
   user-select: none;
   transition: opacity 0.2s, transform 0.15s;
 }
 .radar-legend-item.dimmed { opacity: 0.35; }
 .radar-legend-item:hover { transform: translateY(-1px); }
-.radar-legend-dot {
-  width: 12px; height: 12px; border-radius: 3px;
-}
+.radar-legend-dot { width: 12px; height: 12px; border-radius: 3px; }
 
-/* ═════ Persona mini radars (5 cards in grid) ═════ */
+/* ═════ Persona mini radars ═════ */
 .persona-radar-subtitle {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 .persona-radar-grid {
   display: grid;
@@ -405,16 +333,16 @@ body::after {
   gap: 16px;
 }
 .persona-mini-radar {
-  background: var(--bg-elev-3);
+  background: var(--bg-elev);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius);
-  padding: 16px 14px;
+  padding: 18px 16px;
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.3s;
 }
 .persona-mini-radar:hover {
   transform: translateY(-3px);
-  border-color: var(--purple-2);
-  box-shadow: 0 8px 24px -8px rgba(127, 119, 221, 0.25);
+  border-color: var(--text);
+  box-shadow: var(--shadow-md);
 }
 .mini-radar-header {
   display: flex;
@@ -423,23 +351,23 @@ body::after {
   margin-bottom: 6px;
 }
 .mini-radar-dot {
-  width: 14px; height: 14px; border-radius: 50%;
+  width: 13px; height: 13px; border-radius: 50%;
   flex-shrink: 0;
-  box-shadow: 0 0 12px currentColor;
 }
 .mini-radar-name {
   font-family: var(--serif);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 .mini-radar-svg svg { width: 100%; height: auto; display: block; }
 .mini-radar-stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 4px 10px;
-  margin-top: 8px;
-  font-size: 0.78rem;
+  margin-top: 10px;
+  font-size: 0.76rem;
 }
 .mini-radar-stats div {
   display: flex;
@@ -451,10 +379,11 @@ body::after {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
 }
 .mini-radar-stats strong {
   color: var(--text);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: 800;
+  font-family: var(--serif);
 }

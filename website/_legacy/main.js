@@ -178,6 +178,9 @@ function initEverything() {
   safe("renderPersonaRadar", renderPersonaRadar);
   safe("renderSankey", renderSankey);
   safe("renderBusinessIntelligence", renderBusinessIntelligence);
+  if (typeof window.initAdvancedCharts === "function") {
+    safe("initAdvancedCharts", window.initAdvancedCharts);
+  }
   safe("fillKPIs", fillKPIs);
   safe("initHeroCounter", initHeroCounter);
   safe("initCursorGlow", initCursorGlow);

@@ -1,0 +1,121 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Leaflet — dark theme override that matches the ANKO analytics palette
+   ═══════════════════════════════════════════════════════════════════════ */
+.leaflet-container {
+  background: #0a0d14;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  outline: none;
+}
+.leaflet-container a { color: rgba(216,166,74,0.7); }
+.leaflet-bar {
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,0.7) !important;
+}
+.leaflet-bar a, .leaflet-bar a:hover {
+  background: rgba(20,22,36,0.96);
+  color: #f2f3f7;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.leaflet-bar a:hover { background: #1a1c2e; }
+
+/* Attribution */
+.leaflet-control-attribution {
+  background: rgba(20,22,36,0.7) !important;
+  color: rgba(242,243,247,0.5) !important;
+  font-size: 10px !important;
+  backdrop-filter: blur(6px);
+  border-radius: 4px;
+  padding: 2px 6px !important;
+}
+.leaflet-control-attribution a { color: rgba(216,166,74,0.6) !important; }
+
+/* aimag/province polygon styling */
+.region-base {
+  fill: rgba(216, 166, 74, 0.10);
+  stroke: rgba(216, 166, 74, 0.45);
+  stroke-width: 1;
+  transition: fill 0.25s ease, stroke-width 0.2s ease;
+  cursor: pointer;
+}
+.region-base.is-hover, .region-base.is-on {
+  fill: rgba(216, 166, 74, 0.45);
+  stroke: var(--c-gold, #d8a64a);
+  stroke-width: 2;
+}
+
+/* student dot — Three.js / D3 markers in Leaflet */
+.lf-dot {
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+  transition: transform 0.2s;
+}
+.lf-dot:hover { transform: scale(1.4); }
+
+/* China bubble */
+.lf-bubble {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(110,99,224,0.85) 0%, rgba(110,99,224,0.25) 70%, transparent 100%);
+  border: 1.5px solid rgba(110,99,224,1);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.lf-bubble:hover {
+  transform: scale(1.18);
+  box-shadow: 0 0 24px rgba(110,99,224,0.7);
+}
+.lf-bubble.is-beijing { background: radial-gradient(circle, rgba(216,166,74,0.85) 0%, rgba(216,166,74,0.25) 70%, transparent 100%); border-color: var(--c-gold,#d8a64a); }
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper {
+  background: rgba(20,22,36,0.96);
+  color: #f2f3f7;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  box-shadow: 0 14px 30px -10px rgba(0,0,0,0.6);
+}
+.leaflet-popup-tip { background: rgba(20,22,36,0.96); }
+.leaflet-popup-content {
+  font-family: "Inter", sans-serif;
+  font-size: 0.85rem;
+  margin: 12px 16px !important;
+}
+.leaflet-popup-content b, .leaflet-popup-content strong {
+  font-family: "Inter Tight", sans-serif;
+  font-weight: 700;
+  color: #d8a64a;
+}
+
+/* MarkerCluster — make clusters look on-brand */
+.marker-cluster-small,
+.marker-cluster-medium,
+.marker-cluster-large {
+  background: rgba(110, 99, 224, 0.25) !important;
+}
+.marker-cluster-small div,
+.marker-cluster-medium div,
+.marker-cluster-large div {
+  background: rgba(110, 99, 224, 0.85) !important;
+  color: #fff !important;
+  font-family: "Inter Tight", sans-serif !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(255,255,255,0.18);
+}
+
+/* tile fallback when no online tiles — pure canvas backdrop */
+.lf-canvas-bg { background: #0a0d14; }
+
+/* legend overlay */
+.lf-legend {
+  background: rgba(20,22,36,0.92);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  color: rgba(242,243,247,0.85);
+  backdrop-filter: blur(6px);
+  font-family: "Inter Tight", sans-serif;
+}
+.lf-legend .lg-row { display: grid; grid-template-columns: 12px 1fr; gap: 8px; align-items: center; padding: 3px 0; }
+.lf-legend .lg-sw { width: 12px; height: 12px; border-radius: 50%; }

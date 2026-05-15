@@ -1,560 +1,1685 @@
-<!DOCTYPE html>
-<html lang="mn" data-theme="dark">
+<!doctype html>
+<!--
+  ┌──────────────────────────────────────────────────────────────────┐
+  │  ANKO Bridge — 3D scrollytelling (noomo-style vertical descent)   │
+  │  DO NOT double-click. Serve over HTTP:                           │
+  │     cd website && python -m http.server 8000                     │
+  │     → http://localhost:8000                                      │
+  └──────────────────────────────────────────────────────────────────┘
+-->
+<html lang="mn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ANKO Bridge — Монгол оюутнуудын Хятадад суралцах элсэлтийн шинжилгээ, 2019–2025</title>
-  <meta name="description" content="ANKO Bridge зуучлагч агентлагийн өгөгдлийн гүйлгэж унших өгөгдлийн түүхчилсэн тайлан шинжилгээ. Хятад дахь Монгол оюутны элсэлтийн чиг хандлага 2019–2025." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="agency.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>ANKO Bridge — Монгол оюутны Хятад дахь замнал, 2019–2025</title>
+<meta name="description" content="ANKO Bridge-ийн 2019-2025 оны 2,250 өргөдөл, 1,500 элсэлтийн өгөгдөлд тулгуурласан Монгол оюутнуудын Хятад руу чиглэсэн боловсролын замнал.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%23d8a64a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap&subset=cyrillic,cyrillic-ext" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" crossorigin="">
+<link rel="stylesheet" href="css/analytics.css">
+<link rel="stylesheet" href="css/maps.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js" crossorigin="" defer></script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --ink: #1a1722;
+    --ink-soft: #4a4458;
+  }
+  html, body {
+    overscroll-behavior: none;
+    scroll-behavior: auto;            /* must NOT be smooth — fights Lenis */
+    background:
+      radial-gradient(ellipse 55% 65% at 65% 35%, #e6d1c0 0%, #b9c5e0 55%, transparent 100%),
+      linear-gradient(180deg, #9bafdc 0%, #b1c1e0 50%, #c3cfe4 100%);
+    color: var(--ink);
+  }
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  html.lenis, html.lenis body { height: auto; }
+  .lenis.lenis-smooth { scroll-behavior: auto !important; }
+  .lenis.lenis-stopped { overflow: hidden; }
+
+  /* ── background gradient layers (crossfade on scroll) ────────────── */
+  .bg-stack { position: fixed; inset: 0; z-index: 0; }
+  .bg-layer {
+    position: absolute; inset: 0;
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  /* ── WebGL canvas — sits ABOVE the giant words, BELOW the captions ─ */
+  #webgl {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* ── scroll content ──────────────────────────────────────────────── */
+  /* NOTE: no z-index here — a stacking context on <main> would trap the
+     captions (z-index:3) below the #webgl canvas (z-index:2). */
+  main { position: relative; }
+  .stop {
+    position: relative;
+    height: 100vh;        /* one viewport per station — snap-friendly */
+  }
+
+  /* huge Cyrillic word is rendered INSIDE the 3D scene (as a text-texture
+     plane) so the 3D model can pass in front of it, noomo-style. The DOM
+     .bigword nodes are kept only as semantic/SEO text, visually hidden. */
+  .bigword { position: absolute; opacity: 0; pointer-events: none; user-select: none; }
+
+  /* caption — noomo-style: a tiny KICKER pill bottom-left + a paragraph
+     description bottom-right. Both stay out of the way of the centred 3D. */
+  .caption {
+    position: absolute;
+    z-index: 3;
+    inset: auto 5vw 4.5vh 5vw;            /* span across the bottom */
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    will-change: transform;
+  }
+  .caption .left {
+    display: flex; flex-direction: column; gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .caption .right {
+    text-align: right;
+    max-width: 22rem;
+    justify-self: end;
+  }
+  .caption .kicker {
+    font-family: "Inter Tight", sans-serif;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink);
+    padding: 0.45rem 0.95rem;
+    border: 1px solid rgba(26,23,34,0.35);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(4px);
+  }
+  .caption .tags {
+    font-family: "Inter Tight", sans-serif;
+    font-size: 0.84rem; font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+  .caption h2 {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin-bottom: 0.55rem;
+  }
+  .caption p {
+    font-size: clamp(0.85rem, 0.92vw, 0.95rem);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .caption .stat {
+    display: block;
+    margin-top: 0.6rem;
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 2.0vw, 1.7rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .caption .stat small {
+    display: inline-block;
+    margin-left: 0.6rem;
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+
+  /* ── fixed UI chrome — noomo-style top nav ───────────────────────── */
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 5;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: clamp(1.2rem, 2.5vw, 1.8rem) clamp(1.8rem, 5vw, 3.5rem);
+    pointer-events: none;
+  }
+  .brand {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 800; font-size: 1.05rem;
+    letter-spacing: -0.01em; color: var(--ink);
+  }
+  .brand span { color: var(--ink); }
+  .topbar .nav {
+    display: flex; gap: clamp(1.5rem, 3vw, 3rem);
+    pointer-events: auto;
+  }
+  .topbar .nav a {
+    font-family: "Inter Tight", sans-serif;
+    font-size: 0.74rem; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: opacity 0.25s ease;
+  }
+  .topbar .nav a:hover { opacity: 1; }
+
+  /* progress rail + stop dots */
+  .rail {
+    position: fixed; top: 50%; right: clamp(1rem, 2.2vw, 2rem);
+    transform: translateY(-50%);
+    z-index: 5;
+    display: flex; flex-direction: column; gap: 0.85rem;
+    align-items: center;
+    pointer-events: none;
+  }
+  .rail .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(26,23,34,0.22);
+    border: 0; padding: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 0.4s ease, transform 0.4s ease;
+  }
+  .rail .dot:hover { background: rgba(26,23,34,0.5); }
+  .rail .dot.on { background: #b8862f; transform: scale(1.7); }
+
+  .scrollcue {
+    position: fixed; bottom: 1.4rem; left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    font-family: "Inter Tight", sans-serif;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--ink);
+    display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+    transition: opacity 0.5s ease;
+  }
+  .scrollcue .arrow {
+    animation: bob 1.7s ease-in-out infinite;
+    font-size: 0.85rem; opacity: 0.6;
+  }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+  /* ── preloader ───────────────────────────────────────────────────── */
+  #preloader {
+    position: fixed; inset: 0; z-index: 9000;
+    background:
+      radial-gradient(ellipse 55% 65% at 65% 35%, #e6d1c0 0%, #b9c5e0 55%, transparent 100%),
+      linear-gradient(180deg, #9bafdc 0%, #b1c1e0 50%, #c3cfe4 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1.4rem;
+    transition: opacity 0.8s ease, visibility 0.8s;
+  }
+  #preloader.done { opacity: 0; visibility: hidden; }
+  .pl-brand {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 800; font-size: 1.1rem; letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .pl-brand span { color: #b8862f; }
+  .pl-counter {
+    font-family: "Inter Tight", sans-serif;
+    font-weight: 900; font-size: clamp(3.5rem, 11vw, 8rem);
+    line-height: 1; letter-spacing: -0.04em; color: var(--ink);
+  }
+  .pl-bar { width: clamp(180px, 32vw, 320px); height: 2px; background: rgba(26,23,34,0.12); }
+  .pl-fill { height: 100%; width: 0%; background: #b8862f; transition: width 0.25s ease; }
+  .pl-tag {
+    font-size: 0.8rem; letter-spacing: 0.04em; color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #preloader { transition: none; }
+    .scrollcue .arrow { animation: none; }
+  }
+  /* WebGL-missing fallback */
+  body.no-webgl #webgl { display: none; }
+  body.no-webgl .bigword { color: rgba(26,23,34,0.12); }
+
+  @media (max-width: 720px) {
+    .caption { bottom: 11vh; right: clamp(1.5rem,5vw,5rem); }
+    .rail { display: none; }
+  }
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/",
+    "gsap": "https://esm.sh/gsap@3.12.5",
+    "gsap/ScrollTrigger": "https://esm.sh/gsap@3.12.5/ScrollTrigger",
+    "gsap/ScrollToPlugin": "https://esm.sh/gsap@3.12.5/ScrollToPlugin",
+    "lenis": "https://unpkg.com/lenis@1.1.0/dist/lenis.mjs",
+    "d3": "https://cdn.jsdelivr.net/npm/d3@7/+esm",
+    "d3-sankey": "https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/+esm",
+    "topojson-client": "https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/+esm"
+  }
+}
+</script>
+<script>
+  window.addEventListener('error', (e) => {
+    console.error('[anko-3d]', e.message, e.error);
+    const c = document.querySelector('.pl-counter');
+    if (c) c.textContent = 'ERR';
+    const f = document.querySelector('.pl-fill');
+    if (f) f.style.background = '#e0564a';
+  });
+  window.addEventListener('unhandledrejection', (e) => console.error('[anko-3d] unhandled', e.reason));
+</script>
 </head>
 <body>
 
-  <!-- Page loader (Dogstudio style) -->
-  <div class="page-loader" id="pageLoader" aria-hidden="true">
-    <div class="loader-bg"></div>
-    <div class="loader-content">
-      <div class="loader-brand">ANKO Bridge</div>
-      <div class="loader-counter"><span id="loaderNum">0</span><span class="loader-pct">%</span></div>
-      <div class="loader-line"><div class="loader-line-fill" id="loaderFill"></div></div>
-      <div class="loader-tagline">Өгөгдлийн шинжилгээний үндэслэлийг ачаалж байна…</div>
-    </div>
-  </div>
+<!-- preloader -->
+<div id="preloader">
+  <div class="pl-brand">ANKO <span>Bridge</span></div>
+  <div class="pl-counter">0</div>
+  <div class="pl-bar"><div class="pl-fill"></div></div>
+  <div class="pl-tag">3D ертөнцийг ачаалж байна…</div>
+</div>
 
-  <!-- Persistent 3D globe (fixed, scroll-driven) -->
-  <canvas id="three-globe-fixed" aria-hidden="true"></canvas>
+<!-- background gradient crossfade layers -->
+<div class="bg-stack" id="bgStack" aria-hidden="true"></div>
 
-  <!-- Cursor glow + scroll progress + section nav -->
-  <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="scroll-progress" id="scrollProgress"></div>
-  <nav class="section-nav" aria-label="Хэсгийн навигаци">
-    <button data-target="0" data-label="Эхлэл" class="active" type="button"></button>
-    <button data-target="1" data-label="Хугацаа" type="button"></button>
-    <button data-target="2" data-label="Хятад"   type="button"></button>
-    <button data-target="3" data-label="Монгол"  type="button"></button>
-    <button data-target="4" data-label="HSK"     type="button"></button>
-    <button data-target="5" data-label="Хөтөлбөр" type="button"></button>
-    <button data-target="6" data-label="Чиглэл"  type="button"></button>
-    <button data-target="7" data-label="Төрөл"   type="button"></button>
-    <button data-target="8" data-label="Таамаг"  type="button"></button>
-    <button data-target="9" data-label="Урсгал"  type="button"></button>
-    <button data-target="10" data-label="Зөвлөмж" type="button"></button>
-    <button data-target="11" data-label="Дүгнэлт" type="button"></button>
+<!-- WebGL -->
+<canvas id="webgl"></canvas>
+
+<!-- fixed chrome -->
+<header class="topbar">
+  <div class="brand">ANKO <span>Bridge</span></div>
+  <nav class="nav">
+    <a data-jump="0">Эхлэл</a>
+    <a data-jump="2">Хэл</a>
+    <a data-jump="4">Хил</a>
+    <a data-jump="6">Хандлага</a>
   </nav>
+</header>
+<div class="rail" id="rail" aria-hidden="true"></div>
+<div class="scrollcue" id="scrollcue"><span>Доош гүйлгэнэ үү</span><span class="arrow">↓</span></div>
 
-  <!-- Top bar -->
-  <header class="topbar">
-    <div class="brand">ANKO Bridge<span class="brand-sub">· Өгөгдлийн шинжилгээ 2019–2025</span></div>
-    <button class="theme-toggle" type="button" aria-label="Дэлгэцийн өнгө солих">
-      <span class="theme-icon">◐</span>
-    </button>
-  </header>
+<!-- scroll content — 7 stops -->
+<main id="scrollMain">
+<section class="slide stop" data-stop="0">
+    <div class="bigword">ЭХЛЭЛ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">01 / 2019</div>
+        <div class="tags">ANKO Bridge / Гэр бүлийн гал голомт</div>
+      </div>
+      <div class="right">
+        <h2>ANKO Bridge байгуулагдав</h2>
+        <p>2019 онд ANKO Bridge 55 оюутнаар эхэлсэн. Дараагийн долоон жилд энэ жижиг эхлэл 1,500 элсэлттэй, 50 их сургууль хамарсан боловсролын урсгал болж тэлжээ.</p>
+        <span class="stat">55<small>оюутан · 2019</small></span>
+      </div>
+    </div>  </section>
 
-  <!-- ───────────── Section 1 — Hero with 3D globe ───────────── -->
-  <section class="section section-hero" id="sec-0" data-step="0">
-    <div class="hero-bg" aria-hidden="true">
-      <!-- Globe is now persistent (#three-globe-fixed at body root) -->
-    </div>
-    <div class="hero-inner">
-      <div class="kicker">2019 → 2025 · ANKO Bridge · Өгөгдлийн шинжилгээ</div>
-      <h1 class="hero-title">
-        <span class="hero-num counter" id="hero-num" data-target="1500">0</span>
-        <span class="hero-rotator-wrap">
-          <span class="hero-rotator-static">Монгол</span>
-          <span class="hero-rotator">
-            <span class="rotator-word">оюутан</span>
-            <span class="rotator-word">өргөдөл</span>
-            <span class="rotator-word">амжилт</span>
-            <span class="rotator-word">түүх</span>
-          </span>
-        </span>
-        <span class="hero-tail">7 жилийн хугацаанд</span>
-      </h1>
-      <p class="hero-sub">
-        2019 онд тав хүрэхгүй өргөдлөөс эхэлсэн нэг агентлаг. 2025 онд оны дунд гэхэд
-        <strong>1,371 өргөдөл</strong>. Энэ хугацаанд хил хаалт, цар тахлын саатал, дараах огцом сэргэлт зэрэг томоохон өөрчлөлтүүд өрнөсөн.
-        Энэ бол дата нь хэлж буй жинхэнэ түүх — диаграм, газрын зураг, Машин сургалтын загвар, Python хийгээд
-        <strong>5 стратегийн зөвлөмж</strong>-ийг нэгтгэн харуулна.
-      </p>
-      <div class="hero-stats">
-        <div class="hero-stat"><span class="hero-stat-num">2,250</span><span class="hero-stat-lab">өргөдөл</span></div>
-        <div class="hero-stat"><span class="hero-stat-num">50</span><span class="hero-stat-lab">их сургууль</span></div>
-        <div class="hero-stat"><span class="hero-stat-num">21</span><span class="hero-stat-lab">аймаг</span></div>
-        <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-lab">Машин сургалтын загвар</span></div>
-      </div>
-      <div class="scroll-hint">
-        <span>Доош гүйлгэж үзнэ үү</span>
-        <span class="arrow">↓</span>
-      </div>
+  <section class="slide dash-section slide-kpi stop" data-stop="1" id="sec-kpi-1500">
+    <div class="kpi-hero">
+      <div class="ds-eyebrow">2019 → 2025</div>
+      <div class="big-kpi-num"><span id="bigkpi-students">1,500</span></div>
+      <div class="big-kpi-lbl">Монгол оюутан · 7 жил · 14× өсөлт</div>
+      <div id="bigkpi-spark" class="big-kpi-spark"></div>
+      <div class="big-kpi-meta">Жил бүрийн өргөдөл: <strong>2,250</strong> · нийт элсэлт: <strong>1,500</strong></div>
     </div>
   </section>
 
-  <!-- ───────────── Sections 2-4 — Timeline (sticky chart) ───────────── -->
-  <section class="section section-scrolly" id="sec-1" data-anchor="1">
-    <div class="scrolly-grid">
-      <div class="scrolly-graphic">
-        <div class="sticky-wrap">
-          <div class="chart-wrap" style="width:100%;">
-            <div class="chart-mount" id="chart-timeline"></div>
-          </div>
-        </div>
+<section class="slide stop" data-stop="2">
+    <div class="bigword">МӨРӨӨДӨЛ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">02 / Зорилго</div>
+        <div class="tags">Хилийн чанад / 21 аймаг / 7 жил</div>
       </div>
-      <div class="scrolly-text" id="timeline-scrolly">
-        <div class="step" data-step="1">
-          <div class="kicker">Эхлэлийн жил</div>
-          <h2>2019 он. ANKO Bridge байгуулагдав.</h2>
-          <p>ANKO Bridge байгуулагдаж байсан анхны жил. Зөвхөн <strong class="hl-purple">55 оюутан</strong> бүртгүүлж, ихэнх нь Бээжин, Шанхайн нэр хүндтэй сургуулиуд руу. Хил нээлттэй, виз тогтвортой, ажил жигд явсан.</p>
-        </div>
-        <div class="step" data-step="2">
-          <div class="kicker">Хямрал</div>
-          <h2>2020. Хил хаагдав.</h2>
-          <p>2020 оны 1-р сард Хятад хилээ хаалаа. Нислэг цуцалж, виз олгох ажиллагаа зогсов. Бүтэн жилд <strong class="hl-coral">10 оюутан</strong> л явж чадав. Цахим хичээлд оюутан, эцэг эхийн итгэлийг алдсан, агентлагт орлого тасрав. 2021 онд ердөө 8, 2022 онд 17 өргөдөл.</p>
-        </div>
-        <div class="step" data-step="3">
-          <div class="kicker">Сэргэлт</div>
-          <h2>2023. Хил нээгдэв. 2025 онд оргилдоо хүрэв.</h2>
-          <p>2023 оны 1-р сард Хятад хилээ дахин нээснээр гурван жилийн хүлээгдсэн эрэлт нэг дор тэсэлсэн. <strong class="hl-teal">2023: 190</strong>, <strong class="hl-teal">2024: 460</strong>, ялангуяа <strong class="hl-teal">2025 оны эхний 6 сард 760</strong> оюутан — 2019 оны 14 дахин. Энэ нь зөвхөн ANKO биш, Монгол гэр бүлүүдийн боловсролд хийх хөрөнгө оруулалтын чиг хандлагад гарсан томоохон өөрчлөлт.</p>
-        </div>
+      <div class="right">
+        <h2>Хилийн чанадад суралцах мөрөөдөл</h2>
+        <p>Оюутнууд зөвхөн Улаанбаатараас биш, Монголын 21 аймаг болон нийслэлийн дүүргүүдээс бүртгүүлсэн. Гэхдээ нийт урсгалын 70.1% нь Улаанбаатарт төвлөрч байна.</p>
+        <span class="stat">1,500<small>оюутан · 21 аймаг</small></span>
       </div>
+    </div>  </section>
+
+  <section class="slide dash-section slide-split stop" data-stop="3" id="sec-aimag-breakdown">
+    <div class="ds-head">
+      <span class="ds-eyebrow">Аймгийн хувь</span>
+      <h3 class="ds-title">Монголын 21 аймгаас, Улаанбаатар 70.1%</h3>
+    </div>
+    <div class="ds-body split-grid">
+      <div id="aimag-donut-wrap" class="aimag-donut-wrap"></div>
+      <div id="aimag-list" class="aimag-list"></div>
     </div>
   </section>
 
-  <!-- Bar Chart Race — Top universities cumulative over years -->
-  <section class="section section-race" id="sec-race" data-anchor="race">
-    <div class="container">
-      <div class="step reveal">
-        <div class="kicker">Bar chart race</div>
-        <h2 class="section-title">Топ 10 их сургууль — 7 жилийн уралдаан</h2>
-        <p class="lead">2019-2025 онд оюутны өргөдлөөр өрсөлдсөн их сургуулиуд хугацаа явахад хэрхэн солигдсоныг харуулсан хөдөлгөөнт баганан диаграм. Жилийн гулсуур-ээр сонгож үзэж болно.</p>
+<section class="slide dash-section slide-map stop" data-stop="4" id="sec-map-mongolia">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Газрын зураг · Монгол</span>
+        <h3 class="ds-title">1,500 оюутан хаанаас гарсан бэ?</h3>
+        <p class="ds-lede">Энэ зураг оюутнуудын гарал үүслийг аймаг, дүүргээр харуулна. Шүүлтүүр ашиглан хөтөлбөр болон HSK түвшнээр ялгаж, аль бүсээс ямар төрлийн оюутан давамгай байгааг харж болно.</p>
       </div>
-      <div class="chart-wrap">
-        <div class="race-controls">
-          <button id="raceToggle" class="chip active" type="button">▶ Автоматаар тоглуулах</button>
-          <input type="range" id="raceYear" min="2019" max="2025" step="1" value="2019" />
-          <span class="race-year-label" id="raceYearLabel">2019</span>
-        </div>
-        <div class="chart-mount tall" id="chart-race"></div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Marquee — between Timeline and China sections -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>1,500 ОЮУТАН</span><span class="dot-sep">●</span>
-      <span>50 ИХ СУРГУУЛЬ</span><span class="dot-sep">●</span>
-      <span>21 АЙМАГ</span><span class="dot-sep">●</span>
-      <span>2019 → 2025</span><span class="dot-sep">●</span>
-      <span>+1370% ӨСӨЛТ</span><span class="dot-sep">●</span>
-      <span>1,500 ОЮУТАН</span><span class="dot-sep">●</span>
-      <span>50 ИХ СУРГУУЛЬ</span><span class="dot-sep">●</span>
-      <span>21 АЙМАГ</span><span class="dot-sep">●</span>
-      <span>2019 → 2025</span><span class="dot-sep">●</span>
-      <span>+1370% ӨСӨЛТ</span><span class="dot-sep">●</span>
-    </div>
-  </div>
-
-  <!-- Chapter intro: Хятад дахь -->
-  <div class="chapter-intro" data-chapter="01">
-    <div class="chapter-num">01</div>
-    <div class="chapter-title">Хаашаа?</div>
-    <div class="chapter-desc">1,218 элссэн оюутны байршил — Бээжин, Шанхай, Хөх хот, Өвөр Монгол болон бусад мужийн их сургуулиуд.</div>
-  </div>
-
-  <!-- ───────────── Section 5 — China destinations (real map) ───────────── -->
-  <section class="section section-china" id="sec-2" data-anchor="2">
-    <div class="container">
-      <div class="step reveal" data-step="4">
-        <div class="kicker">Тэд хаашаа явдаг вэ?</div>
-        <h2 class="section-title">Хятадад элссэн оюутнуудын байршил</h2>
-        <p class="lead">Цэг бүр нэг элссэн оюутныг илэрхийлнэ. Бээжинд 460, Шанхайд 197, Өвөр Монголд 160 оюутан байна. C9 болон 985 зэрэглэлийн томоохон их сургуулиудад Монгол оюутнууд суралцаж байна. Газрын зургийг гүйлгэж томруулан, цэг дээр дарж оюутны нэр, GPA, HSK түвшин, элссэн сургуулийг харах боломжтой.</p>
-      </div>
-      <!-- China filter toolbar -->
-      <div class="map-toolbar reveal">
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">Хөтөлбөр</label>
-          <div class="chip-group" id="cn-filter-program">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="6+6" type="button">6+6</button>
-            <button class="chip" data-value="1+4" type="button">1+4</button>
-            <button class="chip" data-value="Fall Bachelor" type="button">Намрын шууд бакалавр</button>
-            <button class="chip" data-value="Master/PhD" type="button">Магистр / Доктор</button>
+      <div class="ds-body map-grid">
+        <div class="map-wrap" id="leaflet-mongolia" aria-label="Монголын аймгуудын газрын зураг"></div>
+        <aside class="map-side">
+          <div class="filter-row">
+            <label>Хөтөлбөр
+              <select id="mn-filter-program">
+                <option value="all">Бүгд</option>
+                <option value="6+6">6+6</option>
+                <option value="1+4">1+4</option>
+                <option value="Fall Bachelor">Fall Bachelor</option>
+                <option value="Master/PhD">Master/PhD</option>
+              </select>
+            </label>
+            <label>HSK
+              <select id="mn-filter-hsk">
+                <option value="all">Бүгд</option>
+                <option value="1-2">HSK 1–2</option>
+                <option value="3-4">HSK 3–4</option>
+                <option value="5-6">HSK 5–6</option>
+              </select>
+            </label>
           </div>
-        </div>
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">Зэрэглэл</label>
-          <div class="chip-group" id="cn-filter-tier">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="C9" type="button">C9</button>
-            <button class="chip" data-value="985" type="button">985</button>
-            <button class="chip" data-value="211" type="button">211</button>
-            <button class="chip" data-value="Provincial" type="button">Мужийн / орон нутгийн</button>
-          </div>
-        </div>
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">Жил</label>
-          <div class="chip-group" id="cn-filter-year">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="2019" type="button">2019</button>
-            <button class="chip" data-value="2023" type="button">2023</button>
-            <button class="chip" data-value="2024" type="button">2024</button>
-            <button class="chip" data-value="2025" type="button">2025</button>
-          </div>
-        </div>
-        <div class="map-toolbar-counter">
-          <span class="counter-num" id="cn-visible-count">1,218</span>
-          <span class="counter-label">элссэн оюутан</span>
-        </div>
-      </div>
-
-      <div class="china-grid">
-        <div class="leaflet-wrap reveal" style="margin:0;">
-          <div id="leaflet-china"></div>
-          <div class="map-legend">
-            <div class="map-legend-title">Хөтөлбөр</div>
-            <div class="legend-row"><span class="dot d6"></span> 6+6</div>
-            <div class="legend-row"><span class="dot d1"></span> 1+4</div>
-            <div class="legend-row"><span class="dot dfb"></span> Fall Bachelor</div>
-            <div class="legend-row"><span class="dot dm"></span> Магистр / Доктор</div>
-          </div>
-          <div class="map-hint">Scroll → томруулна · Drag → хөдөлгөнө</div>
-        </div>
-        <aside class="china-list">
-          <h3>Хамгийн олон оюутан элссэн 10 их сургууль</h3>
-          <ol id="china-list-items"></ol>
+          <h4>Улаанбаатарын дүүрэг</h4>
+          <div id="mn-ub-districts" class="bar-list"></div>
+          <div class="map-hint">↻ Чирж зөөж · scroll-оор зум · аймаг дээр click</div>
         </aside>
       </div>
+    </section>
+
+<section class="slide stop" data-stop="5">
+    <div class="bigword">ХЭЛ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">03 / HSK</div>
+        <div class="tags">汉语水平考试 / Хэлний босго</div>
+      </div>
+      <div class="right">
+        <h2>Хэлний бэлтгэлийн босго</h2>
+        <p>HSK түвшин элсэлтийн чанарыг тодорхойлох хамгийн хүчтэй үзүүлэлтүүдийн нэг байна. 2019 онд HSK 4 давамгай байсан бол 2025 онд HSK 5-6 түвшний оюутнуудын жин мэдэгдэхүйц өсжээ.</p>
+        <span class="stat">HSK 4 → 6<small>түвшин жил бүр өсчээ</small></span>
+      </div>
+    </div>  </section>
+
+  <section class="slide dash-section slide-split stop" data-stop="6" id="sec-hsk-deep">
+    <div class="ds-head">
+      <span class="ds-eyebrow">HSK · Хэлний бэлтгэл</span>
+      <h3 class="ds-title">HSK 4-аас HSK 6 рүү: жил бүр түвшин өсчээ</h3>
+      <p class="ds-lede">HSK 4-өөс дээш түвшинтэй оюутнууд элсэлтийн магадлалаар илүү тогтвортой байна. HSK 1 түвшний батлагдах хувь 7.7% байхад HSK 6 түвшинд 79.8% хүрч байна.</p>
+    </div>
+    <div class="ds-body split-grid">
+      <div id="hsk-area-wrap" class="chart-wrap" style="height:60vh"></div>
+      <div id="hsk-funnel-wrap" class="chart-wrap" style="height:60vh"></div>
     </div>
   </section>
 
-    <!-- Chapter intro: Хэн? -->
-  <div class="chapter-intro" data-chapter="02">
-    <div class="chapter-num">02</div>
-    <div class="chapter-title">Хэн?</div>
-    <div class="chapter-desc">21 аймаг, Улаанбаатарын дүүргүүдээр тархсан 1,500 оюутны газарзүйн зураглал — аймаг, дүүрэг бүрийн GPA, HSK түвшин, сургуулийн төрлийг харуулна.</div>
-  </div>
+<section class="slide stop" data-stop="7">
+    <div class="bigword">БҮРТГЭЛ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">04 / Өргөдөл</div>
+        <div class="tags">Юүлүүр / 4 хөтөлбөр / HSK</div>
+      </div>
+      <div class="right">
+        <h2>Өргөдлийн юүлүүр</h2>
+        <p>Өргөдлийн тоо өсөхийн хэрээр чанарын шүүлтүүр илүү тод харагдаж байна. Хэлний түвшин, GPA, сонгосон хөтөлбөр нь өргөдөл элсэлт болох эсэхэд шууд нөлөөлжээ.</p>
+        <span class="stat">2,250 → 1,500<small>өргөдөл → элсэлт</small></span>
+      </div>
+    </div>  </section>
 
-  <!-- ───────────── Section 6 — Mongolia (real choropleth) ───────────── -->
-  <section class="section section-mongolia" id="sec-3" data-anchor="3">
-    <div class="container">
-      <div class="step reveal" data-step="5">
-        <div class="kicker">Хэн өргөдөл өгдөг вэ?</div>
-        <h2 class="section-title">1,500 оюутан — газрын зураг дээр</h2>
-        <p class="lead">1,500 цэг тус бүр нэг оюутныг илэрхийлнэ. Улаанбаатар нийт оюутны 70%-ийг эзэлж, Хан-Уул дүүрэг хамгийн өндөр хувьтай байна. Энэ зураг нь ANKO Bridge-ийн зорилтот зах зээлийн бодит дүр зургийг харуулж, аль аймаг, дүүргээс ямар төрлийн сурагчид илүү сонирхож байгааг ойлгоход тусална.</p>
+<section class="slide dash-section stop" data-stop="8" id="sec-programs">
+      <div class="ds-head">
+        <span class="ds-eyebrow">4 хөтөлбөр</span>
+        <h3 class="ds-title">6+6 давамгайлж, 1+4 тогтвортой, Master/PhD бага зэрэг өсөж байна</h3>
       </div>
-      <!-- Map filter toolbar -->
-      <div class="map-toolbar reveal">
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">Хөтөлбөр</label>
-          <div class="chip-group" id="filter-program">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="6+6" type="button">6+6</button>
-            <button class="chip" data-value="1+4" type="button">1+4</button>
-            <button class="chip" data-value="Fall Bachelor" type="button">Намрын шууд бакалавр</button>
-            <button class="chip" data-value="Master/PhD" type="button">Магистр / Доктор</button>
+      <div class="ds-body">
+        <div id="program-cards" class="program-cards"></div>
+        <div class="grid-2 chart-row">
+          <div>
+            <h4 class="ds-sub">Хөтөлбөрийн эзлэх хувь жилээр</h4>
+            <div id="program-area" class="chart-wrap" style="height:320px"></div>
           </div>
-        </div>
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">HSK</label>
-          <div class="chip-group" id="filter-hsk">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="1-2" type="button">1–2</button>
-            <button class="chip" data-value="3-4" type="button">3–4</button>
-            <button class="chip" data-value="5-6" type="button">5–6</button>
+          <div>
+            <h4 class="ds-sub">Мэргэжлийн чиглэл (Field of study)</h4>
+            <div id="field-bars" class="chart-wrap" style="height:320px"></div>
           </div>
-        </div>
-        <div class="map-toolbar-group">
-          <label class="map-toolbar-label">Сургууль</label>
-          <div class="chip-group" id="filter-school">
-            <button class="chip active" data-value="all" type="button">Бүгд</button>
-            <button class="chip" data-value="Public" type="button">Улсын</button>
-            <button class="chip" data-value="Private" type="button">Хувийн</button>
-            <button class="chip" data-value="International" type="button">Олон улсын</button>
-          </div>
-        </div>
-        <div class="map-toolbar-counter">
-          <span class="counter-num" id="map-visible-count">1,500</span>
-          <span class="counter-label">харагдаж буй оюутан</span>
         </div>
       </div>
+    </section>
 
-      <!-- Leaflet interactive map -->
-      <div class="leaflet-wrap reveal">
-        <div id="leaflet-mongolia"></div>
-        <div class="map-legend">
-          <div class="map-legend-title">Хөтөлбөр</div>
-          <div class="legend-row"><span class="dot d6"></span> 6+6</div>
-          <div class="legend-row"><span class="dot d1"></span> 1+4</div>
-          <div class="legend-row"><span class="dot dfb"></span> Fall Bachelor</div>
-          <div class="legend-row"><span class="dot dm"></span> Магистр / Доктор</div>
+<section class="slide dash-section slide-tall stop" data-stop="9" id="sec-sankey">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Урсгалын зураг</span>
+        <h3 class="ds-title">Аймаг → Сургуулийн зэрэглэл → Хятадын хот</h3>
+        <p class="ds-lede">Урсгалын зузаан нь тухайн аймгаас ямар зэрэглэлийн сургууль, аль хот руу илүү их оюутан явсныг харуулна. Хамгийн том урсгал Улаанбаатар → 985 зэрэглэл → Бээжин чиглэлд төвлөрчээ.</p>
+      </div>
+      <div class="ds-body">
+        <div id="sankey" class="chart-wrap" style="height:560px"></div>
+        <div class="tier-explainer">
+          <div><strong>C9 League</strong> · Хятадын Ivy League — 9 элит сургууль (Tsinghua, Peking…)</div>
+          <div><strong>Project 985</strong> · 39 шилдэг судалгааны их сургууль</div>
+          <div><strong>Project 211</strong> · 100+ улсын чухал их сургууль</div>
+          <div><strong>Provincial</strong> · мужийн зэрэглэлийн их сургууль</div>
         </div>
-        <div class="map-hint">Scroll → томруулна · Drag → хөдөлгөнө · Цэг дээр дарна → дэлгэрэнгүй</div>
       </div>
-      <div class="callout reveal">
-        <div class="callout-num counter" id="ub-share-num">—</div>
-        <div class="callout-text">10 оюутан тутмын <strong>7</strong> нь Улаанбаатарынх. Гэхдээ аль дүүргээс?</div>
+    </section>
+
+<section class="slide stop" data-stop="10">
+    <div class="bigword">ХИЛ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">05 / Шилжилт</div>
+        <div class="tags">COVID / 3 жил хаалт / 2023 нээлт</div>
       </div>
-      <div class="chart-wrap">
-        <div class="chart-mount" id="chart-ub-districts"></div>
+      <div class="right">
+        <h2>Хятад руу</h2>
+        <p>COVID-19-ийн үеэр өргөдөл болон бүртгэлийн урсгал огцом саарсан. 2020 онд бүртгэл 10 хүртэл буурсан ч 2023 оноос хил нээгдэж, хуримтлагдсан эрэлт дахин идэвхжсэн.</p>
+        <span class="stat">3 жил<small>хил хаалт · 2020–2023</small></span>
       </div>
-      <div class="did-you-know reveal">
-        <div class="dyk-icon">💡</div>
+    </div>  </section>
+
+  <section class="slide dash-section slide-kpi stop" data-stop="11" id="sec-covid-callout">
+    <div class="kpi-hero kpi-hero-coral">
+      <div class="ds-eyebrow">2020 · COVID-19</div>
+      <div class="big-kpi-num big-kpi-coral"><span>−41.5%</span></div>
+      <div class="big-kpi-lbl">Жилийн өргөдөл 53-аас 31-руу унасан — гадаад боловсролын үйлчилгээ хил, виз, зорчих нөхцөлөөс шууд хамаардгийн илрэл</div>
+      <div id="covid-line" class="big-kpi-spark big-kpi-spark-coral"></div>
+      <div class="big-kpi-meta">3 жил хил хаалттай · 2023 онд эргэн нээгдсэн</div>
+    </div>
+  </section>
+
+<section class="slide dash-section slide-tall stop" data-stop="12" id="sec-race">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Top-10 уралдаан</span>
+        <h3 class="ds-title">2019 → 2025 · их сургуулийн жагсаалт хэрхэн өөрчлөгдөв?</h3>
+        <p class="ds-lede">Их сургуулийн сонголт жил бүр өөрчлөгдөж байна. Эхний жилүүдэд цөөн сургууль давамгайлж байсан бол 2024-2025 онд Nankai, China Agricultural, Renmin, Fudan, Tongji зэрэг сургуулиуд тэргүүлэх байр эзэлжээ.</p>
+      </div>
+      <div class="ds-body">
+        <div class="race-controls">
+          <button id="race-play" type="button">▶ Тоглуулах</button>
+          <input id="race-year" type="range" min="2019" max="2025" step="1" value="2019" aria-label="Жил">
+          <span id="race-label" class="race-label">2019</span>
+        </div>
+        <div id="bar-race" class="chart-wrap" style="height:520px"></div>
+      </div>
+    </section>
+
+<section class="slide stop" data-stop="13">
+    <div class="bigword">СУРГУУЛЬ</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">06 / Сургууль</div>
+        <div class="tags">C9 / 985 / 211 / 4 хөтөлбөр</div>
+      </div>
+      <div class="right">
+        <h2>50 их сургууль, 4 хөтөлбөр</h2>
+        <p>Оюутнууд C9, 985, 211 болон мужийн зэрэглэлийн 50 их сургуульд тархан суралцсан. Бээжин, Шанхай, Өвөр Монгол нь хамгийн том хүлээн авагч бүсүүд байна.</p>
+        <span class="stat">50<small>их сургууль · 4 хөтөлбөр</small></span>
+      </div>
+    </div>  </section>
+
+<section class="slide dash-section slide-map stop" data-stop="14" id="sec-map-china">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Газрын зураг · Хятад</span>
+        <h3 class="ds-title">50 их сургууль, гол хот тойрсон бөмбөлгүүд</h3>
+        <p class="ds-lede">Бөмбөлгийн хэмжээ нь тухайн хотод очсон оюутны тоог илэрхийлнэ. Зэрэглэл, жил, хөтөлбөрөөр шүүж харахад аль хот, аль сургуулийн бүлэг ANKO Bridge-ийн гол чиглэл болж байгааг тодруулна.</p>
+      </div>
+      <div class="ds-body map-grid">
+        <div class="map-wrap" id="leaflet-china" aria-label="Хятадын их сургуулиудын газрын зураг"></div>
+        <aside class="map-side">
+          <div class="filter-row">
+            <label>Зэрэглэл
+              <select id="cn-filter-tier">
+                <option value="all">Бүгд</option>
+                <option value="C9">C9</option>
+                <option value="985">985</option>
+                <option value="211">211</option>
+                <option value="Provincial">Provincial</option>
+              </select>
+            </label>
+            <label>Жил
+              <select id="cn-filter-year">
+                <option value="all">Бүгд</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+              </select>
+            </label>
+          </div>
+          <h4>Топ 10 их сургууль</h4>
+          <div id="cn-top10" class="rank-list"></div>
+        </aside>
+      </div>
+    </section>
+
+<section class="slide dash-section stop" data-stop="15" id="sec-personas">
+      <div class="ds-head">
+        <span class="ds-eyebrow">5 архетип</span>
+        <h3 class="ds-title">Оюутны таван дүр</h3>
+      <p class="ds-lede">HSK, GPA, нас, орлого, онооны үзүүлэлтээр төстэй оюутнуудыг бүлэглэж, ямар төрлийн суралцагч ANKO Bridge-д илүү түгээмэл байгааг харуулсан.</p>
+      </div>
+      <div class="ds-body">
+        <div id="persona-cards" class="persona-cards"></div>
+      </div>
+    </section>
+
+<section class="slide dash-section slide-tall stop" data-stop="16" id="sec-predictor">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Интерактив хэрэгсэл</span>
+        <h3 class="ds-title">Виз батлагдах магадлал тооцоолуур</h3>
+        <p class="ds-lede">Энэ тооцоолуур нь өмнөх өгөгдөл дээр суурилан виз батлагдах магадлалыг ойролцоогоор үнэлнэ. Үр дүнг албан шийдвэр гэж биш, эрсдэлийн чиглэл баримжаа гэж ойлгоно.</p>
+      </div>
+      <div class="ds-body">
+        <div class="predictor-grid">
+          <div class="predictor-inputs">
+            <label>HSK түвшин: <strong id="pv-hsk-val">4</strong>
+              <input type="range" id="pv-hsk" min="1" max="6" step="1" value="4">
+            </label>
+            <label>HSK оноо: <strong id="pv-score-val">180</strong>
+              <input type="range" id="pv-score" min="60" max="240" step="5" value="180">
+            </label>
+            <label>GPA: <strong id="pv-gpa-val">85</strong>%
+              <input type="range" id="pv-gpa" min="60" max="100" step="1" value="85">
+            </label>
+            <label>Гэр бүлийн орлого: <strong id="pv-inc-val">3.0</strong>сая ₮
+              <input type="range" id="pv-inc" min="1" max="20" step="0.5" value="3">
+            </label>
+            <label>Хөтөлбөр
+              <select id="pv-prog">
+                <option value="6+6">6+6</option>
+                <option value="1+4">1+4</option>
+                <option value="Fall Bachelor">Fall Bachelor</option>
+                <option value="Master/PhD">Master/PhD</option>
+              </select>
+            </label>
+          </div>
+          <div class="predictor-output">
+            <div class="pv-prob-label">Виз батлагдах магадлал</div>
+            <div class="pv-prob-num" id="pv-prob-num">—</div>
+            <div class="pv-bar"><div class="pv-bar-fill" id="pv-bar-fill"></div></div>
+            <div class="pv-verdict" id="pv-verdict">Утга оруулна уу</div>
+          </div>
+        </div>
+        <h4 class="ds-sub">Танай таамаглалд хамгийн ойр 5 оюутан</h4>
+        <div id="pv-similar" class="similar-grid"></div>
+      </div>
+    </section>
+
+<section class="slide stop" data-stop="17">
+    <div class="bigword">ХАНДЛАГА</div>
+    <div class="caption">
+      <div class="left">
+        <div class="kicker">07 / Хандлага</div>
+        <div class="tags">2025 оргил / ×14 өсөлт</div>
+      </div>
+      <div class="right">
+        <h2>2025: оргил жил</h2>
+        <p>2025 онд өргөдөл 1,371 хүрч, бүртгэл 760 болсон нь судалгааны хугацааны хамгийн өндөр үзүүлэлт юм. Энэ өсөлт нь Хятадад суралцах сонирхол богино хугацааны давлагаа биш, тогтвортой эрэлт болж байгааг харуулж байна.</p>
+        <span class="stat">×14<small>2019 → 2025 өсөлт</small></span>
+      </div>
+    </div>  </section>
+
+  <section class="slide dash-section slide-kpi stop" data-stop="18" id="sec-growth-callout">
+    <div class="kpi-hero">
+      <div class="ds-eyebrow">2019 → 2025</div>
+      <div class="big-kpi-num"><span>×14</span></div>
+      <div class="big-kpi-lbl">2025 онд 1,371 өргөдөл — оргил жил</div>
+      <div id="growth-multiline" class="big-kpi-spark"></div>
+      <div class="big-kpi-meta">Бүртгүүлсэн 760 оюутан · 2019 онд 55 байсан</div>
+    </div>
+  </section>
+
+<section class="slide dash-section slide-tall stop" data-stop="19" id="sec-ml-models">
+      <div class="ds-head">
+        <span class="ds-eyebrow">ML загварууд</span>
+        <h3 class="ds-title">1,500 оюутны өгөгдлөөр элсэлт, виз, тэтгэлгийн магадлалыг тайлбарлах нь</h3>
+        <p class="ds-lede">ANKO Bridge-ийн өгөгдөл дээр <strong>гурван төрлийн таамаглах загвар</strong> ажиллуулсан: элсэлт батлагдах эсэх, виз батлагдах эсэх, тэтгэлэг авах магадлал. Доорх табуудаас загвар бүрийн гүйцэтгэл, ROC муруй, алдааны матриц, хамгийн нөлөөтэй хувьсагчдыг харна уу.</p>
+      </div>
+      <div class="ds-body">
+        <div class="tabs" id="ml-tabs">
+          <button data-tab="rf"  class="tab on">Random Forest · Элсэлт</button>
+          <button data-tab="lr"  class="tab">Logistic Regression · Виз</button>
+          <button data-tab="xgb" class="tab">XGBoost · Тэтгэлэг</button>
+          <button data-tab="fun" class="tab">HSK funnel</button>
+        </div>
+        <div class="tab-body" id="ml-tab-body"></div>
+      </div>
+    </section>
+
+<section class="slide dash-section stop" data-stop="20" id="sec-corr-pca">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Хамаарал · PCA</span>
+        <h3 class="ds-title">5 хувьсагчийн хамаарал ба 1,500 оюутны 2D зураглал</h3>
+      </div>
+      <div class="ds-body grid-2">
         <div>
-          <strong>Онцлох ажиглалт:</strong> Бүх оюутны <strong id="senior-share">85%</strong> нь
-          17–19 настай — 12-р анги төгсөж шууд бакалаврын замыг сонгож байна.
+          <h4 class="ds-sub">Pearson хамаарлын матриц</h4>
+          <div id="corr-heatmap" class="chart-wrap" style="height:420px"></div>
+        </div>
+        <div>
+          <h4 class="ds-sub">PCA scatter (5 кластер)</h4>
+          <div id="pca-scatter" class="chart-wrap" style="height:420px"></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ───────────── Section 7 — HSK story ───────────── -->
-  <section class="section section-hsk" id="sec-4" data-anchor="4">
-    <div class="container">
-      <div class="step reveal" data-step="6">
-        <div class="kicker">Хэлний бэлтгэл</div>
-        <h2 class="section-title">HSK түвшний шилжилт</h2>
-        <p class="lead">HSK буюу 汉语水平考试 нь Хятад хэлний түвшин тогтоох албан ёсны олон улсын шалгалт. ANKO-гийн оюутнуудын HSK тархалт жил тутамд хэрхэн өөрчлөгдсөнийг давхарласан тархалтын графикаар үзүүлэв — 2019 онд HSK 4 голлож, 2024-25 онд HSK 5/6 рүү шилжсэн нь сурагчдын Хятад хэлний бэлтгэлийн чанар сайжирсныг харуулдаг.</p>
+<section class="slide dash-section stop" data-stop="21" id="sec-scholarship">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Тэтгэлэг</span>
+        <h3 class="ds-title">Тэтгэлгийн хэмжээ ба төрлийн ялгаа</h3>
+        <p class="ds-lede">Тэтгэлгийн төрлүүдийн медиан, хэлбэлзэл, нийт ба дундаж хэмжээг харьцуулж, аль санхүүжилт илүү өндөр дэмжлэг үзүүлдгийг харуулна. Нийт олгосон: <strong id="schol-total">—</strong> юань · дундаж <strong id="schol-avg">—</strong> юань</p>
       </div>
-      <div class="chart-wrap">
-        <div class="chart-mount tall" id="chart-hsk"></div>
+      <div class="ds-body">
+        <div id="boxplot" class="chart-wrap" style="height:380px"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-    <!-- Chapter intro: Хөтөлбөр -->
-  <div class="chapter-intro" data-chapter="03">
-    <div class="chapter-num">03</div>
-    <div class="chapter-title">Хөтөлбөр</div>
-    <div class="chapter-desc">ANKO Bridge-ийн 4 хөтөлбөрийн зам — HSK-ийн шаардлага, суралцах хугацаа, тэтгэлгийн босго хүртэл.</div>
-  </div>
-
-  <section class="section section-programs" id="sec-5" data-anchor="5">
-    <div class="container">
-      <div class="step reveal" data-step="7">
-        <div class="kicker">Хөтөлбөр</div>
-        <h2 class="section-title">ANKO-гийн 4 хөтөлбөр</h2>
-        <p class="lead">ANKO Bridge нь дөрвөн өөр хөтөлбөртэй ажилладаг. Сурагчийн HSK түвшин, зорьж буй шат, бэлтгэлийн хэрэгцээнээс хамааран тохирох хөтөлбөр өөр өөр байна. Хамгийн алдартай нь <strong>6+6</strong> — HSK ямар ч түвшнээс эхлэх боломжтой тул 12-р анги шинэ төгсөгчдөд хамгийн их сонгогддог.</p>
+<section class="slide dash-section slide-tall stop" data-stop="22" id="sec-bi">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Business Intelligence</span>
+        <h3 class="ds-title">Өгөгдөлд суурилсан 5 үйл ажиллагааны зөвлөмж</h3>
       </div>
-      <div class="program-cards" id="chart-programs"></div>
-      <div class="chart-wrap">
-        <div class="chart-mount" id="chart-program-evolution"></div>
+      <div class="ds-body">
+        <div id="bi-cards" class="bi-cards"></div>
       </div>
-      <p class="caption">6+6 хөтөлбөрийн жилийн эзлэх хувь — 2019 онд <strong id="six-six-2019">35%</strong>-аас 2024 онд <strong id="six-six-2024">55%</strong> хүртэл өсчээ.</p>
-    </div>
-  </section>
+    </section>
 
-  <!-- ───────────── Section 9 — Field shifts ───────────── -->
-  <section class="section section-fields" id="sec-6" data-anchor="6">
-    <div class="container">
-      <div class="step reveal" data-step="8">
-        <div class="kicker">Мэргэжил</div>
-        <h2 class="section-title">Мэргэжлийн чиг хандлага</h2>
-        <p class="lead">7 том чиглэл, 200 хөтөлбөр. Анагаах ухаан (MBBS) болон Компьютерын ухааны чиглэлийн эрэлт 2019–2024 онд хамгийн их өсжээ. 2025 онд эрэлт хэрхэн өөрчлөгдсөнийг харна уу.</p>
+<section class="slide dash-section slide-tall stop" data-stop="23" id="sec-conclusion">
+      <div class="ds-head">
+        <span class="ds-eyebrow">Дүгнэлт</span>
+        <h3 class="ds-title">7 жил, нэг шинжилгээ</h3>
+      <p class="ds-lede">ANKO Bridge-ийн 7 жилийн өгөгдлөөс харагдсан гол үр дүн</p>
       </div>
-      <div class="chart-wrap">
-        <div class="chart-mount tall" id="chart-fields"></div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Chapter intro: 5 төрөл -->
-  <div class="chapter-intro" data-chapter="04">
-    <div class="chapter-num">04</div>
-    <div class="chapter-title">5 төрөл</div>
-    <div class="chapter-desc">K-Means алгоритм 1,500 оюутныг 5 нийтлэг архетип болгон ангилав. "Эрт эхлэгчид", "Тэтгэлгийн хайгуулчид", "Шууд элсэгчид"…</div>
-  </div>
-
-  <section class="section section-personas" id="sec-7" data-anchor="7">
-    <div class="container">
-      <div class="step reveal" data-step="9">
-        <div class="kicker">Машин сурахуй</div>
-        <h2 class="section-title">5 архетип — машин сурахуй олсон</h2>
-        <p class="lead">Хүний хүчээр гар тогтоосон ангилал биш — <strong>K-Means машин сурахуйн алгоритм</strong> 1,500 оюутны GPA, HSK, гэр бүлийн орлого, нас, аймаг зэрэг 5 хувьсагч дээр өөрөө 5 ялгаатай бүлэг олжээ. Тэдгээрт ердөө шинж тэмдэгт нь нийцсэн, утгатай нэр өгсөн.</p>
-      </div>
-      <div class="persona-grid" id="chart-personas"></div>
-    </div>
-  </section>
-
-  <!-- ───────────── Section 11 — Predictor ───────────── -->
-  <section class="section section-predictor" id="sec-8" data-anchor="8">
-    <div class="container">
-      <div class="step reveal" data-step="10">
-        <div class="kicker">Урьдчилсан таамаглал</div>
-        <h2 class="section-title">Таны виз батлагдах магадлал хэд вэ?</h2>
-        <p class="lead">Сурагчийн HSK түвшин, оноо, GPA, гэр бүлийн орлого, сонгож буй хөтөлбөрөөс хамаарч <strong>виз батлагдах магадлалыг</strong> Logistic Regression загвараар тооцоолно. Гулсуурын утгуудыг өөрчилж үзээд, доор гарах <strong>тантай төстэй 5 оюутны мэдээллийн хуудас</strong>-ыг харна уу — таны үзүүлэлтэд хамгийн ойр оюутнуудыг 1,500-аас хайн олж харуулна.</p>
-      </div>
-      <div class="predictor reveal">
-        <div class="predictor-controls">
-          <label>HSK түвшин: <output id="out-hsk">4</output>
-            <input type="range" id="in-hsk" min="1" max="6" value="4" />
-          </label>
-          <label>HSK оноо: <output id="out-hsk-score">180</output>
-            <input type="range" id="in-hsk-score" min="60" max="300" value="180" />
-          </label>
-          <label>GPA (хувь): <output id="out-gpa">82</output>%
-            <input type="range" id="in-gpa" min="50" max="99" value="82" />
-          </label>
-          <label>Гэр бүлийн орлого (₮/сар): <output id="out-income">3,000,000</output>
-            <input type="range" id="in-income" min="500000" max="15000000" step="100000" value="3000000" />
-          </label>
-          <label>Хөтөлбөр:
-            <select id="in-program">
-              <option value="6+6">6+6 (хэлний бэлтгэл)</option>
-              <option value="1+4">1+4</option>
-              <option value="Fall Bachelor">Fall Bachelor (шууд)</option>
-              <option value="Master/PhD">Магистр / Доктор</option>
-            </select>
-          </label>
-        </div>
-        <div class="predictor-result">
-          <div class="result-label">Виз батлагдах магадлал</div>
-          <div class="result-value" id="result-prob">—</div>
-          <div class="result-bar"><div class="result-bar-fill" id="result-bar"></div></div>
-          <div class="result-note" id="result-note"></div>
-        </div>
-      </div>
-
-      <!-- Similar students -->
-      <div class="similar-students reveal">
-        <div class="similar-title">📌 Тантай төстэй 5 оюутан</div>
-        <div class="similar-grid" id="similar-grid"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ───────────── Section 11.5 — Student Journey Sankey ───────────── -->
-  <section class="section section-sankey" id="sec-9" data-anchor="9">
-    <div class="container">
-      <div class="step reveal" data-step="11">
-        <div class="kicker">Урсгалын зураглал</div>
-        <h2 class="section-title">1,500 оюутан хаашаа урсаж байна вэ?</h2>
-        <p class="lead">Sankey диаграм нь оюутнууд аймаг, хөтөлбөр, сургуулийн зэрэглэл, эцсийн үр дүн рүү хэрхэн шилжсэнийг харуулдаг урсгалын зураглал юм. Шугамын зузаан нь тухайн замаар явсан оюутны тоог илэрхийлнэ. Хан-Уулаас гарсан оюутны замыг нүдээр дагаж болно.</p>
-      </div>
-
-      <!-- Tier explanation -->
-      <div class="tier-explainer reveal">
-        <div class="tier-explainer-title">📚 Хятадын их сургуулиудын зэрэглэл (tier)</div>
-        <div class="tier-grid">
-          <div class="tier-item">
-            <div class="tier-tag tier-c9">C9</div>
-            <div class="tier-desc"><strong>Шилдэг 9 их сургууль</strong> — Tsinghua, Peking, Fudan, SJTU, Zhejiang, USTC, Nanjing, HIT, Xi'an Jiaotong. Хятадын шилдэг их сургуулиудын бүлэг.</div>
-          </div>
-          <div class="tier-item">
-            <div class="tier-tag tier-985">985</div>
-            <div class="tier-desc"><strong>985 төсөл</strong> — 1998 оны 5 сард зарласан. 39 шилдэг сургуулийн жагсаалт. C9 нь үүний дотор. Дэлхийд өрсөлдөх стратеги.</div>
-          </div>
-          <div class="tier-item">
-            <div class="tier-tag tier-211">211</div>
-            <div class="tier-desc"><strong>211 төсөл</strong> — 21-р зууны төлөөх ~115 сонгомол сургууль. 985-аас илүү өргөн. Үндэсний түвшний боловсрол.</div>
-          </div>
-          <div class="tier-item">
-            <div class="tier-tag tier-prov">Provincial</div>
-            <div class="tier-desc"><strong>Аймгийн / орон нутгийн</strong> их сургууль. C9/985/211-д ороогүй бусад. Бага өртөгтэй, хүртээмжтэй.</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="chart-wrap">
-        <div class="chart-mount" id="chart-sankey" style="min-height:560px;"></div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Chapter intro: Зөвлөмж -->
-  <div class="chapter-intro" data-chapter="05">
-    <div class="chapter-num">05</div>
-    <div class="chapter-title">Зөвлөмж</div>
-    <div class="chapter-desc">Хаана салбар нээх, ямар сегментэд төвлөрөх, ямар эрсдэлээс сэргийлэх талаар 5 стратегийн зөвлөмж.</div>
-  </div>
-
-  <section class="section section-bi" id="sec-10" data-anchor="10">
-    <div class="container">
-      <div class="step reveal" data-step="12">
-        <div class="kicker">Дата шинжээчийн тайлан</div>
-        <h2 class="section-title">5 стратегийн зөвлөмж</h2>
-        <p class="lead">Энэ бол энгийн гүйлгэж унших өгөгдлийн түүхчилсэн тайлан биш — энэ хэсэг нь <strong>дата шинжээчийн зөвлөмжийн тайлан</strong>. 1,500 оюутны өгөгдлөөс олж тогтоосон 5 стратегийн боломж: хаана өргөтгөл хийх, ямар сегментэд анхаарах, ямар эрсдэл байх вэ. Card бүрд итгэл түвшин (1-5 одоор), гол өгөгдлүүд, конкрет үйлдэл агуулсан.</p>
-      </div>
-
-      <div class="reco-grid" id="bi-reco-grid">
-        <!-- 5 cards rendered by JS -->
-      </div>
-
-      <div class="bi-summary glass reveal">
-        <div class="bi-summary-title">📊 Хураангуй ROI үнэлгээ</div>
-        <div class="bi-summary-grid" id="bi-roi-grid"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ───────────── Section 13 — Conclusion ───────────── -->
-  <section class="section section-conclusion" id="sec-11" data-anchor="11">
-    <div class="container">
-      <div class="step reveal" data-step="11">
-        <div class="kicker">Дүгнэлт</div>
-        <h2 class="section-title">Дата хэлж буй гол санаанууд</h2>
+      <div class="ds-body">
         <div class="kpi-grid">
-          <div class="kpi"><div class="kpi-num counter" data-target="1500">1,500</div><div class="kpi-label">Нийт оюутан</div></div>
-          <div class="kpi"><div class="kpi-num counter" data-target="2250">2,250</div><div class="kpi-label">Өргөдөл</div></div>
-          <div class="kpi"><div class="kpi-num counter" data-target="50">50</div><div class="kpi-label">Их сургууль</div></div>
-          <div class="kpi"><div class="kpi-num" id="kpi-acceptance">—</div><div class="kpi-label">Дундаж элсэлт</div></div>
+          <div class="kpi"><div class="kpi-num" data-count="1500">0</div><div class="kpi-lbl">Оюутан</div></div>
+          <div class="kpi"><div class="kpi-num" data-count="2250">0</div><div class="kpi-lbl">Өргөдөл</div></div>
+          <div class="kpi"><div class="kpi-num" data-count="50">0</div><div class="kpi-lbl">Их сургууль</div></div>
+          <div class="kpi"><div class="kpi-num" data-count="14">0</div><div class="kpi-lbl">×өсөлт</div></div>
         </div>
-        <ul class="findings">
-          <li><strong>COVID-19 цар тахал</strong> ANKO Bridge-ийн ажилд 3 жилийн саатал учруулсан.</li>
-          <li><strong>2025 онд peak хүрэв</strong> — 6 сарын дотор 760 оюутан бүртгүүлэв (2019 онтой харьцуулахад 14 дахин).</li>
-          <li><strong>10 оюутан тутмын 7</strong> Улаанбаатараас. Хан-Уул дүүрэг тэргүүлдэг.</li>
-          <li><strong>6+6 хөтөлбөр</strong> хамгийн эрэлттэй — 2019-аас 2024 хооронд 20+ хувийн пунктээр өсчээ.</li>
-          <li><strong>HSK 5+</strong> элсэгчдийн ~78% нь батлагдан элсдэг.</li>
-        </ul>
-        <div class="credits">
-          <p>Өгөгдлийн шинжилгээ: <strong>tsogjavkhlananko</strong> · 2026</p>
-          <p>Хичээл: «Эдийн засгийн шинжилгээн дэх программын хэрэглээ»</p>
-          <p>Өгөгдөл: ANKO Bridge-ийн жинхэнэ үйл ажиллагааны паттерныг тусгасан синтетик дата</p>
-          <p class="links">
-            <a href="https://github.com/tsogjavkhlananko/anko-bridge-analysis" target="_blank" rel="noopener">GitHub</a> ·
-            <a href="https://ankobridge.com" target="_blank" rel="noopener">ANKO Bridge</a>
-          </p>
-        </div>
+        <ol class="findings">
+          <li><strong>Хэлний бэлтгэлийн босго өсчээ.</strong> 2019 онд HSK 4 голлож байсан бол 2025 онд HSK 5/6 хүртэл шилжсэн — элсэлтийн магадлал HSK 6 түвшинд 79.8%, HSK 1 түвшинд 7.7%.</li>
+          <li><strong>6+6 хөтөлбөр давамгайлсаар байна.</strong> 2019 → 2024 онд 50.9%-аас 56.8%-д өсөж, ANKO Bridge-ийн гол бүтээгдэхүүн болсон.</li>
+          <li><strong>Улаанбаатар 70.1% эзэлж байна,</strong> гэхдээ бусад аймгууд (Дархан-Уул 6.1%, Орхон 4.3%) сүүлийн жилүүдэд 13× өссөн.</li>
+          <li><strong>COVID 41.5%-ийн уналт авчирсан</strong> (2020), гэхдээ 2023 онд хил нээгдэхэд нэг жилд 14× нөхөв.</li>
+          <li><strong>Random Forest загвар элсэлтийг 68.6% нарийвчлалтай таамагласан.</strong> Гол хувьсагч нь HSK түвшин, GPA, HSK оноо, өрхийн орлого байна.</li>
+        </ol>
+        <footer class="dash-footer">
+          © 2026 · ANKO Bridge өгөгдлийн шинжилгээ ·
+          Three.js + GSAP + Lenis + D3 + Leaflet ·
+          Монгол · Хятадын geoBoundaries ·
+          <a href="https://github.com/tsogjavkhlananko" target="_blank" rel="noopener">GitHub</a>
+        </footer>
       </div>
-    </div>
-  </section>
+    </section>
+</main>
 
-  <div class="footer-note">© 2026 · D3.js + Scrollama · Монгол, Хятадын бодит газрын зураг (geoBoundaries)</div>
+<script type="module">
+// ═══════════════════════════════════════════════════════════════════════
+//  ANKO Bridge — noomo-style vertical-descent 3D scrollytelling
+//  three r170 · GSAP 3.12.5 + ScrollTrigger · Lenis 1.1.0
+// ═══════════════════════════════════════════════════════════════════════
 
-  <!-- ───────────── External libs (CDN) ───────────── -->
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
-  <script src="https://cdn.jsdelivr.net/npm/scrollama@3"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <!-- Agency-level: smooth scroll, animation engine, 3D -->
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.4/dist/lenis.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+function detectWebGL() {
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl2') || c.getContext('webgl');
+    if (!gl) return false;
+    const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    const r = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : '';
+    return !/SwiftShader|Software|llvmpipe/i.test(r);
+  } catch (e) { return false; }
+}
+if (!detectWebGL()) {
+  document.body.classList.add('no-webgl');
+  document.getElementById('preloader').classList.add('done');
+  throw new Error('WebGL unavailable');
+}
+
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
+import Lenis from 'lenis';
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MOBILE  = window.innerWidth < 720;
+
+// ── story config — 7 stops, each at a custom 3D point in the world ───────
+// `pos` is the model's anchor; the camera flies through these as scroll
+// progresses, so motion isn't pure vertical descent — each segment changes
+// direction (down, sideways, up, deep, near…) for a "moving inside a 3D
+// world" feel.
+// 24 stops in the 3D world — 7 with GLB models, 17 analytics-only camera
+// anchors. The camera flies through all of them; each has its own bigword
+// rendered as a text-plane in-scene and its own DOM slide overlay.
+// Stops are scattered in the 3D world (varying X/Z for camera-flight variety),
+// but the camera at each stop frames the model dead-center on screen — so
+// the user always sees the active stop in the median of the viewport.
+const STOPS = [
+  { name: 'ger',       word: 'ЭХЛЭЛ',     url: 'models/ger.glb',       size: 3.4, side:  1, pos: [  0.0,   0.0,   0.0], palette: ['#94a8d3', '#b8c2dc', '#e6d1c0'] },
+  { name: 'kpi',       word: '1,500',     url: null,                   size: 3.0, side: -1, pos: [  3.5,   2.4,  -1.5], palette: ['#90a4d0', '#bac2dc', '#e6cfc0'] },
+  { name: 'globe',     word: 'МӨРӨӨДӨЛ',  url: 'models/globe.glb',     size: 3.6, side: -1, pos: [  6.0,   4.8,  -2.5], palette: ['#8aa1d0', '#b3bcdb', '#e1c7cd'] },
+  { name: 'aimag',     word: 'ХЭН?',      url: null,                   size: 3.0, side:  1, pos: [ -2.5,   7.0,   2.0], palette: ['#8eaad3', '#b8c2dc', '#e3cdc4'] },
+  { name: 'mongolia',  word: 'МОНГОЛ',    url: null,                   size: 3.0, side: -1, pos: [  4.5,   9.2,  -2.0], palette: ['#90aad4', '#bcc3dc', '#e2cebd'] },
+  { name: 'hsk_gauge', word: 'ХЭЛ',       url: 'models/hsk_gauge.glb', size: 3.5, side:  1, pos: [ -5.5,  11.5,   1.5], palette: ['#90a8d4', '#bfc5dd', '#e3ccaf'] },
+  { name: 'hsk_deep',  word: 'HSK',       url: null,                   size: 3.0, side: -1, pos: [  3.0,  13.6,  -2.5], palette: ['#92a8d3', '#bdc4dc', '#e2cdb8'] },
+  { name: 'funnel',    word: 'БҮРТГЭЛ',   url: 'models/funnel.glb',    size: 3.6, side: -1, pos: [  3.0,  16.0,  -4.5], palette: ['#8ea4d3', '#b6c0de', '#e3c7bd'] },
+  { name: 'programs',  word: 'ХӨТӨЛБӨР',  url: null,                   size: 3.0, side:  1, pos: [ -4.0,  18.0,   2.5], palette: ['#90a6d3', '#bac1dc', '#e3c9bb'] },
+  { name: 'sankey',    word: 'УРСГАЛ',    url: null,                   size: 3.0, side: -1, pos: [  4.0,  20.0,  -2.5], palette: ['#92a7d3', '#bcc2dc', '#e3cab9'] },
+  { name: 'greatwall', word: 'ХИЛ',       url: 'models/greatwall.glb', size: 4.0, side:  1, pos: [ -6.5,  22.5,   2.5], palette: ['#9aacd5', '#c2c8de', '#e5c8a8'] },
+  { name: 'covid',     word: '−41.5%',    url: null,                   size: 3.0, side: -1, pos: [  4.0,  24.6,  -2.5], palette: ['#94aad3', '#bdc3dc', '#e6c5a6'] },
+  { name: 'race',      word: 'УРАЛДААН',  url: null,                   size: 3.0, side:  1, pos: [ -3.5,  26.8,   2.0], palette: ['#92aad4', '#bdc4dc', '#e5c8aa'] },
+  { name: 'gradcap',   word: 'СУРГУУЛЬ',  url: 'models/gradcap.glb',   size: 3.7, side: -1, pos: [  4.5,  29.0,  -3.0], palette: ['#92a9d4', '#bac2dc', '#e2c8c5'] },
+  { name: 'china',     word: 'ХААШ?',     url: null,                   size: 3.0, side:  1, pos: [ -4.0,  31.0,   2.5], palette: ['#90a8d3', '#bac2dc', '#e2c8c4'] },
+  { name: 'persona',   word: '5 ТӨРӨЛ',   url: null,                   size: 3.0, side: -1, pos: [  3.5,  33.0,  -2.5], palette: ['#92a9d3', '#bcc2dc', '#e2c8c2'] },
+  { name: 'predictor', word: 'МАГАДЛАЛ',  url: null,                   size: 3.0, side:  1, pos: [ -4.0,  35.0,   2.0], palette: ['#93aad4', '#bdc3dc', '#e2c8be'] },
+  { name: 'growth',    word: 'ХАНДЛАГА',  url: 'models/growth.glb',    size: 3.8, side:  1, pos: [ -3.5,  37.5,   2.0], palette: ['#94abd5', '#bec4dd', '#e3c8a3'] },
+  { name: 'x14',       word: '×14',       url: null,                   size: 3.0, side: -1, pos: [  4.0,  39.5,  -2.5], palette: ['#95abd5', '#bfc5dd', '#e3c9a8'] },
+  { name: 'ml',        word: 'ЗАГВАР',    url: null,                   size: 3.0, side:  1, pos: [ -4.0,  41.5,   2.5], palette: ['#94aad5', '#bec4dc', '#e2c9ad'] },
+  { name: 'corr',      word: 'ХАМААРАЛ',  url: null,                   size: 3.0, side: -1, pos: [  3.5,  43.5,  -2.5], palette: ['#95abd4', '#bdc4dc', '#e2cab0'] },
+  { name: 'boxplot',   word: 'ТЭТГЭЛЭГ',  url: null,                   size: 3.0, side:  1, pos: [ -3.5,  45.5,   2.0], palette: ['#94aad4', '#bcc3dc', '#e3cbb2'] },
+  { name: 'bi',        word: 'ЗӨВЛӨМЖ',   url: null,                   size: 3.0, side: -1, pos: [  4.0,  47.5,  -2.5], palette: ['#94abd4', '#bdc4dc', '#e3cab4'] },
+  { name: 'conclusion',word: 'ДҮГНЭЛТ',   url: null,                   size: 3.0, side:  1, pos: [ -3.5,  49.5,   2.0], palette: ['#93abd4', '#bdc4dc', '#e3c9b0'] },
+];
+const CAM_RANGE = 50;          // legacy — kept for sky shader reference
+const STOP_GAP  = CAM_RANGE / (STOPS.length - 1);
+
+// ── renderer ─────────────────────────────────────────────────────────────
+const canvas = document.getElementById('webgl');
+const renderer = new THREE.WebGLRenderer({
+  canvas, antialias: false, alpha: true,
+  powerPreference: 'high-performance', stencil: false,
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+
+// ── scene & camera ───────────────────────────────────────────────────────
+const scene = new THREE.Scene();   // transparent — CSS gradient shows through
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 200);
+camera.position.set(0, 0, 7);
+
+// ── environment (for the gold-chrome + glass materials) ──────────────────
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+pmrem.dispose();
+
+// ── lighting — bright, airy, with strong specular for the glass pedestal ──
+const hemi = new THREE.HemisphereLight(0xffffff, 0xb9c4de, 1.05);
+scene.add(hemi);
+const key = new THREE.DirectionalLight(0xfff2e0, 2.2);
+key.position.set(4, 7, 6);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0xdfe6ff, 1.0);
+fill.position.set(-6, 2, 4);
+scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffe0c0, 0.9);
+rim.position.set(0, -4, -6);
+scene.add(rim);
+// extra TOP-DOWN spot so the white pedestal catches a bright highlight
+const top = new THREE.DirectionalLight(0xffffff, 1.3);
+top.position.set(0, 10, 2);
+scene.add(top);
+
+// ── voxel-cube satellites (the noomo "floating pixels" detail) ───────────
+const PMat = THREE.MeshPhysicalMaterial;
+const voxWhite = new PMat({ color: 0xf3f2f8, metalness: 0, roughness: 0.35,
+  transmission: 0.4, thickness: 0.4, ior: 1.3, transparent: true, opacity: 0.95, envMapIntensity: 1.5 });
+const voxGold  = new PMat({ color: 0xffc85a, metalness: 1, roughness: 0.14,
+  transparent: true, opacity: 1, envMapIntensity: 1.7 });
+function buildVoxels(parent, count) {
+  const vox = [];
+  for (let i = 0; i < count; i++) {
+    const s = 0.14 + Math.random() * 0.22;
+    const m = new THREE.Mesh(new THREE.BoxGeometry(s, s, s),
+      Math.random() < 0.3 ? voxGold : voxWhite);
+    m.userData.orbitR = 1.7 + Math.random() * 1.5;
+    m.userData.orbitA = Math.random() * Math.PI * 2;
+    m.userData.orbitB = (Math.random() - 0.5) * Math.PI * 0.9;
+    m.userData.orbitSpeed = (Math.random() - 0.5) * 0.32;
+    m.userData.spin = (Math.random() - 0.5) * 0.045;
+    m.userData.phase = Math.random() * Math.PI * 2;
+    parent.add(m);
+    vox.push(m);
+  }
+  return vox;
+}
+
+// Chunky Minecraft-style stepped voxel cluster — noomo's signature
+// pixelated/voxelised flair that floats around the model.
+function buildVoxelCluster() {
+  const group = new THREE.Group();
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: 0xd0d6e2, metalness: 0.0, roughness: 0.55,
+    clearcoat: 0.35, clearcoatRoughness: 0.5,
+    envMapIntensity: 0.8,
+    transparent: true, opacity: 0.96,
+  });
+  // a stair-step assembly of unit cubes
+  const u = 0.35;
+  const cells = [
+    [0,0,0], [1,0,0], [0,1,0], [1,1,0],   // base 2×2
+    [0,0,1], [1,0,1],                      // second row partial
+    [0,0,2],                               // top single
+    [-1,1,0], [-1,0,0],                    // arm
+    [2,1,1],                               // floating piece
+  ];
+  cells.forEach(([x, y, z]) => {
+    const m = new THREE.Mesh(new THREE.BoxGeometry(u*0.98, u*0.98, u*0.98), mat);
+    m.position.set(x * u, y * u, z * u);
+    group.add(m);
+  });
+  return group;
+}
+
+// ── models ───────────────────────────────────────────────────────────────
+const modelGroup = new THREE.Group();
+scene.add(modelGroup);
+const models = {};                       // name -> wrap group
+
+// Frosted-glass stepped pedestal — loaded from a Blender-authored GLB so the
+// stepped plus/cross geometry matches the aaaa.png reference (rounded edges,
+// abutting blocks, raised top step). One GLB is loaded once and CLONED per
+// stop, each clone getting its own material so opacities fade independently.
+let pedestalProto = null;
+const pedestalLoader = new GLTFLoader();
+pedestalLoader.load('models/pedestal.glb', (gltf) => {
+  pedestalProto = gltf.scene;
+  pedestalProto.traverse(n => {
+    if (n.isMesh) {
+      // PURE white solid base — pops against the cool blue background so the
+      // form reads as a distinct object, not the same colour as the sky.
+      n.material = new THREE.MeshPhysicalMaterial({
+        color: 0xffffff, metalness: 0.0, roughness: 0.38,
+        transmission: 0.0,
+        clearcoat: 0.55, clearcoatRoughness: 0.28,
+        emissive: 0x000000, emissiveIntensity: 0,
+        transparent: true, opacity: 1.0,
+        envMapIntensity: 1.4,
+      });
+      n.material.flatShading = true;
+    }
+  });
+  // retro-fit any models already placed before the pedestal GLB finished loading
+  for (const name in models) {
+    const w = models[name];
+    if (!w.userData.pedestal) attachPedestal(w);
+  }
+});
+
+function attachPedestal(wrap) {
+  if (!pedestalProto) return;
+  const ped = pedestalProto.clone(true);
+  // give each clone its own material instance so opacity can fade per-stop
+  ped.traverse(n => { if (n.isMesh) n.material = n.material.clone(); });
+  // Fit pedestal: prototype is ~2.85 units wide. Match the model's footprint.
+  const s = wrap.userData.stop.size;
+  ped.scale.setScalar((s * 0.95) / 2.85);
+  ped.position.y = -s * 0.32;            // just below the model's base
+  ped.position.x = 0;
+  ped.rotation.y = (Math.random() - 0.5) * 0.18;   // tiny yaw only
+  wrap.add(ped);
+  wrap.userData.pedestal = ped;
+}
+
+function placeModel(stop, obj) {
+  const wrap = new THREE.Group();
+  // normalise size (every GLB was modelled at a different Blender scale)
+  const b0 = new THREE.Box3().setFromObject(obj);
+  const sz = b0.getSize(new THREE.Vector3());
+  const maxDim = Math.max(sz.x, sz.y, sz.z) || 1;
+  obj.scale.setScalar(stop.size / maxDim);
+  // recentre
+  const b1 = new THREE.Box3().setFromObject(obj);
+  obj.position.sub(b1.getCenter(new THREE.Vector3()));
+  // Tint scheme:
+  //   funnel + gradcap → navy blue
+  //   hsk_gauge       → warm gold (otherwise its white cubes blend with the
+  //                     pedestal + voxel clusters and read as ambient noise)
+  const NAVY = new THREE.Color(0x1e3a8a);
+  const GOLD = new THREE.Color(0xd4a149);
+  const tintNavy = (stop.name === 'funnel' || stop.name === 'gradcap');
+  const tintGold = (stop.name === 'hsk_gauge');
+  obj.traverse(n => {
+    if (n.isMesh && n.material) {
+      n.material.envMapIntensity = 1.3;
+      n.material.transparent = true;
+      if (tintNavy) {
+        n.material.color = NAVY.clone();
+        if (n.material.emissive) n.material.emissive = new THREE.Color(0x000000);
+        if ('metalness'  in n.material) n.material.metalness  = 0.65;
+        if ('roughness'  in n.material) n.material.roughness  = 0.32;
+        if ('clearcoat'  in n.material) n.material.clearcoat  = 0.4;
+      } else if (tintGold) {
+        n.material.color = GOLD.clone();
+        if (n.material.emissive) n.material.emissive = new THREE.Color(0x000000);
+        if ('metalness'  in n.material) n.material.metalness  = 0.85;
+        if ('roughness'  in n.material) n.material.roughness  = 0.30;
+        if ('clearcoat'  in n.material) n.material.clearcoat  = 0.45;
+      }
+    }
+  });
+
+  // raise the model so it sits ABOVE the pedestal — small lift only so the
+  // model+pedestal cluster reads as a single centred block in the frame.
+  obj.position.y += stop.size * 0.18;
+
+  wrap.add(obj);
+  // No more small orbital voxels — they read as background-coloured noise
+  // around the model. The chunky side clusters below fill the decor role.
+  const voxels = [];
+
+  // voxel clusters disabled — their stacked-cube look was reading as the
+  // HSK gauge model leaking into other stops.
+
+  wrap.userData = {
+    stop, model: obj, pedestal: null, voxels, clusters: [],
+    baseX: stop.pos[0], baseY: stop.pos[1], baseZ: stop.pos[2],
+    opacity: 0, target: 0,
+    scale: 0.6, scaleTarget: 0.6,    // arrival pop
+    // Continuous slow rotation — each model spins forever at its own gentle rate.
+    spinSpeed:  0.10 + Math.random() * 0.05,  // ~0.10–0.15 rad/s ≈ 60s per full turn
+    spinPhase:  Math.random() * Math.PI * 2,  // stagger so models aren't in sync
+    phase:      Math.random() * Math.PI * 2,
+  };
+  wrap.position.set(wrap.userData.baseX, wrap.userData.baseY, wrap.userData.baseZ);
+  wrap.scale.setScalar(0.6);
+  modelGroup.add(wrap);
+  models[stop.name] = wrap;
+  attachPedestal(wrap);
+}
+
+function makeFallback() {
+  const g = new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(1.4, 1),
+    new THREE.MeshStandardMaterial({ color: 0xc9a24b, metalness: 0.95, roughness: 0.18 })));
+  return g;
+}
+
+// ── giant Cyrillic word planes — rendered IN the 3D scene so the model
+//    passes in front of them (the core noomo "object through text" look) ──
+const wordsGroup = new THREE.Group();
+scene.add(wordsGroup);
+function makeWordTexture(text) {
+  // Fixed font size; canvas sized to actual text bounds → every word renders
+  // at the same visual height regardless of letter count.
+  const fs = 520;
+  const padX = 80, padY = 60;
+  const meas = document.createElement('canvas').getContext('2d');
+  meas.font = `900 ${fs}px "Inter Tight", system-ui, sans-serif`;
+  const tw = Math.ceil(meas.measureText(text).width);
+  const w = Math.max(512, tw + padX * 2);
+  const h = Math.ceil(fs * 1.15) + padY * 2;
+  const c = document.createElement('canvas');
+  c.width = w; c.height = h;
+  const ctx = c.getContext('2d');
+  ctx.font = `900 ${fs}px "Inter Tight", system-ui, sans-serif`;
+  ctx.fillStyle = '#1a1722';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, w / 2, h / 2);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return { texture: tex, aspect: w / h };
+}
+function buildWords() {
+  const H = 3.6;          // world-units tall — bigger monolith, like noomo
+  while (wordsGroup.children.length) wordsGroup.remove(wordsGroup.children[0]);
+  STOPS.forEach((stop) => {
+    // Only render bigword for cinematic 3D-model stops; analytics stops show
+    // their title text inside the DOM slide, so no in-scene bigword is needed.
+    if (!stop.url) { wordsGroup.add(new THREE.Group()); return; }
+    const { texture, aspect } = makeWordTexture(stop.word);
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(H * aspect, H),
+      new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false }),
+    );
+    plane.position.set(stop.pos[0] * 0.5, stop.pos[1], stop.pos[2] - 2.2);
+    wordsGroup.add(plane);
+  });
+}
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(buildWords);
+else buildWords();
+
+// Model + word anchors are now fixed at STOPS[i].pos in 3D world space — the
+// camera path moves through them. Kept as a no-op for callers that still
+// invoke it on resize/load.
+function anchorAll() { /* legacy noop */ }
+
+// ── decor — chrome / glass shapes scattered through the descent ──────────
+const decorGroup = new THREE.Group();
+scene.add(decorGroup);
+(function buildDecor() {
+  const chrome = new PMat({ color: 0xffffff, metalness: 1, roughness: 0.05,
+    clearcoat: 1, clearcoatRoughness: 0.08, envMapIntensity: 1.8 });
+  const glass = new PMat({ color: 0xeef0ff, metalness: 0, roughness: 0.12,
+    transmission: 0.7, thickness: 0.8, ior: 1.4, transparent: true, opacity: 0.95, envMapIntensity: 1.6 });
+  const geos = [
+    () => new THREE.BoxGeometry(0.5, 0.5, 0.5),
+    () => new THREE.IcosahedronGeometry(0.34, 0),
+    () => new THREE.TorusGeometry(0.32, 0.12, 14, 28),
+    () => new THREE.OctahedronGeometry(0.4, 0),
+  ];
+  let seed = 1337;
+  const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  const N = 0;     // decor disabled — was bleeding into the background
+  for (let i = 0; i < N; i++) {
+    const m = new THREE.Mesh(geos[i % geos.length](), rnd() > 0.5 ? glass : chrome);
+    const side = rnd() > 0.5 ? 1 : -1;
+    m.position.set(side * (1.8 + rnd() * 4.5), -rnd() * CAM_RANGE, -1.5 - rnd() * 6);
+    m.scale.setScalar(0.5 + rnd() * 1.1);
+    m.userData.spin = (rnd() - 0.5) * 0.012;
+    m.userData.amp = 0.15 + rnd() * 0.3;
+    m.userData.phase = rnd() * Math.PI * 2;
+    m.userData.baseY = m.position.y;
+    decorGroup.add(m);
+  }
+})();
+
+// ── loading manager + GLB load ───────────────────────────────────────────
+const plEl = { box: document.getElementById('preloader'),
+  counter: document.querySelector('.pl-counter'), fill: document.querySelector('.pl-fill') };
+let loadShown = 0;
+const manager = new THREE.LoadingManager();
+manager.onProgress = (url, loaded, total) => {
+  const pct = Math.round((loaded / total) * 100);
+  loadShown = Math.max(loadShown, pct);
+};
+const loader = new GLTFLoader(manager);
+STOPS.forEach((stop, i) => {
+  stop.index = i;
+  if (!stop.url) return;           // analytics-only stop: no 3D model, just word + camera anchor
+  loader.load(stop.url,
+    (gltf) => placeModel(stop, gltf.scene),
+    undefined,
+    (err) => { console.warn('GLB failed:', stop.url, err); placeModel(stop, makeFallback()); });
+});
+
+// ── gradient sky — rendered INSIDE the scene so the composer (which
+//    outputs opaque frames) composites it correctly. A CSS background would
+//    be hidden behind the opaque post-processed canvas.
+scene.add(camera);
+const skyU = {
+  uBot: { value: new THREE.Color(STOPS[0].palette[0]) },
+  uMid: { value: new THREE.Color(STOPS[0].palette[1]) },
+  uTop: { value: new THREE.Color(STOPS[0].palette[2]) },
+};
+const sky = new THREE.Mesh(
+  new THREE.SphereGeometry(60, 32, 32),
+  new THREE.ShaderMaterial({
+    side: THREE.BackSide, depthWrite: false,
+    uniforms: skyU,
+    vertexShader: `varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }`,
+    fragmentShader: `
+      precision mediump float;
+      varying vec3 vP;
+      uniform vec3 uBot; uniform vec3 uMid; uniform vec3 uTop;
+      void main(){
+        float h = vP.y * 0.5 + 0.5;
+        vec3 col = mix(uBot, uMid, smoothstep(0.0, 0.62, h));
+        col = mix(col, uTop, smoothstep(0.5, 1.0, h));
+        float glow = smoothstep(0.85, 0.0, distance(vP.xy, vec2(0.5, 0.42)));
+        col = mix(col, uTop, glow * 0.45);
+        gl_FragColor = vec4(col, 1.0);
+      }`,
+  }),
+);
+sky.renderOrder = -1;
+camera.add(sky);                       // surrounds the camera, fixed to view
+const _c0 = new THREE.Color(), _c1 = new THREE.Color();
+
+// ── post-processing ──────────────────────────────────────────────────────
+const hdrTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, { type: THREE.HalfFloatType });
+const composer = new EffectComposer(renderer, hdrTarget);
+composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+composer.setSize(window.innerWidth, window.innerHeight);
+composer.addPass(new RenderPass(scene, camera));
+
+const bloom = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  MOBILE ? 0.10 : 0.16,    // mild bloom — gives the pedestal a clean edge
+  0.4, 0.92);              // halo without making it look like a light source
+composer.addPass(bloom);
+
+const vignette = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uOffset: { value: 0.52 }, uDark: { value: 0.32 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    precision mediump float;
+    uniform sampler2D tDiffuse; uniform float uOffset; uniform float uDark;
+    varying vec2 vUv;
+    void main(){
+      vec4 c = texture2D(tDiffuse, vUv);
+      float v = smoothstep(0.85, uOffset, length(vUv - 0.5));
+      gl_FragColor = vec4(mix(c.rgb * (1.0 - uDark), c.rgb, v), c.a);
+    }`,
+});
+composer.addPass(vignette);
+composer.addPass(new OutputPass());
+
+const grain = new ShaderPass({
+  uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uAmt: { value: 0.035 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    precision mediump float;
+    uniform sampler2D tDiffuse; uniform float uTime; uniform float uAmt;
+    varying vec2 vUv;
+    float rand(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233))) * 43758.5453); }
+    void main(){
+      vec4 c = texture2D(tDiffuse, vUv);
+      float n = rand(vUv + fract(uTime)) - 0.5;
+      gl_FragColor = vec4(c.rgb + n * uAmt, c.a);
+    }`,
+});
+composer.addPass(grain);
+
+// ── lerp state ───────────────────────────────────────────────────────────
+const S = {
+  p:     { c: 0, t: 0, e: 0.08 },   // scroll progress 0..1
+  mx:    { c: 0, t: 0, e: 0.10 },
+  my:    { c: 0, t: 0, e: 0.10 },
+};
+function damp(s, dt) {
+  const f = 1 - Math.pow(1 - s.e, dt * 60);
+  s.c += (s.t - s.c) * f;
+}
+
+// ── lenis + ScrollTrigger ────────────────────────────────────────────────
+// Lenis ignores wheel/touch input (multipliers = 0). Wheel is handled by a
+// custom listener: each deliberate gesture advances ONE station.
+const lenis = new Lenis({
+  duration: 1.0,
+  easing: (t) => (t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2),
+  smoothWheel: true,
+  wheelMultiplier: 0,         // disabled — custom wheel listener drives snap
+  touchMultiplier: 0,
+  prevent: () => false,
+});
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+window.__lenis = lenis;
+
+// Camera progress is driven by `computeStopFloat()` — which holds the camera
+// at a stop while the user reads analytics in the gap below it, then smoothly
+// flies to the next stop as that stop enters the viewport. Hook into Lenis's
+// scroll callback so we update every frame.
+lenis.on('scroll', () => {
+  if (!STOPS.length) return;
+  S.p.t = computeStopFloat() / (STOPS.length - 1);
+});
+
+// ── noomo-style station jump ─────────────────────────────────────────────
+// Wheel / touch / keyboard all funnel through `jumpStop(±1)`. Each gesture
+// advances EXACTLY one station — never strands the user mid-transit.
+let snapping = false;
+const SNAP_DUR = 1.60;            // s — graceful, deliberate camera flight
+const SNAP_COOLDOWN = 600;        // ms — short rest then ready for next scroll
+// gentle ease — slow start, gradual middle, slow finish (cubic in/out)
+const SNAP_EASE = (t) => {
+  // 5th-order smoothstep — extra-soft start/end, lingers in motion
+  return t * t * t * (t * (6 * t - 15) + 10);
+};
+
+// ── slide deck position cache ───────────────────────────────────────────
+// SLIDE_POSITIONS: every .slide (cinematic + analytics).
+// CINEMATIC_INDICES: indexes of the 7 .slide.stop slides within SLIDE_POSITIONS.
+// The camera path interpolates between adjacent cinematic anchors as the
+// user scrolls through the slides in between, then locks on each cinematic.
+let SLIDE_POSITIONS = [];
+let CINEMATIC_INDICES = [];
+function refreshStopPositions() {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  SLIDE_POSITIONS = slides.map(el => ({
+    el,
+    top:    el.offsetTop,
+    height: el.offsetHeight,
+    center: el.offsetTop + el.offsetHeight * 0.5,
+    isStop: el.classList.contains('stop'),
+  }));
+  CINEMATIC_INDICES = SLIDE_POSITIONS
+    .map((p, i) => p.isStop ? i : -1)
+    .filter(i => i >= 0);
+}
+
+function currentSlideIndex() {
+  if (!SLIDE_POSITIONS.length) refreshStopPositions();
+  const mid = lenis.scroll + window.innerHeight * 0.5;
+  let best = 0, bestD = Infinity;
+  SLIDE_POSITIONS.forEach((p, i) => {
+    const d = Math.abs(mid - p.center);
+    if (d < bestD) { bestD = d; best = i; }
+  });
+  return best;
+}
+const currentStopIndex = currentSlideIndex;
+
+// Camera float 0..(STOPS.length-1) — interpolated between cinematic anchors.
+function computeStopFloat() {
+  if (!SLIDE_POSITIONS.length) refreshStopPositions();
+  if (CINEMATIC_INDICES.length < 2) return 0;
+  const mid = lenis.scroll + window.innerHeight * 0.5;
+  for (let k = 0; k < CINEMATIC_INDICES.length - 1; k++) {
+    const a = SLIDE_POSITIONS[CINEMATIC_INDICES[k]];
+    const b = SLIDE_POSITIONS[CINEMATIC_INDICES[k + 1]];
+    if (mid <= a.center) return k;
+    if (mid >= a.center && mid < b.center) {
+      const f = (mid - a.center) / (b.center - a.center);
+      return k + f;
     }
   }
-  </script>
-  <script type="module">
-    import * as THREE from "three";
-    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-    // Expose globally so legacy script-style code (agency.js) can still use them
-    window.THREE = THREE;
-    window.GLTFLoader = GLTFLoader;
-    // Dispatch a "three-ready" event so agency.js can start
-    window.dispatchEvent(new Event("three-ready"));
-  </script>
-  <script src="main.js"></script>
-  <script src="agency.js"></script>
+  return CINEMATIC_INDICES.length - 1;
+}
+
+function jumpToSlide(i) {
+  if (!SLIDE_POSITIONS.length) refreshStopPositions();
+  i = Math.max(0, Math.min(SLIDE_POSITIONS.length - 1, i));
+  if (snapping) return;
+  snapping = true;
+  lenis.scrollTo(SLIDE_POSITIONS[i].top, {
+    duration: SNAP_DUR,
+    easing: SNAP_EASE,
+    lock: true,
+    onComplete: () => { setTimeout(() => { snapping = false; }, SNAP_COOLDOWN); },
+  });
+}
+function jumpToStop(stopIdx) {
+  if (CINEMATIC_INDICES[stopIdx] != null) jumpToSlide(CINEMATIC_INDICES[stopIdx]);
+}
+function jumpSlide(delta) { jumpToSlide(currentSlideIndex() + delta); }
+const jumpStop = jumpSlide;
+
+// ── wheel snap — PowerPoint-style, one gesture = one slide step.
+//    On TALL slides (content > viewport, e.g. ML explainer), wheel scrolls
+//    naturally within the slide first; only snaps to the next slide once
+//    the bottom/top edge of the current slide is reached.
+let wheelAccum = 0, wheelResetTimer = 0;
+const WHEEL_THRESHOLD = 80;
+window.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  if (snapping) { wheelAccum = 0; return; }
+  if (!SLIDE_POSITIONS.length) refreshStopPositions();
+  const i = currentSlideIndex();
+  const slide = SLIDE_POSITIONS[i];
+  const vh = window.innerHeight;
+  const isTall = slide && slide.height > vh * 1.05;
+  if (isTall) {
+    const viewTop = lenis.scroll;
+    const viewBottom = viewTop + vh;
+    const atBottom = viewBottom >= slide.top + slide.height - 12;
+    const atTop = viewTop <= slide.top + 12;
+    // Inside the slide → smooth scroll within it; don't trigger slide-snap yet.
+    if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
+      lenis.scrollTo(Math.max(0, viewTop + e.deltaY * 1.6), { duration: 0.4, lock: false });
+      wheelAccum = 0;
+      return;
+    }
+  }
+  wheelAccum += e.deltaY;
+  clearTimeout(wheelResetTimer);
+  wheelResetTimer = setTimeout(() => { wheelAccum = 0; }, 220);
+  if (Math.abs(wheelAccum) >= WHEEL_THRESHOLD) {
+    const dir = Math.sign(wheelAccum);
+    wheelAccum = 0;
+    jumpSlide(dir);
+  }
+}, { passive: false });
+
+// ── touch snap ──────────────────────────────────────────────────────────
+let touchStartY = 0, touchActive = false;
+window.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+  touchActive = true;
+}, { passive: true });
+window.addEventListener('touchend', (e) => {
+  if (!touchActive) return;
+  touchActive = false;
+  if (snapping) return;
+  const dy = touchStartY - (e.changedTouches[0]?.clientY ?? touchStartY);
+  if (Math.abs(dy) < 40) return;
+  jumpSlide(Math.sign(dy));
+}, { passive: true });
+
+// ── top-nav links → jump to stop ─────────────────────────────────────────
+document.querySelectorAll('.topbar .nav a[data-jump]').forEach((a) => {
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    jumpToStop(parseInt(a.dataset.jump, 10));
+  });
+});
+
+// ── keyboard ─────────────────────────────────────────────────────────────
+window.addEventListener('keydown', (e) => {
+  if (e.target.closest('input, textarea')) return;
+  if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); jumpStop(+1); }
+  else if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); jumpStop(-1); }
+  else if (e.key === 'Home') { e.preventDefault(); jumpStop(-99); }
+  else if (e.key === 'End')  { e.preventDefault(); jumpStop(+99); }
+});
+
+// per-stop reveal — fade a model in while its section is on screen
+const railEl = document.getElementById('rail');
+const dotEls = STOPS.map((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot';
+  d.type = 'button';
+  d.setAttribute('aria-label', `Өртөө ${i + 1}: ${STOPS[i].word}`);
+  d.addEventListener('click', () => jumpToStop(i));
+  railEl.appendChild(d);
+  return d;
+});
+// Model opacity/scale are driven CONTINUOUSLY from scroll progress in tick().
+// ScrollTrigger here only handles the rail dot + active-stop highlight.
+let activeStop = 0;
+document.querySelectorAll('.stop').forEach((sec, i) => {
+  ScrollTrigger.create({
+    trigger: sec, start: 'top 60%', end: 'bottom 40%',
+    onToggle: (self) => {
+      if (!self.isActive) return;
+      activeStop = i;
+      dotEls.forEach((d, j) => d.classList.toggle('on', j === i));
+    },
+  });
+});
+dotEls[0].classList.add('on');
+
+// hide the scroll cue after the first stop
+ScrollTrigger.create({
+  trigger: '.stop[data-stop="1"]', start: 'top 80%',
+  onEnter: () => { document.getElementById('scrollcue').style.opacity = '0'; },
+  onLeaveBack: () => { document.getElementById('scrollcue').style.opacity = '1'; },
+});
+
+// subtle parallax on the caption blocks (always readable — no opacity fade)
+if (!REDUCED) {
+  gsap.utils.toArray('.caption').forEach((el) => {
+    gsap.fromTo(el, { yPercent: -8 }, { yPercent: 8, ease: 'none',
+      scrollTrigger: { trigger: el.closest('.stop'), start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+  });
+}
+
+// ── mouse parallax ───────────────────────────────────────────────────────
+window.addEventListener('mousemove', (e) => {
+  S.mx.t = (e.clientX / window.innerWidth) * 2 - 1;
+  S.my.t = -((e.clientY / window.innerHeight) * 2 - 1);
+}, { passive: true });
+
+// ── camera path — flies through the 3D world between stops ──────────────
+// The camera sits OPPOSITE the active model (so it fills frame from the
+// correct side). Between stops the camera takes a Bezier-like arc with a
+// perpendicular detour, so each segment moves in a different direction —
+// down, sideways, up, deep, near — rather than pure vertical descent.
+const _look = new THREE.Vector3();
+const segsN = STOPS.length - 1;
+const CAM_DIST = 9.2;                                 // camera distance from a stop
+function camAt(i) {
+  const s = STOPS[i];
+  // Camera sits directly in front of the stop, framing it on the viewport median.
+  return [ s.pos[0], s.pos[1], s.pos[2] + CAM_DIST ];
+}
+function lookAt(i) {
+  // Look exactly at the stop anchor → model/word renders at screen center.
+  const s = STOPS[i];
+  return [ s.pos[0], s.pos[1], s.pos[2] ];
+}
+
+// Per-segment arc detour — each transit takes a distinctly different path
+// through 3D space so the camera move never feels mechanical.
+const DETOURS = [
+  [ 3.5,  2.0, -1.5],   // 0→1: arc up-right & back   (to globe)
+  [-3.0,  1.5,  2.0],   // 1→2: arc up-left & forward (to hsk)
+  [ 2.5,  2.5, -2.0],   // 2→3: arc right & deeper    (to funnel)
+  [-3.5,  2.0,  2.5],   // 3→4: arc left & forward    (to greatwall)
+  [ 3.0,  2.5, -2.5],   // 4→5: arc right & deeper    (to gradcap)
+  [-2.5,  2.0,  2.0],   // 5→6: arc left & forward    (to growth)
+];
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+function lerp3(a, b, t) { return [lerp(a[0],b[0],t), lerp(a[1],b[1],t), lerp(a[2],b[2],t)]; }
+
+function cameraPath(p) {
+  const fp = Math.max(0, Math.min(segsN, p * segsN));
+  const i  = Math.min(segsN - 1, Math.floor(fp));
+  const f  = fp - i;
+  // strong ease — long linger at stops, fast through middle
+  const ef = f < 0.5 ? 2*f*f : 1 - Math.pow(-2*f + 2, 2) / 2;
+  const arc = Math.sin(f * Math.PI);                  // 0 at stops, 1 mid-transit
+
+  // straight-line interpolation between stop cam positions
+  const camA = camAt(i), camB = camAt(i + 1);
+  const baseCam = lerp3(camA, camB, ef);
+  // detour offset peaks at mid-segment
+  const det = DETOURS[i] || [0, 0, 0];
+  const cx = baseCam[0] + det[0] * arc;
+  const cy = baseCam[1] + det[1] * arc;
+  const cz = baseCam[2] + det[2] * arc;
+
+  // look target — interpolate between the two stop centers
+  const lkA = lookAt(i), lkB = lookAt(i + 1);
+  const lk = lerp3(lkA, lkB, ef);
+
+  return { x: cx, y: cy, z: cz, lookX: lk[0], lookY: lk[1], lookZ: lk[2], arc };
+}
+
+// ── resize ───────────────────────────────────────────────────────────────
+let resizePending = false;
+function onResize() {
+  if (resizePending) return;
+  resizePending = true;
+  requestAnimationFrame(() => {
+    const w = window.innerWidth, h = window.innerHeight;
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    renderer.setSize(w, h);
+    composer.setSize(w, h);
+    bloom.resolution.set(w, h);
+    refreshStopPositions();
+    ScrollTrigger.refresh();
+    anchorAll();
+    resizePending = false;
+  });
+}
+window.addEventListener('resize', onResize);
+
+// ── visibility pause ─────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+let running = true, rafId = 0;
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { running = false; cancelAnimationFrame(rafId); }
+  else if (!running) { running = true; clock.getDelta(); tick(); }
+});
+
+// ── main loop ────────────────────────────────────────────────────────────
+function tick() {
+  if (!running) return;
+  const dt = Math.min(clock.getDelta(), 0.1);
+  const t = clock.elapsedTime;
+  damp(S.p, dt); damp(S.mx, dt); damp(S.my, dt);
+
+  // camera
+  const cp = cameraPath(S.p.c);
+  camera.position.set(cp.x + S.mx.c * 0.5, cp.y + S.my.c * 0.3, cp.z);
+  _look.set(cp.lookX + S.mx.c * 0.4, cp.lookY - S.my.c * 0.3, cp.lookZ);
+  camera.lookAt(_look);
+
+  // models — visibility driven by scroll progress. Each model has a narrow
+  // window around its anchor; outside that window it fades fully so we get
+  // a clean noomo "one model per station" reveal with a brief transit gap.
+  const visSegs = STOPS.length - 1;
+  const VIS_WINDOW  = 0.85;       // 3D model fades to invisible by the next
+                                  // stop so it doesn't bleed through analytics
+  const WORD_WINDOW = 0.55;
+  for (const name in models) {
+    const u = models[name].userData;
+    const stopP = u.stop.index / visSegs;
+    const norm  = Math.min(1, Math.abs(S.p.c - stopP) * visSegs / VIS_WINDOW);
+    const tvis  = 1 - norm;
+    const sm    = tvis * tvis * (3 - 2 * tvis);
+    u.target      = sm;
+    u.scaleTarget = 0.85 + sm * 0.15;
+  }
+  wordsGroup.children.forEach((plane, i) => {
+    if (!plane.material) return;     // analytics stops have an empty Group placeholder
+    const stopP = i / visSegs;
+    const norm  = Math.min(1, Math.abs(S.p.c - stopP) * visSegs / WORD_WINDOW);
+    const tvis  = 1 - norm;
+    plane.material.opacity = tvis * tvis * (3 - 2 * tvis);
+  });
+  const k = 1 - Math.pow(1 - 0.07, dt * 60);
+  for (const name in models) {
+    const w = models[name];
+    const u = w.userData;
+    // Continuous slow rotation — never stops, just gentle spin
+    u.model.rotation.y = u.spinPhase + t * u.spinSpeed;
+    w.position.x = u.baseX + Math.sin(t * 0.40 + u.phase) * 0.22;
+    w.position.y = u.baseY + Math.sin(t * 0.52 + u.phase) * 0.26;
+    w.position.z = u.baseZ + Math.sin(t * 0.34 + u.phase) * 0.18;
+    // chunky voxel clusters drift + rotate slowly (no-op when none)
+    if (u.clusters && u.clusters.length) {
+      u.clusters[0].rotation.y += 0.0035;
+      u.clusters[0].position.y += (Math.sin(t * 0.55 + u.phase) * 0.005);
+      if (u.clusters[1]) {
+        u.clusters[1].rotation.y -= 0.0028;
+        u.clusters[1].position.y += (Math.cos(t * 0.62 + u.phase) * 0.004);
+      }
+    }
+    u.voxels.forEach((v) => {
+      v.rotation.x += v.userData.spin;
+      v.rotation.y += v.userData.spin * 1.3;
+      v.userData.orbitA += v.userData.orbitSpeed * dt;
+      const r = v.userData.orbitR, b = v.userData.orbitB, a = v.userData.orbitA;
+      v.position.set(
+        Math.cos(a) * Math.cos(b) * r,
+        Math.sin(b) * r + Math.sin(t * 0.6 + v.userData.phase) * 0.12,
+        Math.sin(a) * Math.cos(b) * r);
+    });
+    u.opacity += (u.target - u.opacity) * k;
+    u.scale   += (u.scaleTarget - u.scale) * k;
+    w.scale.setScalar(u.scale);
+    // hide the whole wrap once it's effectively transparent — prevents the
+    // pedestals/models of distant stops bleeding through with residual opacity
+    w.visible = u.opacity > 0.01;
+    if (!w.visible) continue;
+    u.model.traverse((n) => {
+      if (n.isMesh && n.material && n.material.transparent) n.material.opacity = u.opacity;
+    });
+    if (u.pedestal) u.pedestal.traverse((n) => {
+      if (n.isMesh && n.material) n.material.opacity = u.opacity * 0.95;
+    });
+    if (u.clusters) u.clusters.forEach((c) => c.traverse((n) => {
+      if (n.isMesh && n.material) n.material.opacity = u.opacity * 0.92;
+    }));
+    u.voxels.forEach((v) => { v.material.opacity = u.opacity * (v.material === voxGold ? 1 : 0.95); });
+  }
+
+  // decor — slow spin + drift
+  decorGroup.children.forEach((m) => {
+    m.rotation.x += m.userData.spin;
+    m.rotation.y += m.userData.spin * 0.7;
+    m.position.y = m.userData.baseY + Math.sin(t * 0.35 + m.userData.phase) * m.userData.amp;
+  });
+
+  // sky gradient — lerp the palette between adjacent stops
+  const segs = STOPS.length - 1;
+  const fp = Math.max(0, Math.min(segs, S.p.c * segs));
+  const i0 = Math.min(segs, Math.floor(fp));
+  const i1 = Math.min(segs, i0 + 1);
+  const f = fp - i0;
+  for (let j = 0; j < 3; j++) {
+    _c0.set(STOPS[i0].palette[j]);
+    _c1.set(STOPS[i1].palette[j]);
+    _c0.lerp(_c1, f);
+    (j === 0 ? skyU.uBot : j === 1 ? skyU.uMid : skyU.uTop).value.copy(_c0);
+  }
+
+  grain.uniforms.uTime.value = t;
+  composer.render();
+  rafId = requestAnimationFrame(tick);
+}
+
+// ── preloader ────────────────────────────────────────────────────────────
+let plPct = 0;
+const plTimer = setInterval(() => {
+  // ease toward whatever the loading manager reports, always creep forward
+  const aim = Math.max(loadShown, plPct + 2);
+  plPct = Math.min(100, plPct + (aim - plPct) * 0.18 + 0.8);
+  const shown = Math.floor(plPct);
+  plEl.counter.textContent = shown;
+  plEl.fill.style.width = shown + '%';
+  const cinematicCount = STOPS.filter(s => s.url).length;
+  const ready = Object.keys(models).length === cinematicCount;
+  if (plPct >= 99 && (ready || plPct >= 100)) {
+    clearInterval(plTimer);
+    plEl.counter.textContent = '100';
+    plEl.fill.style.width = '100%';
+    setTimeout(playIntro, 280);
+  }
+}, 40);
+
+function playIntro() {
+  plEl.box.classList.add('done');
+  renderer.compile(scene, camera);
+  composer.render();
+  // make sure stop 0 is revealed even if its ScrollTrigger was created pre-load
+  const first = models[STOPS[0].name];
+  if (first) first.userData.target = 1;
+  if (!REDUCED) {
+    gsap.from(camera.position, { z: 16, duration: 2.4, ease: 'power3.out' });
+    gsap.from(camera, { fov: 58, duration: 2.4, ease: 'power3.out',
+      onUpdate: () => camera.updateProjectionMatrix() });
+  }
+  refreshStopPositions();
+  ScrollTrigger.refresh();
+  anchorAll();
+}
+
+// ── start ────────────────────────────────────────────────────────────────
+refreshStopPositions();
+tick();
+
+// ── expose to analytics modules ──────────────────────────────────────────
+window.__anko3d = {
+  THREE, scene, camera, renderer, composer, bloom,
+  models, modelGroup, STOPS, S, lenis, gsap, ScrollTrigger,
+  refreshStopPositions, computeStopFloat,
+  currentSlideIndex, currentStopIndex,
+  jumpToSlide, jumpToStop, jumpSlide,
+};
+window.dispatchEvent(new CustomEvent('anko3d-ready'));
+</script>
+
+<!-- ═════════════════════════════════════════════════════════════════════
+     ANALYTICS BOOTSTRAP — loads insights.json, mounts cards/maps/charts,
+     binds GSAP ScrollTrigger reveals. Runs in parallel with 3D scene.
+     ═════════════════════════════════════════════════════════════════════ -->
+<script type="module" src="js/main.js"></script>
+
 </body>
 </html>

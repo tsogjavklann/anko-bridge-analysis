@@ -3,6 +3,7 @@
   "framework": null,
   "buildCommand": null,
   "installCommand": null,
+  "devCommand": null,
   "outputDirectory": "website",
   "cleanUrls": true,
   "trailingSlash": false
